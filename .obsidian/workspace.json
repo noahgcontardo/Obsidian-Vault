@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "THM red team/Alfred.md",
+                "file": "THM red team/HackPark.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Alfred"
+              "title": "HackPark"
             }
           }
         ]
@@ -169,8 +169,10 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "d30a7c104a859b2e",
+  "active": "a67d065b0035090e",
   "lastOpenFiles": [
+    "THM red team/Alfred.md",
+    "THM red team/HackPark.md",
     "Obsidian",
     "Documents/-'s Notebook.url",
     "Documents",
@@ -181,10 +183,8 @@
     "Crypto projects/maths.py",
     "Crypto projects/learning mod.py",
     "Crypto projects/JUST EEA.py",
-    "Crypto projects/binary conversion.py",
     "README.md",
     "NCAE COMPETITION/1ubuntu web server.md",
-    "THM red team/Alfred.md",
     "NCAE COMPETITION/Microtik.md",
     "NCAE COMPETITION/IP schema.md",
     "Microtik.md",
