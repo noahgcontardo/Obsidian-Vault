@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "NCAE COMPETITION/1ubuntu web server.md",
+                "file": "THM red team/game.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "1ubuntu web server"
+              "title": "game"
             }
           }
         ]
@@ -171,13 +171,20 @@
   },
   "active": "a67d065b0035090e",
   "lastOpenFiles": [
+    "THM red team/HackPark.md",
+    "THM red team/game.md",
+    "THM red team/Alfred.md",
+    "THM blue team/5Ws template.md",
+    "THM blue team/5Ws template example.md",
+    "THM blue team/SOC simulator phishing unleashed.md",
+    "Pasted image 20250323205500.png",
+    "NCAE COMPETITION/1ubuntu web server.md",
+    "THM blue team",
     "NCAE COMPETITION/IP schema.md",
     "NCAE COMPETITION/Microtik.md",
-    "THM red team/HackPark.md",
     "NCAE COMPETITION/CCRI man not mine.html",
     "NCAE COMPETITION/CCRI man.html",
     "NCAE COMPETITION/NCAE-manual(updated).html",
-    "THM red team/Alfred.md",
     "Pasted image 20250312212858.png",
     "Pasted image 20250312201831.png",
     "Obsidian",
@@ -186,9 +193,7 @@
     "Crypto projects/test for RSA char shit.py",
     "Crypto projects/RSA prototype.py",
     "Crypto projects/RSA modifications.py",
-    "Crypto projects/RSA CURRENT.py",
     "README.md",
-    "NCAE COMPETITION/1ubuntu web server.md",
     "Microtik.md",
     "ncae share/NCAE COMPETITION/Pasted image 20250311193153.png",
     "ncae share/NCAE COMPETITION/Pasted image 20250311192704.png",
@@ -200,7 +205,6 @@
     "ncae share/NCAE COMPETITION/1ubuntu web server.md",
     "NCAE COMPETITION/Pasted image 20250311192322.png",
     "NCAE COMPETITION/Pasted image 20250311192238.png",
-    "NCAE COMPETITION/Pasted image 20250311193153.png",
     "IP schema.md",
     "1ubuntu web server.md",
     "Schema.md"
