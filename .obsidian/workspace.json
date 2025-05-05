@@ -41,12 +41,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "THM red team/Daily Bugle.md",
+                "file": "THM red team/Internal.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Daily Bugle"
+              "title": "Internal"
             }
           }
         ],
@@ -200,8 +200,10 @@
   },
   "active": "fa32305ba0f7d141",
   "lastOpenFiles": [
-    "THM red team/Skynet.md",
+    "THM red team/Relevant.md",
+    "THM red team/Internal.md",
     "THM red team/Daily Bugle.md",
+    "THM red team/Skynet.md",
     "Pasted image 20250323205500.png",
     "Pasted image 20250422162702.png",
     "THM red team/game.md",

