@@ -41,12 +41,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "THM red team/Internal.md",
+                "file": "THM red team/Mr.Robot.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Internal"
+              "title": "Mr.Robot"
             }
           }
         ],
@@ -200,13 +200,14 @@
   },
   "active": "fa32305ba0f7d141",
   "lastOpenFiles": [
-    "THM red team/Alfred.md",
-    "THM red team/Internal.md",
-    "THM red team/HackPark.md",
-    "THM red team/game.md",
     "THM red team/Skynet.md",
-    "THM red team/Relevant.md",
+    "THM red team/game.md",
     "THM red team/Daily Bugle.md",
+    "THM red team/Alfred.md",
+    "THM red team/HackPark.md",
+    "THM red team/Mr.Robot.md",
+    "THM red team/Relevant.md",
+    "THM red team/Internal.md",
     "Pasted image 20250323205500.png",
     "Pasted image 20250422162702.png",
     "THM blue team/5Ws template.md",
